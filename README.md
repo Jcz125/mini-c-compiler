@@ -1,4 +1,4 @@
-dépôt-template pour le projet de compilation 2021
+dépôt pour le projet de compilation 2021
 
 Les membres du groupe: 
 Gisel RODRIGUEZ BAIDE   G4 ;
