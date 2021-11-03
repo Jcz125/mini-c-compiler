@@ -13,13 +13,13 @@ decl :
     | decl_fct
     ;
 
+decl_typ :
+      STRUCT IDF '{' decl_vars* '}' SEMICOLON;
+
 decl_vars :
       INT (IDF COMMA)* IDF SEMICOLON
     | STRUCT IDF ('*' IDF COMMA)* ('*' IDF) SEMICOLON
     ;
-
-decl_typ :
-      STRUCT IDF '{' decl_vars* '}' SEMICOLON;
 
 decl_fct :
       INT IDF '(' ((param)? | (param COMMA)+ param) ')' bloc
@@ -31,17 +31,8 @@ param :
     | STRUCT IDF '*' IDF
     ;
 
-expr :
-      INTEGER
-    | IDF
-    | expr '->' IDF
-    | IDF '(' ((expr)? | (expr COMMA)+ expr) ')'
-    | '!' expr
-    | '-' expr
-    | expr OPERATOR expr
-    | SIZEOF '(' STRUCT IDF ')'
-    | '(' expr ')'
-    ;
+bloc :
+      '{' decl_vars* instruction* '}';
 
 instruction :
       SEMICOLON
@@ -60,30 +51,17 @@ if_instruction :
 while_instruction :
       WHILE '(' expr ')' instruction;
 
-bloc :
-      '{' decl_vars* instruction* '}';
-
-
-// key words
-INT : 'int' ;
-IF : 'if' ;
-ELSE : 'else' ;
-WHILE : 'while' ;
-STRUCT : 'struct' ;
-RETURN : 'return' ;
-SIZEOF : 'sizeof' ;
-
-
-// commenters
-COMMENTERS : 
-      '/*' CHARACTERS* '*/' 
-    | '//' CHARACTERS* 
+expr :
+      INTEGER
+    | IDF
+    | expr '->' IDF
+    | IDF '(' ((expr)? | (expr COMMA)+ expr) ')'
+    | '!' expr
+    | '-' expr
+    | expr OPERATOR expr
+    | SIZEOF '(' STRUCT IDF ')'
+    | '(' expr ')'
     ;
-
-
-// semicolon and parentheses
-SEMICOLON : ';' ;
-COMMA : ',' ;
 
 
 //lexer ruler
@@ -114,5 +92,29 @@ CHARACTERS :
     | '\"'
     ;
 
+
+// semicolon and parentheses
+SEMICOLON : ';' ;
+COMMA : ',' ;
+
+
+// key words
+INT : 'int' ;
+IF : 'if' ;
+ELSE : 'else' ;
+WHILE : 'while' ;
+STRUCT : 'struct' ;
+RETURN : 'return' ;
+SIZEOF : 'sizeof' ;
+
+
+// commenters
+COMMENTERS : 
+      '/*' CHARACTERS* '*/' 
+    | '//' CHARACTERS* 
+    ;
+
+
+// skip
 WS :
       ('\t' | ' ' | '\r' | '\n')+ -> skip ;
