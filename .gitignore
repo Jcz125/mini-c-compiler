@@ -2,3 +2,6 @@
 bin
 .antlr
 .idea
+./examples
+
+grammaire_cir-c.g4
