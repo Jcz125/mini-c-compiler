@@ -2,10 +2,10 @@
 bin
 .antlr
 .idea
-./examples/
-./lib/
-./src/parser/
-./src/Main
-./bin/
+
+examples/
+lib/
+src/parser/
+src/Main
 
 grammaire_cir-c.g4
