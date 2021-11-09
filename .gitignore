@@ -3,5 +3,9 @@ bin
 .antlr
 .idea
 ./examples/
+./lib/
+./src/parser/
+./src/Main
+./bin/
 
 grammaire_cir-c.g4
