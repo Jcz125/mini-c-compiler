@@ -1,5 +1,5 @@
 
-int sum(int a1, a2){
+int sum(int a1, int a2){
     int S ;
     S = a1 + a2 ;
     return S ;
@@ -10,7 +10,7 @@ struct test_struct1 {
     int a ;
     int b ;
     int c ;
-}
+};
 
 
 struct test_struct2 { } ;
