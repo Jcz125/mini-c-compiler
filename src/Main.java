@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 
 import parser.*;
-// import parser.grammaireParser.ProgramContext;
+import parser.grammaireParser.ProgramContext;
 
 public class Main {
 
