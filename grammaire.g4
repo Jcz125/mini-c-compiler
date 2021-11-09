@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-grammar grammaire1;
-=======
 grammar grammaire;
->>>>>>> 8c84be591d82ba45d2af867bf51cc73d05a0b209
 
 
 @header{
