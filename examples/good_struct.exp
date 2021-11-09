@@ -23,7 +23,7 @@ struct test_struct3 {
 } ;
 
 
-struct test_struct1 * struct_function(test_struct1 * abc) {
+struct test_struct1 * struct_function(struct test_struct1 * abc) {
     abc->a = 1;
     abc->b = 2;
     abc->c = 3;
@@ -34,8 +34,8 @@ struct test_struct1 * struct_function(test_struct1 * abc) {
 int main() {
 
     struct test_struct1 *abc1 ;
-    *abc1 = malloc(sizeof(struct test_struct1)) ;
-    *abc1 = struct_function(abc1);
+    abc1 = malloc(sizeof(struct test_struct1)) ;
+    abc1 = struct_function(abc1);
     print(abc1->a) ;
     print(abc1->b) ;
     print(abc1->c) ;
