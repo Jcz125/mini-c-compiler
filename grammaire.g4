@@ -40,19 +40,11 @@ bloc :
 
 instruction :
       SEMICOLON                                       #None
-<<<<<<< HEAD
     | expr SEMICOLON                                  #Expression
     | affect SEMICOLON                                #Affectation
     | if_instruction                                  #IfInst
     | while_instruction                               #WhileInst
     | bloc                                            #BlocInst
-=======
-    | expr SEMICOLON
-    | affect SEMICOLON
-    | if_instruction
-    | while_instruction
-    | bloc
->>>>>>> 8c84be591d82ba45d2af867bf51cc73d05a0b209
     | RETURN expr SEMICOLON                           #Return
     ;
 
@@ -60,11 +52,7 @@ if_instruction :
       IF '('expr')' instruction                       #IfThen
     | IF '('expr')' instruction ELSE instruction      #IfThenElse
     ;
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 8c84be591d82ba45d2af867bf51cc73d05a0b209
 while_instruction :
       WHILE '('expr')' instruction;
 
@@ -75,11 +63,7 @@ expr :
       or_op;
 
 or_op :
-<<<<<<< HEAD
       et_op ('||' et_op)*;
-=======
-      et_op (|| et_op)*;
->>>>>>> 8c84be591d82ba45d2af867bf51cc73d05a0b209
 
 et_op :
       egalite ('&&' egalite)*;
@@ -113,37 +97,19 @@ value :
 params :
       param? | (param COMMA)+ param;
 
-<<<<<<< HEAD
-//lexer ruler
-OPERATOR :
-      '==' | '!=' | '<' | '<=' | '>' | '>=' | '+' | '-' | '*' | '/' | '&&' | '||' ;
 
+//lexer ruler
 INTEGER :
       '0'
     | '1'..'9' ('0'..'9')*
     | '\'' [\u0020-\u007E] '\''
-=======
-// lexer rules
-INTEGER :
-      '0'
-    | '1'..'9' ('0'..'9')*
-    | '\''([\u0020-\u007E] | '\\' | '\'' | '\"')'\''
->>>>>>> 8c84be591d82ba45d2af867bf51cc73d05a0b209
     ;
 
 IDF :
       ('a'..'z' | 'A'..'Z')('a'..'z' | 'A'..'Z' | '0'..'9' | '_')* ;
 
 CHARACTERS :
-<<<<<<< HEAD
       [\u0020-\u007E];
-=======
-      [\u0020-\u007E]
-    | '\\'
-    | '\''
-    | '\"'
-    ;
->>>>>>> 8c84be591d82ba45d2af867bf51cc73d05a0b209
 
 
 // semicolon and parentheses
@@ -163,18 +129,10 @@ SIZEOF : 'sizeof' ;
 
 // commenters
 COMMENTERS :
-<<<<<<< HEAD
       ('/*' [\u0000-\u007E]* '*/'|'//' [\u0000-\u007E]* ('\u000A' | '\u000D'))  -> skip;
     // ~[\u000A\u000D]
     // '/*' ([\u0020-\u007E] | '\\' | '\'' | '\"')* '*/'
     // | '//' ([\u0020-\u007E] | '\\' | '\'' | '\"')*
-=======
-     ( '/*' [\u0000-\u007E]* '*/'
-    | '//' [\u0000-\u007E]* ('\u000A' | '\u000D') )  // ~[\u000A\u000D] )
-    -> skip;
-//       '/*' ([\u0020-\u007E] | '\\' | '\'' | '\"')* '*/' 
-//     | '//' ([\u0020-\u007E] | '\\' | '\'' | '\"')* 
->>>>>>> 8c84be591d82ba45d2af867bf51cc73d05a0b209
 
 
 // skip
