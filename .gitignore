@@ -2,3 +2,9 @@
 bin
 .antlr
 .idea
+
+examples
+lib/
+src/parser/
+
+grammaire_cir-c.g4

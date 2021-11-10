@@ -14,46 +14,51 @@ decl :
     ;
 
 decl_typ :
-      STRUCT IDF '{'decl_vars*'}' SEMICOLON;
+      'struct' IDF '{'decl_vars*'}' ';';
 
 decl_vars :
-      INT (IDF COMMA)* IDF SEMICOLON                  #IntDecl
-    | STRUCT IDF ('*' IDF COMMA)* ('*' IDF) SEMICOLON #StructDecl
+      'int' (IDF ',')* IDF ';'                        #IntDecl
+    | 'struct' IDF ('*' IDF ',')* ('*' IDF) ';'       #StructDecl
     ;
 
 decl_fct :
-      INT IDF '('params')' bloc                       #IntFct
-    | STRUCT IDF '*' IDF '('params')' bloc            #StructFct
+      'int' IDF '('params')' bloc                     #IntFct
+    | 'struct' IDF '*' IDF '('params')' bloc          #StructFct
+    ;
+
+params :
+      param?
+    | (param ',')+ param
     ;
 
 param :
-      INT IDF                                         #IntParam
-    | STRUCT IDF '*' IDF                              #StructPointer
+      'int' IDF                                       #IntParam
+    | 'struct' IDF '*' IDF                            #StructPointer
     ;
 
-bloc :
-      '{'decl_vars* instruction*'}';
+bloc : // vérifier si on peut alterner les decl_vars et instruction dans le code
+      '{'(decl_vars|instruction)*'}'; // decl_vars* instruction*
 
 instruction :
-      SEMICOLON                                       #None
-    | expr SEMICOLON                                  #Expression
-    | affect SEMICOLON                                #Affectation
+      ';'                                             #None
+    | expr ';'                                        #Expression
+    | affect ';'                                      #Affectation
     | if_instruction                                  #IfInst
     | while_instruction                               #WhileInst
     | bloc                                            #BlocInst
-    | RETURN expr SEMICOLON                           #Return
+    | 'return' expr ';'                               #Return
     ;
 
 if_instruction :
-      IF '('expr')' instruction                       #IfThen
-    | IF '('expr')' instruction ELSE instruction      #IfThenElse
+      'if' '('expr')' instruction                     #IfThen
+    | 'if' '('expr')' instruction 'else' instruction  #IfThenElse
     ;
 
 while_instruction :
-      WHILE '('expr')' instruction;
+      'while' '('expr')' instruction;
 
-affect :    // est-ce qu'on peut faire a = b = c (plusieurs affectation) ?
-      IDF '=' expr;
+affect :    // est-ce qu'on peut faire a = b = c (plusieurs affectation) ? erreur syntaxique peut-être
+      (IDF|fleche) '=' expr;
 
 expr :
       or_op;
@@ -79,19 +84,17 @@ produit :
 oppose :
       ('!'|'-')?value;
 
+fleche :
+      IDF '->' IDF;
+
 value :
       INTEGER                                         #Integer
     | IDF                                             #Identifier
-    | IDF '->' IDF                                    #Arrow
-    | IDF '('params')'                                #Function
-    | SIZEOF '('STRUCT IDF')'                         #Sizeof
+    | fleche                                          #Arrow
+    | IDF '('((expr ',')* expr)?')'                   #Function
+    | 'sizeof' '(''struct' IDF')'                     #Sizeof
     | '('expr')'                                      #Parenthesis
     ;
-
-
-// parameters
-params :
-      param? | (param COMMA)+ param;
 
 
 //lexer ruler
@@ -104,31 +107,10 @@ INTEGER :
 IDF :
       ('a'..'z' | 'A'..'Z')('a'..'z' | 'A'..'Z' | '0'..'9' | '_')* ;
 
-CHARACTERS :
-      [\u0020-\u007E];
-
-
-// semicolon and parentheses
-SEMICOLON : ';' ;
-COMMA : ',' ;
-
-
-// key words
-INT : 'int' ;
-IF : 'if' ;
-ELSE : 'else' ;
-WHILE : 'while' ;
-STRUCT : 'struct' ;
-RETURN : 'return' ;
-SIZEOF : 'sizeof' ;
-
 
 // commenters
 COMMENTERS :
-      ('/*' [\u0000-\u007E]* '*/'|'//' [\u0000-\u007E]* ('\u000A' | '\u000D'))  -> skip;
-    // ~[\u000A\u000D]
-    // '/*' ([\u0020-\u007E] | '\\' | '\'' | '\"')* '*/'
-    // | '//' ([\u0020-\u007E] | '\\' | '\'' | '\"')*
+      ('/*' .*? '*/'|'//' ~[\u000A\u000D]*)  -> skip;
 
 
 // skip
