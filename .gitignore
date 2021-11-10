@@ -5,6 +5,6 @@ bin
 
 examples
 lib/
-src/parser
+src/parser/
 
 grammaire_cir-c.g4
