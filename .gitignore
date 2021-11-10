@@ -4,8 +4,7 @@ bin
 .idea
 
 examples
-lib
+lib/
 src/parser
-src/Main
 
 grammaire_cir-c.g4
