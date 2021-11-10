@@ -16,7 +16,7 @@ decl :
 decl_typ :
       'struct' IDF '{'decl_vars*'}' ';';
 
-decl_vars : // attention ici decl_vars entre en paramètres de fonction, définie de cette manière il faut écrire function(struct oneStruct*)
+decl_vars :
       'int' (IDF ',')* IDF ';'                        #IntDecl
     | 'struct' IDF ('*' IDF ',')* ('*' IDF) ';'       #StructDecl
     ;
@@ -37,7 +37,7 @@ param :
     ;
 
 bloc : // vérifier si on peut alterner les decl_vars et instruction dans le code
-      '{'(decl_vars|instruction)*'}';
+      '{'(decl_vars|instruction)*'}'; // decl_vars* instruction*
 
 instruction :
       ';'                                             #None
@@ -57,7 +57,7 @@ if_instruction :
 while_instruction :
       'while' '('expr')' instruction;
 
-affect :    // est-ce qu'on peut faire a = b = c (plusieurs affectation) ?
+affect :    // est-ce qu'on peut faire a = b = c (plusieurs affectation) ? erreur syntaxique peut-être
       (IDF|fleche) '=' expr;
 
 expr :
@@ -110,10 +110,7 @@ IDF :
 
 // commenters
 COMMENTERS :
-      ('/*' [\u0000-\u007E]* '*/'|'//' [\u0000-\u007E]* ('\u000A' | '\u000D'))  -> skip;
-    // ~[\u000A\u000D]
-    // '/*' ([\u0020-\u007E] | '\\' | '\'' | '\"')* '*/'
-    // | '//' ([\u0020-\u007E] | '\\' | '\'' | '\"')*
+      ('/*' .*? '*/'|'//' ~[\u000A\u000D]*)  -> skip;
 
 
 // skip
