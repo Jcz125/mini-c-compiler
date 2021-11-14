@@ -59,7 +59,7 @@ public class AstCreator extends exprBaseVisitor<Ast>{
 			Idf idf = new Idf(idfString);
 			list.add(idf);
 		}
-		return new DeclType(list);
+		return new DeclInt(list);
 	}
 
 		 }
@@ -81,7 +81,7 @@ public class AstCreator extends exprBaseVisitor<Ast>{
 			Idf idf = new Idf(idfString);
 			list.add(idf);
 		}
-		return new DeclType(list); }
+		return new DeclStruct(list); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -2,7 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
-public class DeclIng implements Ast {
+public class DeclInt implements Ast {
 
     // Utile pour la dernière partie
     public <T> T accept(AstVisitor<T> visitor){
@@ -10,7 +10,7 @@ public class DeclIng implements Ast {
     }
 
 
-    public ArrayList<Ast> list
+    public ArrayList<Ast> list;
 
     public DeclInt (ArrayList<Ast> list){
         this.list = list;
