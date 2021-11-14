@@ -13,7 +13,13 @@ public class AstCreator extends exprBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitProgram(grammaireParser.ProgramContext ctx) { return visitChildren(ctx); }
+	@Override public T visitProgram(grammaireParser.ProgramContext ctx) {
+		ArrayList<Ast> list= new ArrayList<>();
+
+		for(int i=0;i<ctx.getChildCount()-1;i++){
+			list.add(ctx.getChild(i).accept(this));
+		}
+		return new InstrList(list); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -28,21 +34,54 @@ public class AstCreator extends exprBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDecl_typ(grammaireParser.Decl_typContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDecl_typ(grammaireParser.Decl_typContext ctx) {
+
+		String idfString = ctx.getChild(1).toString();
+		Idf idf = new Idf(idfString);
+
+		ArrayList<Ast> list= new ArrayList<>();
+		for(int i=3;i<ctx.getChildCount()-2;i++){
+			list.add(ctx.getChild(i).accept(this));
+		}
+
+		return new DeclType(list,idf);
+		 }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntDecl(grammaireParser.IntDeclContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIntDecl(grammaireParser.IntDeclContext ctx) {
+		ArrayList<Ast> list= new ArrayList<>();
+		for(int i=1;i<ctx.getChildCount()-1;i=i+2){
+			String idfString = ctx.getChild(i).toString();
+			Idf idf = new Idf(idfString);
+			list.add(idf);
+		}
+		return new DeclType(list);
+	}
+
+		 }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStructDecl(grammaireParser.StructDeclContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStructDecl(grammaireParser.StructDeclContext ctx) {
+		ArrayList<Ast> list= new ArrayList<>();
+
+		String idfString = ctx.getChild(i).toString();
+		Idf idf = new Idf(idfString);
+		list.add(idf);
+
+		for(int i=3;i<ctx.getChildCount()-1;i=i+3){
+			String idfString = ctx.getChild(i).toString();
+			Idf idf = new Idf(idfString);
+			list.add(idf);
+		}
+		return new DeclType(list); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -80,14 +119,22 @@ public class AstCreator extends exprBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParametre(grammaireParser.ParametreContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParametre(grammaireParser.ParametreContext ctx) {
+		return ctx.getChild(0).accept(this); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParametres(grammaireParser.ParametresContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParametres(grammaireParser.ParametresContext ctx) {
+
+		ArrayList<Ast> list= new ArrayList<>();
+
+		for(int i=0;i<ctx.getChildCount();i++){
+		list.add(ctx.getChild(i).accept(this));
+		}
+		return new Parametres(list);}
 	/**
 	 * {@inheritDoc}
 	 *
