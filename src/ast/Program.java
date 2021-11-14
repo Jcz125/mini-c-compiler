@@ -9,7 +9,7 @@ public class Program implements Ast {
         return visitor.visit(this);
     }
 
-    public ArrayList<Ast> program
+    public ArrayList<Ast> program;
 
     public Program(ArrayList<Ast> list){
         this.program = list;
