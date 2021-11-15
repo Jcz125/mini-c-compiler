@@ -5,7 +5,7 @@ import parser.grammaireParser;
 
 import java.util.ArrayList;
 
-public class AstCreator extends grammaireBaseVisitor<Ast>{
+public class AstCreator extends grammaireBaseVisitor<Ast> {
 
 	/**
 	 * {@inheritDoc}
@@ -13,46 +13,47 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitProgram(grammaireParser.ProgramContext ctx) {
+	@Override public Ast visitProgram(grammaireParser.ProgramContext ctx) {
 		ArrayList<Ast> list= new ArrayList<>();
 
-		for(int i=0;i<ctx.getChildCount()-1;i++){
+		for(int i=0; i<ctx.getChildCount()-1; i++) {
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new InstrList(list); }
+		return new InstrList(list);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDecl(grammaireParser.DeclContext ctx) {
-		return ctx.getChild(0).accept(this);}
+	@Override public Ast visitDecl(grammaireParser.DeclContext ctx) {
+		return ctx.getChild(0).accept(this);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDecl_typ(grammaireParser.Decl_typContext ctx) {
+	@Override public Ast visitDecl_typ(grammaireParser.Decl_typContext ctx) {
 
 		String idfString = ctx.getChild(1).toString();
 		Idf idf = new Idf(idfString);
 
 		ArrayList<Ast> list= new ArrayList<>();
-		for(int i=3;i<ctx.getChildCount()-2;i++){
+		for(int i=3; i<ctx.getChildCount()-2; i++) {
 			list.add(ctx.getChild(i).accept(this));
 		}
-
 		return new DeclType(list,idf);
-		 }
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntDecl(grammaireParser.IntDeclContext ctx) {
+	@Override public Ast visitIntDecl(grammaireParser.IntDeclContext ctx) {
 		ArrayList<Ast> list= new ArrayList<>();
 		for(int i=1;i<ctx.getChildCount()-1;i=i+2){
 			String idfString = ctx.getChild(i).toString();
@@ -69,7 +70,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStructDecl(grammaireParser.StructDeclContext ctx) {
+	@Override public Ast visitStructDecl(grammaireParser.StructDeclContext ctx) {
 		ArrayList<Ast> list= new ArrayList<>();
 
 		String idfString = ctx.getChild(i).toString();
@@ -88,7 +89,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntFct(grammaireParser.IntFctContext ctx) {
+	@Override public Ast visitIntFct(grammaireParser.IntFctContext ctx) {
 		Ast params = ctx.getChild(3).accept(this);
 		Ast bloc = ctx.getChild(5).accept(this);
 		String idf1String = ctx.getChild(1).toString();
@@ -103,7 +104,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStructFct(grammaireParser.StructFctContext ctx) {
+	@Override public Ast visitStructFct(grammaireParser.StructFctContext ctx) {
 		Ast params = ctx.getChild(5).accept(this);
 		Ast bloc = ctx.getChild(7).accept(this);
 		String idf1String = ctx.getChild(1).toString();
@@ -119,7 +120,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParametre(grammaireParser.ParametreContext ctx) {
+	@Override public Ast visitParametre(grammaireParser.ParametreContext ctx) {
 		return ctx.getChild(0).accept(this); }
 	/**
 	 * {@inheritDoc}
@@ -127,7 +128,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParametres(grammaireParser.ParametresContext ctx) {
+	@Override public Ast visitParametres(grammaireParser.ParametresContext ctx) {
 
 		ArrayList<Ast> list= new ArrayList<>();
 
@@ -141,7 +142,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntParam(grammaireParser.IntParamContext ctx) {
+	@Override public Ast visitIntParam(grammaireParser.IntParamContext ctx) {
 		String idfString = ctx.getChild(1).toString();
 
 		//Création des sous AST
@@ -155,7 +156,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStructPointer(grammaireParser.StructPointerContext ctx) {
+	@Override public Ast visitStructPointer(grammaireParser.StructPointerContext ctx) {
 		String idf1String = ctx.getChild(1).toString();
 		String idf2String = ctx.getChild(3).toString();
 
@@ -169,7 +170,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBloc(grammaireParser.BlocContext ctx) {
+	@Override public Ast visitBloc(grammaireParser.BlocContext ctx) {
 		ArrayList<Ast> list= new ArrayList<>();
 		//if empty list?
 		for(int i=1;i<ctx.getChildCount()-1;i++){
@@ -185,14 +186,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNone(grammaireParser.NoneContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitNone(grammaireParser.NoneContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExpression(grammaireParser.ExpressionContext ctx) {
+	@Override public Ast visitExpression(grammaireParser.ExpressionContext ctx) {
 		return ctx.getChild(0).accept(this);
 	}
 	/**
@@ -201,7 +202,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAffectation(grammaireParser.AffectationContext ctx) {
+	@Override public Ast visitAffectation(grammaireParser.AffectationContext ctx) {
 		return ctx.getChild(0).accept(this);
 	}
 	/**
@@ -210,7 +211,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfInst(grammaireParser.IfInstContext ctx) {
+	@Override public Ast visitIfInst(grammaireParser.IfInstContext ctx) {
 		return ctx.getChild(0).accept(this);
 	}
 	/**
@@ -219,7 +220,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWhileInst(grammaireParser.WhileInstContext ctx) {
+	@Override public Ast visitWhileInst(grammaireParser.WhileInstContext ctx) {
 		return ctx.getChild(0).accept(this); }
 	/**
 	 * {@inheritDoc}
@@ -227,7 +228,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBlocInst(grammaireParser.BlocInstContext ctx) {
+	@Override public Ast visitBlocInst(grammaireParser.BlocInstContext ctx) {
 		return ctx.getChild(0).accept(this);
 	}
 	/**
@@ -236,7 +237,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReturn(grammaireParser.ReturnContext ctx) {
+	@Override public Ast visitReturn(grammaireParser.ReturnContext ctx) {
 		return ctx.getChild(1).accept(this);
 	}
 	/**
@@ -245,7 +246,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfThen(grammaireParser.IfThenContext ctx) {
+	@Override public Ast visitIfThen(grammaireParser.IfThenContext ctx) {
 
 		Ast condition = ctx.getChild(2).accept(this);
 		Ast thenBlock = ctx.getChild(4).accept(this);
@@ -258,7 +259,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfThenElse(grammaireParser.IfThenElseContext ctx) {
+	@Override public Ast visitIfThenElse(grammaireParser.IfThenElseContext ctx) {
 
 		Ast condition = ctx.getChild(2).accept(this);
 		Ast thenBlock = ctx.getChild(4).accept(this);
@@ -273,7 +274,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWhile_instruction(grammaireParser.While_instructionContext ctx) {
+	@Override public Ast visitWhile_instruction(grammaireParser.While_instructionContext ctx) {
 		Ast condition = ctx.getChild(2).accept(this);
 		Ast instruction = ctx.getChild(4).accept(this);
 
@@ -284,7 +285,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
+	@Override public Ast visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
 
 		Ast expr = ctx.getChild(2).accept(this);
 		String idfString = ctx.getChild(0).toString();
@@ -299,7 +300,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFlecheAffect(grammaireParser.FlecheAffectContext ctx) {
+	@Override public Ast visitFlecheAffect(grammaireParser.FlecheAffectContext ctx) {
 		Ast expr = ctx.getChild(2).accept(this);
 		Ast fleche = ctx.getChild(0).accept(this);
 
@@ -310,7 +311,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExpr(grammaireParser.ExprContext ctx) {
+	@Override public Ast visitExpr(grammaireParser.ExprContext ctx) {
 		return ctx.getChild(0).accept(this);
 	}
 	/**
@@ -319,7 +320,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOr_op(grammaireParser.Or_opContext ctx) {
+	@Override public Ast visitOr_op(grammaireParser.Or_opContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
 		for (int i=0;2*i<ctx.getChildCount()-1;i++){
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
@@ -334,7 +335,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEt_op(grammaireParser.Et_opContext ctx) {
+	@Override public Ast visitEt_op(grammaireParser.Et_opContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
 		for (int i=0;2*i<ctx.getChildCount()-1;i++){
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
@@ -348,7 +349,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEgalite(grammaireParser.EgaliteContext ctx) {
+	@Override public Ast visitEgalite(grammaireParser.EgaliteContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
 		for (int i=0;2*i<ctx.getChildCount()-1;i++){
 			String operation = ctx.getChild(2*i+1).toString();
@@ -372,7 +373,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitComparaison(grammaireParser.ComparaisonContext ctx) {
+	@Override public Ast visitComparaison(grammaireParser.ComparaisonContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
 		for (int i=0;2*i<ctx.getChildCount()-1;i++){
 			String operation = ctx.getChild(2*i+1).toString();
@@ -406,7 +407,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSomme(grammaireParser.SommeContext ctx) {
+	@Override public Ast visitSomme(grammaireParser.SommeContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
 		for (int i=0;2*i<ctx.getChildCount()-1;i++){
 
@@ -432,7 +433,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitProduit(grammaireParser.ProduitContext ctx) {
+	@Override public Ast visitProduit(grammaireParser.ProduitContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
 		for (int i=0;2*i<ctx.getChildCount()-1;i++){
 
@@ -459,7 +460,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOppose(grammaireParser.OpposeContext ctx) {
+	@Override public Ast visitOppose(grammaireParser.OpposeContext ctx) {
 		int dernier = ctx.getChildCount();
 		return  ctx.getChild(dernier).accept(this)}
 	/**
@@ -468,7 +469,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFleche(grammaireParser.FlecheContext ctx) {
+	@Override public Ast visitFleche(grammaireParser.FlecheContext ctx) {
 		String idf1String = ctx.getChild(0).toString();
 		String idf2String = ctx.getChild(2).toString();
 		return Arrow(idf1String,idf2String);
@@ -479,7 +480,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitInteger(grammaireParser.IntegerContext ctx) {
+	@Override public Ast visitInteger(grammaireParser.IntegerContext ctx) {
 		String str = ctx.getChild(0).toString();
 		int integer=Integer.parseInt(str);
 		return new Integer(integer);
@@ -490,7 +491,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdentifier(grammaireParser.IdentifierContext ctx) {
+	@Override public Ast visitIdentifier(grammaireParser.IdentifierContext ctx) {
 		String idf = ctx.getChild(0).toString();
 		return new Idf(idf);
 	}
@@ -500,7 +501,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArrow(grammaireParser.ArrowContext ctx) {
+	@Override public Ast visitArrow(grammaireParser.ArrowContext ctx) {
 
 		return ctx.getChild(0).accept(this);
 	}
@@ -510,14 +511,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunction(grammaireParser.FunctionContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitFunction(grammaireParser.FunctionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSizeof(grammaireParser.SizeofContext ctx) {
+	@Override public Ast visitSizeof(grammaireParser.SizeofContext ctx) {
 
 		return ctx.getChild(3).accept(this);
 	}
@@ -527,7 +528,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast>{
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParenthesis(grammaireParser.ParenthesisContext ctx) {
+	@Override public Ast visitParenthesis(grammaireParser.ParenthesisContext ctx) {
 
 		return ctx.getChild(1).accept(this);
 	}
