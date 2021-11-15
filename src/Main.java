@@ -1,7 +1,7 @@
 
-import parser.exprLexer;
-import parser.exprParser;
-import parser.exprParser.ProgramContext;
+import parser.grammaireLexer;
+import parser.grammaireParser;
+import parser.grammaireParser.ProgramContext;
 
 
 import java.io.IOException;
@@ -30,9 +30,9 @@ public class Main {
             //chargement du fichier et construction du parser
 
             CharStream input = CharStreams.fromFileName(testFile);
-            exprLexer lexer = new exprLexer(input); 
+            grammaireLexer lexer = new grammaireLexer(input);
             CommonTokenStream stream = new CommonTokenStream(lexer);
-            exprParser parser = new exprParser(stream);
+            grammaireParser parser = new grammaireParser(stream);
 
             // Récupération du noeud program (le noeud à la racine)
             ProgramContext program = parser.program();

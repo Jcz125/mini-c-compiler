@@ -1,11 +1,11 @@
 package ast;
 
-import parser.exprBaseVisitor;
-import parser.exprParser;
+import parser.grammaireBaseVisitor;
+import parser.grammaireParser;
 
 import java.util.ArrayList;
 
-public class AstCreator extends exprBaseVisitor<Ast>{
+public class AstCreator extends grammaireBaseVisitor<Ast>{
 
 	/**
 	 * {@inheritDoc}

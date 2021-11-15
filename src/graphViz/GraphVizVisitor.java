@@ -3,20 +3,39 @@ package graphViz;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import ast.Affect;
+
 import ast.Ast;
 import ast.AstVisitor;
+import ast.Bloc;
+import ast.DeclInt;
+import ast.DeclType;
+import ast.DeclStruct;
 import ast.Divide;
+import ast.EqualTo;
+import ast.EtLogique;
+import ast.Fleche;
+import ast.FlecheAffect;
+import ast.GreaterOrEqual;
+import ast.GreaterThan;
 import ast.Idf;
+import ast.IdfAffect;
 import ast.IfThen;
 import ast.IfThenElse;
-import ast.InstrList;
-import ast.IntNode;
+import ast.Integer;
+import ast.IntFct;
+import ast.IntParam;
+import ast.LessOrEqual;
+import ast.LessThan;
 import ast.Minus;
 import ast.Mult;
+import ast.NotEqualTo;
+import ast.OuLogique;
+import ast.Parametres;
 import ast.Plus;
-import ast.Print;
 import ast.Program;
+import ast.StructFct;
+import ast.StructPointer;
+import ast.WhileInst;
 
 public class GraphVizVisitor implements AstVisitor<String> {
 
@@ -60,7 +79,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
     }
 
-    @Override
+    /*@Override
     public String visit(Affect affect) {
 
         String nodeIdentifier = this.nextState();
@@ -144,7 +163,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         
         String nodeIdentifier = this.nextState();
 
-        this.addNode(nodeIdentifier, "InstrList");
+        this.addNode(nodeIdentifier, "Program");
 
         for (Ast ast:instrList.instrList){
 
@@ -246,6 +265,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         return nodeIdentifier;
 
-    }
+    }*/
     
 }
