@@ -27,8 +27,8 @@ decl_fct :
     ;
 
 params :
-      param?                                           #Parametre
-    | (param ',')+ param                               #Parametres
+      param?                                          #Parametre
+    | (param ',')+ param                              #Parametres
     ;
 
 param :
@@ -58,9 +58,9 @@ while_instruction :
       'while' '('expr')' instruction;
 
 affect :    // est-ce qu'on peut faire a = b = c (plusieurs affectation) ? erreur syntaxique peut-être
-       IDF '=' expr                                    #IdfAffect
-       | fleche '=' expr                               #FlecheAffect
-       ;
+      IDF '=' expr                                    #IdfAffect
+    | fleche '=' expr                                 #FlecheAffect
+    ;
 
 expr :
       or_op;
