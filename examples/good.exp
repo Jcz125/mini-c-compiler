@@ -1,4 +1,4 @@
-
+// simple condition with bool
 int simple_condition() {
     int bool;
     bool = 0 ;
@@ -6,66 +6,16 @@ int simple_condition() {
 }
 
 
+// simple condition with comparison
 int max(int a, int b) {
     if (a < b) return b ;
     else return a ;
 }
 
 
-int mul(int a, int b) {
-
-    if (a == 0 || b == 0) {
-        return 0 ;
-    }
-    else {
-        int res ;
-        res = a ;
-        int i ;
-        i = 1 ;
-        while (i != b) {
-            res = res + a ;
-            i = i+1 ;
-        }
-        return res ;
-    }
-}
-
-
-int sum(int a1, int a2){
-    int S ;
-    S = a1 + a2 ;
-    return S ;
-}
-
-
-int calculate() {
-    int res;
-    res = 1 + 10 * 2 - 40 + (10 - 2) / 2 ;
-    return res ;
-}
-
-
 int main() {
-
-    int S ;
-    S = sum(3,2) ;
-    print(S) ;
-
-    int res ;
-    res = calculate() ;
-    print(res) ;
-
-    int M ;
-    M = max(7,15) ;
-    print(M) ;
-
-    int multi ;
-    multi = mul(5,3) ;
-    print(multi) ;
-
     int bool ;
     bool = simple_condition() ;
-
-    return 0 ;
+    return bool ;
 }
 
