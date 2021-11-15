@@ -19,7 +19,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		for(int i=0; i<ctx.getChildCount()-1; i++) {
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new InstrList(list);
+		return new DeclList(list);
 	}
 	/**
 	 * {@inheritDoc}
@@ -41,11 +41,11 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		String idfString = ctx.getChild(1).toString();
 		Idf idf = new Idf(idfString);
 
-		ArrayList<Ast> list= new ArrayList<>();
-		for(int i=3; i<ctx.getChildCount()-2; i++) {
+		ArrayList<Ast> list = new ArrayList<>();
+		for (int i=3; i<ctx.getChildCount()-2; i++) {
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new DeclType(list,idf);
+		return new DeclType(idf, list);
 	}
 	/**
 	 * {@inheritDoc}
@@ -54,16 +54,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitIntDecl(grammaireParser.IntDeclContext ctx) {
-		ArrayList<Ast> list= new ArrayList<>();
-		for(int i=1;i<ctx.getChildCount()-1;i=i+2){
+		ArrayList<Ast> list = new ArrayList<>();
+		for(int i=1; i<ctx.getChildCount()-1; i+=2){
 			String idfString = ctx.getChild(i).toString();
 			Idf idf = new Idf(idfString);
 			list.add(idf);
 		}
 		return new DeclInt(list);
 	}
-
-		 }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -9,11 +9,11 @@ public class DeclType implements Ast {
         return visitor.visit(this);
     }
 
-    public Ast idf
-    public ArrayList<Ast> list
+    public Ast idf;
+    public ArrayList<Ast> list;
 
-    public DeclType (ArrayList<Ast> list, Ast idf){
-        this.idf=idf;
+    public DeclType (Ast idf, ArrayList<Ast> list){
+        this.idf = idf;
         this.list = list;
     }
 
