@@ -353,14 +353,10 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 			switch (operation) {
-				case "==":
-					noeudTemporaire = new EqualTo(noeudTemporaire,right);
-					break;
-				case "!=":
-					noeudTemporaire = new NotEqualTo(noeudTemporaire,right);
-					break;
-				default:
-					break;
+				case "==" -> noeudTemporaire = new EqualTo(noeudTemporaire, right);
+				case "!=" -> noeudTemporaire = new NotEqualTo(noeudTemporaire, right);
+				default -> {
+				}
 			}
 		}
 		return noeudTemporaire;
@@ -377,20 +373,12 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 			switch (operation) {
-				case "<":
-					noeudTemporaire = new LessThan(noeudTemporaire,right);
-					break;
-				case "<=":
-					noeudTemporaire = new LessOrEqual(noeudTemporaire,right);
-					break;
-				case ">":
-					noeudTemporaire = new GreaterThan(noeudTemporaire,right);
-					break;
-				case ">=":
-					noeudTemporaire = new GreaterOrEqual(noeudTemporaire,right);
-					break;
-				default:
-					break;
+				case "<" -> noeudTemporaire = new LessThan(noeudTemporaire, right);
+				case "<=" -> noeudTemporaire = new LessOrEqual(noeudTemporaire, right);
+				case ">" -> noeudTemporaire = new GreaterThan(noeudTemporaire, right);
+				case ">=" -> noeudTemporaire = new GreaterOrEqual(noeudTemporaire, right);
+				default -> {
+				}
 			}
 		}
 		return noeudTemporaire;
@@ -410,14 +398,10 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 
 			switch (operation) {
-				case "-":
-					noeudTemporaire = new Minus(noeudTemporaire,right);
-					break;
-				case "+":
-					noeudTemporaire = new Plus(noeudTemporaire,right);
-					break;
-				default:
-					break;
+				case "-" -> noeudTemporaire = new Minus(noeudTemporaire, right);
+				case "+" -> noeudTemporaire = new Plus(noeudTemporaire, right);
+				default -> {
+				}
 			}
 		}
 		return noeudTemporaire;
@@ -434,14 +418,10 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 			switch (operation) {
-				case "*":
-					noeudTemporaire = new Mult(noeudTemporaire,right);
-					break;
-				case "/":
-					noeudTemporaire = new Divide(noeudTemporaire,right);
-					break;
-				default:
-					break;
+				case "*" -> noeudTemporaire = new Mult(noeudTemporaire, right);
+				case "/" -> noeudTemporaire = new Divide(noeudTemporaire, right);
+				default -> {
+				}
 			}
 		}
 		return noeudTemporaire;
@@ -507,7 +487,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Ast visitFunction(grammaireParser.FunctionContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitFunction(grammaireParser.FunctionContext ctx) {
+		String idfString = ctx.getChild(2).toString();
+		Idf idf = new Idf(idfString);
+		ArrayList<Ast> list= new ArrayList<>();
+		for(int i=2;i<ctx.getChildCount()-1;i=i+2){
+			list.add(ctx.getChild(i).accept(this));
+		}
+		return new Function(idf,list); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -10,7 +10,7 @@ public class DeclStruct implements Ast {
     }
 
 
-    public ArrayList<Ast> list_idf
+    public ArrayList<Ast> list_idf;
 
     public DeclStruct (ArrayList<Ast> list_idf){
 

@@ -10,10 +10,9 @@ public class Parametres implements Ast {
     }
 
 
-    public ArrayList<Ast> list
+    public ArrayList<Ast> list;
 
-    public Parametres (ArrayList<Ast> list_idf){
-
+    public Parametres (ArrayList<Ast> list){
         this.list = list;
     }
 

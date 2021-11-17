@@ -11,6 +11,7 @@ public interface AstVisitor<T> {
     public T visit(EtLogique etLogique);
     public T visit(FlecheAffect flecheAffect);
     public T visit(Fleche fleche);
+    public T visit(Function function);
     public T visit(GreaterOrEqual greaterOrEqual);
     public T visit(GreaterThan greaterThan);
     public T visit(Idf idf);
