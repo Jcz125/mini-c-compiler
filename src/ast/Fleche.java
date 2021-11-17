@@ -7,7 +7,6 @@ public class Fleche implements Ast{
         return visitor.visit(this);
     }
 
-
     public Ast idf1;
     public Ast idf2;
 
