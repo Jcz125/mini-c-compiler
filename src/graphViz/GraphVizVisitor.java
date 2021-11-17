@@ -21,7 +21,7 @@ import ast.Idf;
 import ast.IdfAffect;
 import ast.IfThen;
 import ast.IfThenElse;
-import ast.Integer;
+import ast.Entier;
 import ast.IntFct;
 import ast.IntParam;
 import ast.LessOrEqual;
@@ -79,6 +79,13 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
     }
 
+
+
+/* ------------------------------------------------------------------------------------------------------------- */
+
+
+
+    //Ici on doit écrire les méthodes pour visit notre grammaire
     /*@Override
     public String visit(Affect affect) {
 
