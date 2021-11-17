@@ -1,6 +1,6 @@
 package ast;
 
-public class Integer implements Ast {
+public class Entier implements Ast {
 
     // Utile pour la dernière partie
     public <T> T accept(AstVisitor<T> visitor){
@@ -9,7 +9,7 @@ public class Integer implements Ast {
 
     public int value;
 
-    public Integer(int value){
+    public Entier(int value){
         this.value=value;
     }
 }

@@ -11,7 +11,7 @@ public class FlecheAffect implements Ast{
     public Ast fleche;
     public Ast expression;
 
-    public FlecheAffectAffectAffect(Ast fleche, Ast expr){
+    public FlecheAffect(Ast fleche, Ast expr){
         this.fleche = fleche;
         this.expression = expr;
     }

@@ -16,7 +16,7 @@ public interface AstVisitor<T> {
     public T visit(IdfAffect idfAffect);
     public T visit(IfThen ifThen);
     public T visit(IfThenElse ifThenElse);
-    public T visit(Integer integer);
+    public T visit(Entier integer);
     public T visit(IntFct intFct);
     public T visit(IntParam intParam);
     public T visit(LessOrEqual lessOrEqual);

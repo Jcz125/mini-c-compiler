@@ -71,9 +71,9 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitStructDecl(grammaireParser.StructDeclContext ctx) {
 		ArrayList<Ast> list= new ArrayList<>();
 
-		String idfString = ctx.getChild(i).toString();
-		Idf idf = new Idf(idfString);
-		list.add(idf);
+		String idf1String = ctx.getChild(1).toString();
+		Idf idf1 = new Idf(idf1String);
+		list.add(idf1);
 
 		for(int i=3;i<ctx.getChildCount()-1;i=i+3){
 			String idfString = ctx.getChild(i).toString();
@@ -91,11 +91,11 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		Ast params = ctx.getChild(3).accept(this);
 		Ast bloc = ctx.getChild(5).accept(this);
 		String idf1String = ctx.getChild(1).toString();
-
+		String idf2String = ctx.getChild(3).toString();
 		Idf idf1 = new Idf(idf1String);
+		Idf idf2 = new Idf(idf2String);
+		return new StructFct(idf1,idf2,params,bloc); }
 
-		return new StructFct(idf1,params,bloc) }
- }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -111,7 +111,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		Idf idf1 = new Idf(idf1String);
 		Idf idf2 = new Idf(idf2String);
 
-		return new StructFct(idf1,idf2,params,bloc) }
+		return new StructFct(idf1,idf2,params,bloc); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -262,7 +262,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		Ast condition = ctx.getChild(2).accept(this);
 		Ast thenBlock = ctx.getChild(4).accept(this);
 		Ast elseBlock = ctx.getChild(6).accept(this);
-		return new IfThenElse(condition,thenBlock);
+		return new IfThenElse(condition,thenBlock,elseBlock);
 
 	}
 
@@ -396,9 +396,6 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		return noeudTemporaire;
 	}
 
-
-
-	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -434,10 +431,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitProduit(grammaireParser.ProduitContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
 		for (int i=0;2*i<ctx.getChildCount()-1;i++){
-
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
-
 			switch (operation) {
 				case "*":
 					noeudTemporaire = new Mult(noeudTemporaire,right);
@@ -460,7 +455,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitOppose(grammaireParser.OpposeContext ctx) {
 		int dernier = ctx.getChildCount();
-		return  ctx.getChild(dernier).accept(this)}
+		return  ctx.getChild(dernier).accept(this);}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -470,7 +465,10 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitFleche(grammaireParser.FlecheContext ctx) {
 		String idf1String = ctx.getChild(0).toString();
 		String idf2String = ctx.getChild(2).toString();
-		return Arrow(idf1String,idf2String);
+		Idf idf1 = new Idf(idf1String);
+		Idf idf2 = new Idf(idf2String);
+
+		return new Fleche(idf1,idf2);
 		}
 	/**
 	 * {@inheritDoc}
@@ -481,7 +479,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitInteger(grammaireParser.IntegerContext ctx) {
 		String str = ctx.getChild(0).toString();
 		int integer=Integer.parseInt(str);
-		return new Integer(integer);
+		return new Entier(integer);
 	}
 	/**
 	 * {@inheritDoc}

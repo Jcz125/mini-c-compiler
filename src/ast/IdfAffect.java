@@ -11,7 +11,7 @@ public class IdfAffect implements Ast{
     public Ast idf;
     public Ast expression;
 
-    public IdfAffectAffect(Ast idf, Ast expr){
+    public IdfAffect(Ast idf, Ast expr){
         this.idf = idf;
         this.expression = expr;
     }
