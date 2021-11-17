@@ -83,13 +83,7 @@ chaima
 oipi
 /* ------------------------------------------------------------------------------------------------------------- */
 
-Hello Chaima
-        gdgsdgdfg
-    dfgdfhd
 
-                plusiefbfidk
-
-                fhdfhdfh
 
     //Ici on doit écrire les méthodes pour visit notre grammaire
     /*@Override
