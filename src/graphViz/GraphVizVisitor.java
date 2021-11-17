@@ -82,6 +82,19 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
 /* ------------------------------------------------------------------------------------------------------------- */
 
+    @Override
+    public String visit(Entier entier) {
+        String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier, String.valueOf(entier.value));
+        return nodeIdentifier;
+    }
+
+    @Override
+    public String visit(Idf idf) {
+        String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier, idf.name);
+        return nodeIdentifier;
+    }
 
 
     //Ici on doit écrire les méthodes pour visit notre grammaire
