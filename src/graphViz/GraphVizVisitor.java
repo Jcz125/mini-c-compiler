@@ -36,6 +36,7 @@ import ast.Program;
 import ast.StructFct;
 import ast.StructPointer;
 import ast.WhileInst;
+import ast.Function;
 
 public class GraphVizVisitor implements AstVisitor<String> {
 
@@ -78,6 +79,100 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.nodeBuffer += String.format("\t%s [label=\"%s\", shape=\"box\"];\n", node,label);
 
     }
+
+    @Override
+    public String visit(Program program) {
+
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier, "Program");
+
+        for (Ast ast:program.program){
+
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+
+        }
+
+        return nodeIdentifier;
+    }
+
+
+    @Override
+    public String visit(DeclType decl_typ) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idfState = decl_typ.idf.accept(this);
+
+        this.addNode(nodeIdentifier, "Decl_Type");
+        this.addTransition(nodeIdentifier, idfState);
+
+        for (Ast ast:decl_typ.list){
+
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+
+        }
+
+        return nodeIdentifier;
+
+    }
+
+
+    @Override
+    public String visit(IntFct intFunc) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idfState = intFunc.idf1.accept(this);
+        String paramsState = intFunc.params.accept(this);
+        String blocState = intFunc.bloc.accept(this);
+
+        this.addNode(nodeIdentifier, "Decl_IntFct");
+        this.addTransition(nodeIdentifier, idfState);
+        this.addTransition(nodeIdentifier, paramsState);
+        this.addTransition(nodeIdentifier, blocState);
+
+        return nodeIdentifier;
+
+    }
+
+
+//    @Override
+//    public String visit(StructFct StructFunc) {
+//
+//        String nodeIdentifier = this.nextState();
+//
+//        String idfState = intFunc.idf.accept(this);
+//        String paramsState = intFunc.params.accept(this);
+//        String blocState = intFunc.bloc.accept(this);
+//
+//        this.addNode(nodeIdentifier, "Decl_IntFct");
+//        this.addTransition(nodeIdentifier, idfState);
+//        this.addTransition(nodeIdentifier, paramsState);
+//        this.addTransition(nodeIdentifier, blocState);
+//
+//        return nodeIdentifier;
+//
+//    }
+
+
+    @Override
+    public String visit(DeclInt decl_int) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idfState = decl_int.idf.accept(this);
+
+        this.addNode(nodeIdentifier, "Decl_Int");
+        this.addTransition(nodeIdentifier, idfState);
+
+        return nodeIdentifier;
+
+    }
+
+
 
 
 /* ------------------------------------------------------------------------------------------------------------- */
