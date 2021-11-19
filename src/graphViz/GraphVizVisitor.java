@@ -163,14 +163,74 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         String nodeIdentifier = this.nextState();
 
-        String idfState = decl_int.idf.accept(this);
-
         this.addNode(nodeIdentifier, "Decl_Int");
-        this.addTransition(nodeIdentifier, idfState);
+
+        for (Ast ast:decl_int.list){
+
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+
+        }
 
         return nodeIdentifier;
 
     }
+
+
+//    @Override
+//    public String visit(Bloc bloc) {
+//
+//        String nodeIdentifier = this.nextState();
+//
+//        this.addNode(nodeIdentifier, "Bloc");
+//
+//        for (Ast ast:bloc.list){
+//
+//            String astState = ast.accept(this);
+//            this.addTransition(nodeIdentifier, astState);
+//
+//        }
+//
+//        return nodeIdentifier;
+//
+//    }
+
+
+    @Override
+    public String visit(Devide div) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = div.left.accept(this);
+        String rightState = div.right.accept(this);
+
+        this.addNode(nodeIdentifier, " / ");
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+
+//    @Override
+//    public String visit(Parametres params) {
+//
+//        String nodeIdentifier = this.nextState();
+//
+//        String leftState = div.left.accept(this);
+//        String rightState = div.right.accept(this);
+//
+//        this.addNode(nodeIdentifier, " / ");
+//        this.addTransition(nodeIdentifier, leftState);
+//        this.addTransition(nodeIdentifier, rightState);
+//
+//        return nodeIdentifier;
+//
+//    }
+
+
+
 
 
 
