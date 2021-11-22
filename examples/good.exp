@@ -19,8 +19,8 @@ int mul(int a, int b) {
     }
     else {
         int res ;
-        res = a ;
         int i ;
+        res = a ;
         i = 1 ;
         while (i != b) {
             res = res + a ;
@@ -47,23 +47,20 @@ int calculate() {
 
 int main() {
 
-    int S ;
+    int S, res, M, multi, bool ;
+
     S = sum(3,2) ;
     print(S) ;
 
-    int res ;
     res = calculate() ;
     print(res) ;
 
-    int M ;
     M = max(7,15) ;
     print(M) ;
 
-    int multi ;
     multi = mul(5,3) ;
     print(multi) ;
 
-    int bool ;
     bool = simple_condition() ;
 
     return 0 ;

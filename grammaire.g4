@@ -36,8 +36,8 @@ param :
     | 'struct' IDF '*' IDF                            #StructPointer
     ;
 
-bloc : // vérifier si on peut alterner les decl_vars et instruction dans le code
-      '{'(decl_vars|instruction)*'}'; // decl_vars* instruction*
+bloc :
+      '{'decl_vars* instruction*'}';
 
 instruction :
       ';'                                             #None
@@ -57,10 +57,8 @@ if_instruction :
 while_instruction :
       'while' '('expr')' instruction;
 
-affect :    // est-ce qu'on peut faire a = b = c (plusieurs affectation) ? erreur syntaxique peut-être
-      IDF '=' expr                                    #IdfAffect
-    | fleche '=' expr                                 #FlecheAffect
-    ;
+affect :
+      ((IDF|fleche) '=')+ expr;
 
 expr :
       or_op;
@@ -103,7 +101,8 @@ value :
 INTEGER :
       '0'
     | '1'..'9' ('0'..'9')*
-    | '\'' [\u0020-\u007E] '\''
+    | '\'' [\u0020\u0021\u0023-\u0026\u0028-\u005B\u005D-\u007E] '\'' // ~\u0022~\u0027~\u005C retirer
+    | '\'' ('\u005C\u0027'|'\u005C\u0022'|'\u005C\u005C') '\''
     ;
 
 IDF :
@@ -112,7 +111,7 @@ IDF :
 
 // commenters
 COMMENTERS :
-      ('/*' .*? '*/'|'//' ~[\u000A\u000D]*)  -> skip;
+      ('/*' .*? '*/'|'//' ~[\u000A\u000D]*) -> skip;
 
 
 // skip
