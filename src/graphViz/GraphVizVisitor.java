@@ -8,6 +8,7 @@ import ast.Ast;
 import ast.AstVisitor;
 import ast.Bloc;
 import ast.DeclInt;
+import ast.DeclList;
 import ast.DeclType;
 import ast.DeclStruct;
 import ast.Divide;
@@ -80,6 +81,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
     }
 
+
     @Override
     public String visit(Program program) {
 
@@ -121,41 +123,45 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
 
     @Override
-    public String visit(IntFct intFunc) {
+    public String visit(DeclList decl_list) {
 
         String nodeIdentifier = this.nextState();
 
-        String idfState = intFunc.idf1.accept(this);
-        String paramsState = intFunc.params.accept(this);
-        String blocState = intFunc.bloc.accept(this);
+        this.addNode(nodeIdentifier, "Decl_List");
 
-        this.addNode(nodeIdentifier, "Decl_IntFct");
-        this.addTransition(nodeIdentifier, idfState);
-        this.addTransition(nodeIdentifier, paramsState);
-        this.addTransition(nodeIdentifier, blocState);
+        for (Ast ast:decl_list.instrList){
+
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+
+        }
 
         return nodeIdentifier;
 
     }
 
 
-//    @Override
-//    public String visit(StructFct StructFunc) {
-//
-//        String nodeIdentifier = this.nextState();
-//
-//        String idfState = intFunc.idf.accept(this);
-//        String paramsState = intFunc.params.accept(this);
-//        String blocState = intFunc.bloc.accept(this);
-//
-//        this.addNode(nodeIdentifier, "Decl_IntFct");
-//        this.addTransition(nodeIdentifier, idfState);
-//        this.addTransition(nodeIdentifier, paramsState);
-//        this.addTransition(nodeIdentifier, blocState);
-//
-//        return nodeIdentifier;
-//
-//    }
+    @Override
+    public String visit(DeclStruct decl_struct) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idfState = decl_struct.struct_name.accept(this);
+
+        this.addNode(nodeIdentifier, "decl_struct");
+        this.addTransition(nodeIdentifier, idfState);
+
+
+        for (Ast ast:decl_struct.list_idf){
+
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+
+        }
+
+        return nodeIdentifier;
+
+    }
 
 
     @Override
@@ -171,6 +177,46 @@ public class GraphVizVisitor implements AstVisitor<String> {
             this.addTransition(nodeIdentifier, astState);
 
         }
+
+        return nodeIdentifier;
+
+    }
+
+
+    @Override
+    public String visit(IntFct intFunc) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idfState = intFunc.idf.accept(this);
+        String paramsState = intFunc.params.accept(this);
+        String blocState = intFunc.bloc.accept(this);
+
+        this.addNode(nodeIdentifier, "Decl_IntFct");
+        this.addTransition(nodeIdentifier, idfState);
+        this.addTransition(nodeIdentifier, paramsState);
+        this.addTransition(nodeIdentifier, blocState);
+
+        return nodeIdentifier;
+
+    }
+
+
+    @Override
+    public String visit(StructFct StructFunc) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idf1State = intFunc.idf_struct.accept(this);
+        String idf2State = intFunc.idf.accept(this);
+        String paramsState = intFunc.params.accept(this);
+        String blocState = intFunc.bloc.accept(this);
+
+        this.addNode(nodeIdentifier, "Decl_StructFct");
+        this.addTransition(nodeIdentifier, idf1State);
+        this.addTransition(nodeIdentifier, idf2State);
+        this.addTransition(nodeIdentifier, paramsState);
+        this.addTransition(nodeIdentifier, blocState);
 
         return nodeIdentifier;
 
@@ -213,29 +259,167 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
 
-//    @Override
-//    public String visit(Parametres params) {
-//
-//        String nodeIdentifier = this.nextState();
-//
-//        String leftState = div.left.accept(this);
-//        String rightState = div.right.accept(this);
-//
-//        this.addNode(nodeIdentifier, " / ");
-//        this.addTransition(nodeIdentifier, leftState);
-//        this.addTransition(nodeIdentifier, rightState);
-//
-//        return nodeIdentifier;
-//
-//    }
+    @Override
+    public String visit(Parametres params) {
+
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier, "Parameters");
+
+        for (Ast ast:params.list){
+
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+
+        }
+
+        return nodeIdentifier;
+
+    }
 
 
+    @Override
+    public String visit(IntParam IntParam) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idfState = IntParam.idf.accept(this);
+
+        this.addNode(nodeIdentifier, " IntParam ");
+        this.addTransition(nodeIdentifier, idfState);
+
+        return nodeIdentifier;
+
+    }
 
 
+    @Override
+    public String visit(StructPointer pointer) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idf1State = paramINT.idf1.accept(this);
+        String idf2State = paramINT.idf2.accept(this);
+
+        this.addNode(nodeIdentifier, " Struct_Pointer ");
+        this.addTransition(nodeIdentifier, idf1State);
+        this.addTransition(nodeIdentifier, idf2State);
+
+        return nodeIdentifier;
+
+    }
 
 
+    @Override
+    public String visit(WhileInst whileI) {
 
-/* ------------------------------------------------------------------------------------------------------------- */
+        String nodeIdentifier = this.nextState();
+
+        String CondState = whileI.condition.accept(this);
+        String InstState = whileI.instruction.accept(this);
+
+        this.addNode(nodeIdentifier, " While ");
+        this.addTransition(nodeIdentifier, CondState);
+        this.addTransition(nodeIdentifier, InstState);
+
+        return nodeIdentifier;
+
+    }
+
+
+    @Override
+    public String visit(IfThen ifThen) {
+
+        String nodeIdentifier = this.nextState();
+
+        String conditionState = ifThen.condition.accept(this);
+        String thenBlockState = ifThen.thenBlock.accept(this);
+
+        this.addNode(nodeIdentifier, "IfThen");
+
+        this.addTransition(nodeIdentifier, conditionState);
+        this.addTransition(nodeIdentifier, thenBlockState);
+
+        return nodeIdentifier;
+
+    }
+
+
+    @Override
+    public String visit(IfThenElse ifThenElse) {
+
+        String nodeIdentifier = this.nextState();
+
+        String conditionState = ifThenElse.condition.accept(this);
+        String thenBlockState = ifThenElse.thenBlock.accept(this);
+        String elseBlockState = ifThenElse.elseBlock.accept(this);
+
+        this.addNode(nodeIdentifier, "IfThenElse");
+
+        this.addTransition(nodeIdentifier, conditionState);
+        this.addTransition(nodeIdentifier, thenBlockState);
+        this.addTransition(nodeIdentifier, elseBlockState);
+
+        return nodeIdentifier;
+
+    }
+
+
+    @Override
+    public String visit(IdfAffect IdfAffect) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idfState = IdfAffect.idf.accept(this);
+        String expressionState = IdfAffect.expression.accept(this);
+
+        this.addNode(nodeIdentifier, " = ");
+
+        this.addTransition(nodeIdentifier, idfState);
+        this.addTransition(nodeIdentifier, expressionState);
+
+        return nodeIdentifier;
+
+    }
+
+
+    @Override
+    public String visit(FlecheAffect FlecheAffect) {
+
+        String nodeIdentifier = this.nextState();
+
+        String flecheState = FlecheAffect.fleche.accept(this);
+        String expressionState = FlecheAffect.expression.accept(this);
+
+        this.addNode(nodeIdentifier, " = ");
+
+        this.addTransition(nodeIdentifier, flecheState);
+        this.addTransition(nodeIdentifier, expressionState);
+
+        return nodeIdentifier;
+
+    }
+
+
+    @Override
+    public String visit(Fleche Fleche) {
+
+        String nodeIdentifier = this.nextState();
+
+        String idf1State = Fleche.idf1.accept(this);
+        String idf2State = Fleche.idf2.accept(this);
+
+        this.addNode(nodeIdentifier, " --> ");
+
+        this.addTransition(nodeIdentifier, idf1State);
+        this.addTransition(nodeIdentifier, idf2State);
+
+        return nodeIdentifier;
+
+    }
+
+
+    /* ------------------------------------------------------------------------------------------------------------- */
 
     @Override
     public String visit(Entier entier) {
