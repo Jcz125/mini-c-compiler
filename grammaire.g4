@@ -58,9 +58,7 @@ while_instruction :
       'while' '('expr')' instruction;
 
 affect :
-      (IDF '=')+ expr                                   #IdAffect
-    | (fleche '=')+ expr                                #FlecheAffect
-    ;
+      ((IDF|fleche) '=')+ expr;
 
 expr :
       or_op;
@@ -104,7 +102,7 @@ INTEGER :
       '0'
     | '1'..'9' ('0'..'9')*
     | '\'' [\u0020\u0021\u0023-\u0026\u0028-\u005B\u005D-\u007E] '\'' // ~\u0022~\u0027~\u005C retirer
-    | ('\''|'\"'|'\\')
+    | ('\u005C\u0027'|'\u005C\u0022'|'\u005C\u005C')
     ;
 
 IDF :
