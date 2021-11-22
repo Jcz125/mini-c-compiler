@@ -111,7 +111,7 @@ IDF :
 
 // commenters
 COMMENTERS :
-      ('/*' .*? '*/'|'//' ~[\u000A\u000D]*)  -> skip;
+      ('/*' .*? '*/'|'//' ~[\u000A\u000D]*) -> skip;
 
 
 // skip
