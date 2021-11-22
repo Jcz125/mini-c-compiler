@@ -55,7 +55,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitIntDecl(grammaireParser.IntDeclContext ctx) {
 		ArrayList<Ast> list = new ArrayList<>();
-		for(int i=1; i<ctx.getChildCount()-1; i+=2){
+		
+		for (int i=1; i<ctx.getChildCount()-1; i+=2) {
 			String idfString = ctx.getChild(i).toString();
 			Idf idf = new Idf(idfString);
 			list.add(idf);
@@ -71,16 +72,16 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitStructDecl(grammaireParser.StructDeclContext ctx) {
 		ArrayList<Ast> list= new ArrayList<>();
 
-		String idf1String = ctx.getChild(1).toString();
-		Idf idf1 = new Idf(idf1String);
-		list.add(idf1);
+		String idfStruct = ctx.getChild(1).toString();
+		Idf idf_struct = new Idf(idfStruct);
 
 		for(int i=3;i<ctx.getChildCount()-1;i=i+3){
 			String idfString = ctx.getChild(i).toString();
 			Idf idf = new Idf(idfString);
 			list.add(idf);
 		}
-		return new DeclStruct(list); }
+		return new DeclStruct(idf_struct, list);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -90,12 +91,12 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitIntFct(grammaireParser.IntFctContext ctx) {
 		Ast params = ctx.getChild(3).accept(this);
 		Ast bloc = ctx.getChild(5).accept(this);
-		String idf1String = ctx.getChild(1).toString();
-		String idf2String = ctx.getChild(3).toString();
-		Idf idf1 = new Idf(idf1String);
-		Idf idf2 = new Idf(idf2String);
-		return new StructFct(idf1,idf2,params,bloc); }
 
+		String idfString = ctx.getChild(1).toString();
+		Idf idf = new Idf(idfString);
+
+		return new IntFct(idf, params, bloc);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -105,13 +106,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitStructFct(grammaireParser.StructFctContext ctx) {
 		Ast params = ctx.getChild(5).accept(this);
 		Ast bloc = ctx.getChild(7).accept(this);
-		String idf1String = ctx.getChild(1).toString();
-		String idf2String = ctx.getChild(3).toString();
 
-		Idf idf1 = new Idf(idf1String);
-		Idf idf2 = new Idf(idf2String);
+		String idfStruct = ctx.getChild(1).toString();
+		String idfString = ctx.getChild(3).toString();
+		Idf idf_struct = new Idf(idfStruct);
+		Idf idf = new Idf(idfString);
 
-		return new StructFct(idf1,idf2,params,bloc); }
+		return new StructFct(idf_struct, idf, params, bloc);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -119,7 +121,11 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitParametre(grammaireParser.ParametreContext ctx) {
-		return ctx.getChild(0).accept(this); }
+		if (ctx.getChildCount() != 0) {
+			return ctx.getChild(0).accept(this);
+		}
+		return null;
+	}
 	/**
 	 * {@inheritDoc}
 	 *

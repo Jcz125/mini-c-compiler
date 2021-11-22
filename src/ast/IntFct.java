@@ -7,12 +7,12 @@ public class IntFct implements Ast{
         return visitor.visit(this);
     }
 
-    public Ast idf1;
+    public Ast idf;
     public Ast params;
     public Ast bloc;
 
-    public IntFct(Ast idf1,Ast params,Ast bloc){
-        this.idf1 = idf1;
+    public IntFct(Ast idf, Ast params, Ast bloc){
+        this.idf = idf;
         this.params = params;
         this.bloc = bloc;
     }
