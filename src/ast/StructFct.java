@@ -2,8 +2,7 @@ package ast;
 
 public class StructFct implements Ast{
 
-    // Utile pour la dernière partie
-    public <T> T accept(AstVisitor<T> visitor){
+    public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 
@@ -12,7 +11,7 @@ public class StructFct implements Ast{
     public Ast params;
     public Ast bloc;
 
-    public StructFct(Ast struct, Ast idf,Ast params,Ast bloc){
+    public StructFct(Ast struct, Ast idf,Ast params,Ast bloc) {
         this.idf_struct = struct;
         this.idf = idf;
         this.params = params;

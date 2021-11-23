@@ -292,6 +292,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitAffect(grammaireParser.AffectContext ctx) {
 		// vérifier le type de IDF ou fleche pour traiter les deux cas
+		System.out.println("class ="+ctx.getChild(0));
 		return visitChildren(ctx);
 	}
 	// @Override public Ast visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
@@ -331,10 +332,11 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitOr_op(grammaireParser.Or_opContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
-		for (int i=0;2*i<ctx.getChildCount()-1;i++){
+
+		for (int i=0; 2*i<ctx.getChildCount()-1;i++) {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
-			noeudTemporaire = new OuLogique(noeudTemporaire,right);
-			}
+			noeudTemporaire = new OuLogique(noeudTemporaire, right);
+		}
 		return noeudTemporaire;
 	}
 
@@ -346,9 +348,10 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitEt_op(grammaireParser.Et_opContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
-		for (int i=0;2*i<ctx.getChildCount()-1;i++){
+
+		for (int i=0; 2*i<ctx.getChildCount()-1; i++) {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
-			noeudTemporaire = new EtLogique(noeudTemporaire,right);
+			noeudTemporaire = new EtLogique(noeudTemporaire, right);
 		}
 		return noeudTemporaire;
 	}
@@ -360,15 +363,16 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitEgalite(grammaireParser.EgaliteContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
-		for (int i=0;2*i<ctx.getChildCount()-1;i++){
+
+		for (int i=0; 2*i<ctx.getChildCount()-1; i++) {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
+
 			switch (operation) {
 				case "==" -> noeudTemporaire = new EqualTo(noeudTemporaire, right);
 				case "!=" -> noeudTemporaire = new NotEqualTo(noeudTemporaire, right);
-				default -> {
-				}
-			}
+				default -> {}
+			} // J'ai Java 11 ça me cause des erreurs haha.
 		}
 		return noeudTemporaire;
 	}
@@ -380,16 +384,17 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitComparaison(grammaireParser.ComparaisonContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
-		for (int i=0;2*i<ctx.getChildCount()-1;i++){
+
+		for (int i=0; 2*i<ctx.getChildCount()-1; i++) {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
+
 			switch (operation) {
 				case "<" -> noeudTemporaire = new LessThan(noeudTemporaire, right);
 				case "<=" -> noeudTemporaire = new LessOrEqual(noeudTemporaire, right);
 				case ">" -> noeudTemporaire = new GreaterThan(noeudTemporaire, right);
 				case ">=" -> noeudTemporaire = new GreaterOrEqual(noeudTemporaire, right);
-				default -> {
-				}
+				default -> {}
 			}
 		}
 		return noeudTemporaire;
@@ -403,16 +408,15 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitSomme(grammaireParser.SommeContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
-		for (int i=0;2*i<ctx.getChildCount()-1;i++){
 
+		for (int i=0; 2*i<ctx.getChildCount()-1; i++) {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 
 			switch (operation) {
 				case "-" -> noeudTemporaire = new Minus(noeudTemporaire, right);
 				case "+" -> noeudTemporaire = new Plus(noeudTemporaire, right);
-				default -> {
-				}
+				default -> {}
 			}
 		}
 		return noeudTemporaire;
@@ -425,18 +429,16 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitProduit(grammaireParser.ProduitContext ctx) {
 		Ast noeudTemporaire = ctx.getChild(0).accept(this);
-		for (int i=0;2*i<ctx.getChildCount()-1;i++){
+		for (int i=0; 2*i<ctx.getChildCount()-1; i++) {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 			switch (operation) {
 				case "*" -> noeudTemporaire = new Mult(noeudTemporaire, right);
 				case "/" -> noeudTemporaire = new Divide(noeudTemporaire, right);
-				default -> {
-				}
+				default -> {}
 			}
 		}
 		return noeudTemporaire;
-
 	}
 	/**
 	 * {@inheritDoc}
@@ -446,7 +448,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitOppose(grammaireParser.OpposeContext ctx) {
 		int dernier = ctx.getChildCount();
-		return  ctx.getChild(dernier).accept(this);}
+		return ctx.getChild(dernier).accept(this);
+	} // peut-être qu'on aura besoin de distinguer le cas ! et -, et faire une classe Oppose
 	/**
 	 * {@inheritDoc}
 	 *
@@ -458,9 +461,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		String idf2String = ctx.getChild(2).toString();
 		Idf idf1 = new Idf(idf1String);
 		Idf idf2 = new Idf(idf2String);
-
-		return new Fleche(idf1,idf2);
-		}
+		return new Fleche(idf1, idf2);
+	} // demander si l'on peut faire a->b->c etc. conséquence : modifier la règle en (IDF '->')* IDF
 	/**
 	 * {@inheritDoc}
 	 *
@@ -469,7 +471,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitInteger(grammaireParser.IntegerContext ctx) {
 		String str = ctx.getChild(0).toString();
-		int integer=Integer.parseInt(str);
+		int integer = Integer.parseInt(str);
 		return new Entier(integer);
 	}
 	/**
@@ -489,7 +491,6 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitArrow(grammaireParser.ArrowContext ctx) {
-
 		return ctx.getChild(0).accept(this);
 	}
 	/**
@@ -502,10 +503,11 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		String idfString = ctx.getChild(2).toString();
 		Idf idf = new Idf(idfString);
 		ArrayList<Ast> list= new ArrayList<>();
+
 		for(int i=2;i<ctx.getChildCount()-1;i=i+2){
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new Function(idf,list); }
+		return new Function(idf, list); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -513,9 +515,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitSizeof(grammaireParser.SizeofContext ctx) {
-
 		return ctx.getChild(3).accept(this);
-	}
+	} // y a t-il besoin de faire une classe Sizeof ? certainement oui
 	/**
 	 * {@inheritDoc}
 	 *
@@ -523,7 +524,6 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitParenthesis(grammaireParser.ParenthesisContext ctx) {
-
 		return ctx.getChild(1).accept(this);
-	}
+	} // IDEM : y a t-il besoin de faire une classe Sizeof ? certainement oui
 }
