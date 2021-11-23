@@ -290,26 +290,30 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Ast visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
-
-		Ast expr = ctx.getChild(2).accept(this);
-		String idfString = ctx.getChild(0).toString();
-
-		Idf idf = new Idf(idfString);
-
-		return new IdfAffect(idf,expr);
+	@Override public Ast visitAffect(grammaireParser.AffectContext ctx) {
+		// vérifier le type de IDF ou fleche pour traiter les deux cas
+		return visitChildren(ctx);
 	}
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public Ast visitFlecheAffect(grammaireParser.FlecheAffectContext ctx) {
-		Ast expr = ctx.getChild(2).accept(this);
-		Ast fleche = ctx.getChild(0).accept(this);
+	// @Override public Ast visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
 
-		return new FlecheAffect(fleche,expr); }
+	// 	Ast expr = ctx.getChild(2).accept(this);
+	// 	String idfString = ctx.getChild(0).toString();
+
+	// 	Idf idf = new Idf(idfString);
+
+	// 	return new IdfAffect(idf,expr);
+	// }
+	// /**
+	//  * {@inheritDoc}
+	//  *
+	//  * <p>The default implementation returns the result of calling
+	//  * {@link #visitChildren} on {@code ctx}.</p>
+	//  */
+	// @Override public Ast visitFlecheAffect(grammaireParser.FlecheAffectContext ctx) {
+	// 	Ast expr = ctx.getChild(2).accept(this);
+	// 	Ast fleche = ctx.getChild(0).accept(this);
+
+	// 	return new FlecheAffect(fleche,expr); }
 	/**
 	 * {@inheritDoc}
 	 *
