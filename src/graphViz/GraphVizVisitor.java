@@ -435,95 +435,14 @@ public class GraphVizVisitor implements AstVisitor<String> {
         return nodeIdentifier;
     }
 
-
-    //Ici on doit écrire les méthodes pour visit notre grammaire
-    /*@Override
-    public String visit(Affect affect) {
-
-        String nodeIdentifier = this.nextState();
-
-        String idfState = affect.idf.accept(this);
-        String expressionState = affect.expression.accept(this);
-
-        this.addNode(nodeIdentifier, "Affect");
-        this.addTransition(nodeIdentifier, idfState);
-        this.addTransition(nodeIdentifier, expressionState);
-
-        return nodeIdentifier;
-
-    }
-
     @Override
-    public String visit(Divide divide) {
+    public String visit(Bloc bloc) {
 
         String nodeIdentifier = this.nextState();
 
-        String leftState = divide.left.accept(this);
-        String rightState = divide.right.accept(this);
+        this.addNode(nodeIdentifier, "Bloc");
 
-        this.addNode(nodeIdentifier, "/");
-        
-        this.addTransition(nodeIdentifier, leftState);
-        this.addTransition(nodeIdentifier, rightState);
-
-        return nodeIdentifier;
-    }
-
-    @Override
-    public String visit(Idf idf) {
-
-        String nodeIdentifier = this.nextState();
-
-        this.addNode(nodeIdentifier, idf.name);
-
-        return nodeIdentifier;
-
-    }
-
-    @Override
-    public String visit(IfThen ifThen) {
-
-        String nodeIdentifier = this.nextState();
-
-        String conditionState = ifThen.condition.accept(this);
-        String thenBlockState = ifThen.thenBlock.accept(this);
-
-        this.addNode(nodeIdentifier, "IfThen");
-
-        this.addTransition(nodeIdentifier, conditionState);
-        this.addTransition(nodeIdentifier, thenBlockState);
-
-        return nodeIdentifier;
-        
-    }
-
-    @Override
-    public String visit(IfThenElse ifThenElse) {
-        
-        String nodeIdentifier = this.nextState();
-
-        String conditionState = ifThenElse.condition.accept(this);
-        String thenBlockState = ifThenElse.thenBlock.accept(this);
-        String elseBlockState = ifThenElse.elseBlock.accept(this);
-        
-        this.addNode(nodeIdentifier, "IfThenElse");
-
-        this.addTransition(nodeIdentifier, conditionState);
-        this.addTransition(nodeIdentifier, thenBlockState);
-        this.addTransition(nodeIdentifier, elseBlockState);
-
-        return nodeIdentifier;
-
-    }
-
-    @Override
-    public String visit(InstrList instrList) {
-        
-        String nodeIdentifier = this.nextState();
-
-        this.addNode(nodeIdentifier, "Program");
-
-        for (Ast ast:instrList.instrList){
+        for (Ast ast:bloc.list){
 
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
@@ -535,15 +454,21 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
     @Override
-    public String visit(IntNode intNode) {
+    public String visit(Function function) {
 
         String nodeIdentifier = this.nextState();
+        String idfState = function.idf.accept(this);
 
-        this.addNode(nodeIdentifier, String.valueOf(intNode.value));
+        this.addNode(nodeIdentifier, "Function");
+        this.addTransition(nodeIdentifier, idfState);
 
+        for (Ast ast: function.expression){
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+        }
         return nodeIdentifier;
-
     }
+
 
     @Override
     public String visit(Minus minus) {
@@ -554,24 +479,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String rightState = minus.right.accept(this);
 
         this.addNode(nodeIdentifier, "-");
-        
-        this.addTransition(nodeIdentifier, leftState);
-        this.addTransition(nodeIdentifier, rightState);
 
-        return nodeIdentifier;
-
-    }
-
-    @Override
-    public String visit(Mult mult) {
-
-        String nodeIdentifier = this.nextState();
-
-        String leftState = mult.left.accept(this);
-        String rightState = mult.right.accept(this);
-
-        this.addNode(nodeIdentifier, "*");
-        
         this.addTransition(nodeIdentifier, leftState);
         this.addTransition(nodeIdentifier, rightState);
 
@@ -588,7 +496,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String rightState = plus.right.accept(this);
 
         this.addNode(nodeIdentifier, "+");
-        
+
         this.addTransition(nodeIdentifier, leftState);
         this.addTransition(nodeIdentifier, rightState);
 
@@ -597,32 +505,174 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
     @Override
-    public String visit(Print print) {
+    public String visit(Mult mult) {
 
         String nodeIdentifier = this.nextState();
 
-        String valueState = print.value.accept(this);
+        String leftState = mult.left.accept(this);
+        String rightState = mult.right.accept(this);
 
-        this.addNode(nodeIdentifier, "print");
-        this.addTransition(nodeIdentifier, valueState);
+        this.addNode(nodeIdentifier, "*");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
 
         return nodeIdentifier;
-
 
     }
 
     @Override
-    public String visit(Program program) {
+    public String visit(Divide divide) {
 
         String nodeIdentifier = this.nextState();
 
-        String instructionsState =program.instructions.accept(this);
+        String leftState = divide.left.accept(this);
+        String rightState = divide.right.accept(this);
 
-        this.addNode(nodeIdentifier, "Program");
-        this.addTransition(nodeIdentifier, instructionsState);
+        this.addNode(nodeIdentifier, "/");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
 
         return nodeIdentifier;
 
-    }*/
+    }
+
+    @Override
+    public String visit(OuLogique ouLogique) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = ouLogique.left.accept(this);
+        String rightState = ouLogique.right.accept(this);
+
+        this.addNode(nodeIdentifier, "||");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+    @Override
+    public String visit(EtLogique etLogique) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = etLogique.left.accept(this);
+        String rightState = etLogique.right.accept(this);
+
+        this.addNode(nodeIdentifier, "&&");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+    @Override
+    public String visit(LessOrEqual lessOrEqual) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = lessOrEqual.left.accept(this);
+        String rightState = lessOrEqual.right.accept(this);
+
+        this.addNode(nodeIdentifier, "<=");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+    @Override
+    public String visit(LessThan lessThan) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = lessThan.left.accept(this);
+        String rightState = lessThan.right.accept(this);
+
+        this.addNode(nodeIdentifier, "<");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+    @Override
+    public String visit(GreaterThan greaterThan) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = greaterThan.left.accept(this);
+        String rightState = greaterThan.right.accept(this);
+
+        this.addNode(nodeIdentifier, "<");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+    @Override
+    public String visit(GreaterOrEqual greaterOrEqual) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = greaterOrEqual.left.accept(this);
+        String rightState = greaterOrEqual.right.accept(this);
+
+        this.addNode(nodeIdentifier, ">=");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+    @Override
+    public String visit(EqualTo equalTo) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = equalTo.left.accept(this);
+        String rightState = equalTo.right.accept(this);
+
+        this.addNode(nodeIdentifier, "==");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+    @Override
+    public String visit(NotEqualTo notEqualTo) {
+
+        String nodeIdentifier = this.nextState();
+
+        String leftState = notEqualTo.left.accept(this);
+        String rightState = notEqualTo.right.accept(this);
+
+        this.addNode(nodeIdentifier, "!=");
+
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
     
 }
