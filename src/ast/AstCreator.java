@@ -75,7 +75,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		String idfStruct = ctx.getChild(1).toString();
 		Idf idf_struct = new Idf(idfStruct);
 
-		for(int i=3;i<ctx.getChildCount()-1;i=i+3){
+		for(int i=3; i<ctx.getChildCount()-1; i+=3){
 			String idfString = ctx.getChild(i).toString();
 			Idf idf = new Idf(idfString);
 			list.add(idf);
@@ -123,7 +123,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitParametre(grammaireParser.ParametreContext ctx) {
 		if (ctx.getChildCount() != 0) {
 			return ctx.getChild(0).accept(this);
-		}
+		} // peut-être qu'on aura besoin dans une liste new Parametres(list) avec list : singleton ou list : vide
 		return null;
 	}
 	/**
@@ -133,13 +133,13 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitParametres(grammaireParser.ParametresContext ctx) {
-
 		ArrayList<Ast> list= new ArrayList<>();
 
-		for(int i=0;i<ctx.getChildCount();i++){
-		list.add(ctx.getChild(i).accept(this));
+		for (int i=0; i<ctx.getChildCount(); i+=2) {
+			list.add(ctx.getChild(i).accept(this));
 		}
-		return new Parametres(list);}
+		return new Parametres(list);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -153,7 +153,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		Idf idf = new Idf(idfString);
 
 		return new IntParam(idf);
-	}
+	} // nécessaire de faire un IntParam et y mettre un Idf ?
 	/**
 	 * {@inheritDoc}
 	 *
@@ -161,13 +161,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitStructPointer(grammaireParser.StructPointerContext ctx) {
-		String idf1String = ctx.getChild(1).toString();
-		String idf2String = ctx.getChild(3).toString();
+		String idfStruct = ctx.getChild(1).toString();
+		String idfString = ctx.getChild(3).toString();
 
-		Idf idf1 = new Idf(idf1String);
-		Idf idf2 = new Idf(idf2String);
+		Idf idf_struct = new Idf(idfStruct);
+		Idf idf = new Idf(idfString);
 
-		return new StructPointer(idf1,idf2); }
+		return new StructPointer(idf_struct, idf);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -175,22 +176,24 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitBloc(grammaireParser.BlocContext ctx) {
-		ArrayList<Ast> list= new ArrayList<>();
-		//if empty list?
-		for(int i=1;i<ctx.getChildCount()-1;i++){
+		// ArrayList<Ast> list_decl = new ArrayList<>(); // séparation ici dès mtn ? utile ?
+		// ArrayList<Ast> list_instr = new ArrayList<>();
+		ArrayList<Ast> list = new ArrayList<>();
+		//if empty list? then list=empty avec Bloc(list(empty))
+		for (int i=1; i<ctx.getChildCount()-1; i++) {
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new Bloc(list);
-
-
-		 }
+		return new Bloc(list); // list_decl, list_instr);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Ast visitNone(grammaireParser.NoneContext ctx) { return visitChildren(ctx); }
+	@Override public Ast visitNone(grammaireParser.NoneContext ctx) {
+		return visitChildren(ctx); // peut-être essayer return null; si ça ne marche pas
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -243,7 +246,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitReturn(grammaireParser.ReturnContext ctx) {
 		return ctx.getChild(1).accept(this);
-	}
+	} // peut-être qu'il faudra ajouter un objet new Return
 	/**
 	 * {@inheritDoc}
 	 *
@@ -251,11 +254,10 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitIfThen(grammaireParser.IfThenContext ctx) {
-
 		Ast condition = ctx.getChild(2).accept(this);
 		Ast thenBlock = ctx.getChild(4).accept(this);
 
-		return new IfThen(condition,thenBlock);
+		return new IfThen(condition, thenBlock);
 	}
 	/**
 	 * {@inheritDoc}
@@ -264,14 +266,12 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitIfThenElse(grammaireParser.IfThenElseContext ctx) {
-
 		Ast condition = ctx.getChild(2).accept(this);
 		Ast thenBlock = ctx.getChild(4).accept(this);
 		Ast elseBlock = ctx.getChild(6).accept(this);
-		return new IfThenElse(condition,thenBlock,elseBlock);
 
+		return new IfThenElse(condition, thenBlock, elseBlock);
 	}
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -282,7 +282,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		Ast condition = ctx.getChild(2).accept(this);
 		Ast instruction = ctx.getChild(4).accept(this);
 
-		return new WhileInst(condition,instruction); }
+		return new WhileInst(condition, instruction);
+	}
 	/**
 	 * {@inheritDoc}
 	 *

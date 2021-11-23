@@ -11,7 +11,7 @@ public class IfThen implements Ast {
     public Ast thenBlock;
 
     public IfThen(Ast condition, Ast thenBlock){
-        this.condition=condition;
-        this.thenBlock=thenBlock;
+        this.condition = condition;
+        this.thenBlock = thenBlock;
     }
 }

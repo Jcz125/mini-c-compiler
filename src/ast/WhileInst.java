@@ -11,7 +11,7 @@ public class WhileInst implements Ast {
     public Ast instruction;
 
     public WhileInst(Ast condition, Ast instruction){
-        this.condition=condition;
-        this.instruction=instruction;
+        this.condition = condition;
+        this.instruction = instruction;
     }
 }
