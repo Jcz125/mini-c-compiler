@@ -223,25 +223,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
 
-//    @Override
-//    public String visit(Bloc bloc) {
-//
-//        String nodeIdentifier = this.nextState();
-//
-//        this.addNode(nodeIdentifier, "Bloc");
-//
-//        for (Ast ast:bloc.list){
-//
-//            String astState = ast.accept(this);
-//            this.addTransition(nodeIdentifier, astState);
-//
-//        }
-//
-//        return nodeIdentifier;
-//
-//    }
-
-
     @Override
     public String visit(Devide div) {
 
@@ -365,22 +346,22 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
 
-    @Override
-    public String visit(IdfAffect IdfAffect) {
-
-        String nodeIdentifier = this.nextState();
-
-        String idfState = IdfAffect.idf.accept(this);
-        String expressionState = IdfAffect.expression.accept(this);
-
-        this.addNode(nodeIdentifier, " = ");
-
-        this.addTransition(nodeIdentifier, idfState);
-        this.addTransition(nodeIdentifier, expressionState);
-
-        return nodeIdentifier;
-
-    }
+//    @Override
+//    public String visit(IdfAffect IdfAffect) {
+//
+//        String nodeIdentifier = this.nextState();
+//
+//        String idfState = IdfAffect.idf.accept(this);
+//        String expressionState = IdfAffect.expression.accept(this);
+//
+//        this.addNode(nodeIdentifier, " = ");
+//
+//        this.addTransition(nodeIdentifier, idfState);
+//        this.addTransition(nodeIdentifier, expressionState);
+//
+//        return nodeIdentifier;
+//
+//    }
 
 
     @Override
@@ -401,23 +382,43 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
 
+//    @Override
+//    public String visit(Fleche Fleche) {
+//
+//        String nodeIdentifier = this.nextState();
+//
+//        this.addNode(nodeIdentifier, " --> ");
+//
+//        for (Ast ast:Fleche.idflist){
+//
+//            String astState = ast.accept(this);
+//            this.addTransition(nodeIdentifier, astState);
+//
+//        }
+//        return nodeIdentifier;
+
+//    }
+
+
     @Override
-    public String visit(Fleche Fleche) {
+    public String visit(Affect Affect) {
 
         String nodeIdentifier = this.nextState();
+        String expressionState = Affect.expression.accept(this);
 
-        String idf1State = Fleche.idf1.accept(this);
-        String idf2State = Fleche.idf2.accept(this);
+        this.addTransition(nodeIdentifier, expressionState);
 
-        this.addNode(nodeIdentifier, " --> ");
+        this.addNode(nodeIdentifier, " = ");
 
-        this.addTransition(nodeIdentifier, idf1State);
-        this.addTransition(nodeIdentifier, idf2State);
+        for (Ast ast:Affect.vars){
 
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+
+        }
         return nodeIdentifier;
 
     }
-
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
