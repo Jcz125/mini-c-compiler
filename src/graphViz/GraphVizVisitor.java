@@ -615,7 +615,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String leftState = greaterThan.left.accept(this);
         String rightState = greaterThan.right.accept(this);
 
-        this.addNode(nodeIdentifier, "<");
+        this.addNode(nodeIdentifier, ">");
 
         this.addTransition(nodeIdentifier, leftState);
         this.addTransition(nodeIdentifier, rightState);
