@@ -292,29 +292,46 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitAffect(grammaireParser.AffectContext ctx) {
 		// vérifier le type de IDF ou fleche pour traiter les deux cas
-		System.out.println("class ="+ctx.getChild(0));
-		return visitChildren(ctx);
+		String TerminalNodeclass = "class org.antlr.v4.runtime.tree.TerminalNodeImpl";
+		Ast expr = ctx.getChild(ctx.getChildCount()-1).accept(this);
+		ArrayList<Ast> list = new ArrayList<>();
+
+		for (int i=0; i<ctx.getChildCount()-2; i+=2) {
+			if (""+ctx.getChild(0).getClass() == TerminalNodeclass) {
+				String idfString = ctx.getChild(0).toString();
+				Idf idf = new Idf(idfString);
+				list.add(idf);
+			} else {
+				list.add(ctx.getChild(0).accept(this));
+			}
+		}
+		return new Affect(list, expr);
 	}
-	// @Override public Ast visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
+/*
+	@Override public Ast visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
 
-	// 	Ast expr = ctx.getChild(2).accept(this);
-	// 	String idfString = ctx.getChild(0).toString();
+		Ast expr = ctx.getChild(2).accept(this);
+		String idfString = ctx.getChild(0).toString();
 
-	// 	Idf idf = new Idf(idfString);
+		Idf idf = new Idf(idfString);
 
-	// 	return new IdfAffect(idf,expr);
-	// }
-	// /**
-	//  * {@inheritDoc}
-	//  *
-	//  * <p>The default implementation returns the result of calling
-	//  * {@link #visitChildren} on {@code ctx}.</p>
-	//  */
-	// @Override public Ast visitFlecheAffect(grammaireParser.FlecheAffectContext ctx) {
-	// 	Ast expr = ctx.getChild(2).accept(this);
-	// 	Ast fleche = ctx.getChild(0).accept(this);
+		return new IdfAffect(idf,expr);
+	}
+*/
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+/*
+	@Override public Ast visitFlecheAffect(grammaireParser.FlecheAffectContext ctx) {
+		Ast expr = ctx.getChild(2).accept(this);
+		Ast fleche = ctx.getChild(0).accept(this);
 
-	// 	return new FlecheAffect(fleche,expr); }
+		return new FlecheAffect(fleche,expr);
+	}
+*/
 	/**
 	 * {@inheritDoc}
 	 *
@@ -457,12 +474,24 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitFleche(grammaireParser.FlecheContext ctx) {
+		String idfString; // = ctx.getChild(0).toString();
+		Idf idf; // = new Idf(idfString);
+		ArrayList<Ast> list = new ArrayList<>();
+
+		for (int i=0; i<ctx.getChildCount(); i+=2) {
+			idfString = ctx.getChild(i).toString();
+			idf = new Idf(idfString);
+			list.add(idf);
+		}
+		return new Fleche(list);
+	} // demander si l'on peut faire a->b->c etc. conséquence : modifier la règle en (IDF '->')* IDF
+/*
 		String idf1String = ctx.getChild(0).toString();
 		String idf2String = ctx.getChild(2).toString();
 		Idf idf1 = new Idf(idf1String);
 		Idf idf2 = new Idf(idf2String);
 		return new Fleche(idf1, idf2);
-	} // demander si l'on peut faire a->b->c etc. conséquence : modifier la règle en (IDF '->')* IDF
+*/
 	/**
 	 * {@inheritDoc}
 	 *

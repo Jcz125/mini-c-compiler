@@ -85,7 +85,7 @@ oppose :
       ('!'|'-')?value;
 
 fleche :
-      IDF '->' IDF;
+      (IDF '->')* IDF;
 
 value :
       INTEGER                                         #Integer
