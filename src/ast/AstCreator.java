@@ -554,7 +554,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitFunction(grammaireParser.FunctionContext ctx) {
-		String idfString = ctx.getChild(2).toString();
+		String idfString = ctx.getChild(0).toString();
 		Idf idf = new Idf(idfString);
 		ArrayList<Ast> list= new ArrayList<>();
 
