@@ -1,0 +1,24 @@
+digraph "ast"{
+
+	nodesep=1;
+	ranksep=1;
+
+	N0 [label="Program", shape="box"];
+	N2 [label="fct", shape="box"];
+	N4 [label="a", shape="box"];
+	N3 [label=" IntParam ", shape="box"];
+	N5 [label="Bloc", shape="box"];
+	N7 [label="[275 251 240 232 224 216 208 200 198 150 141 99 53 44]", shape="box"];
+	N6 [label="Function", shape="box"];
+	N8 [label="a", shape="box"];
+	N1 [label="Decl_IntFct", shape="box"];
+
+	N3 -> N4; 
+	N6 -> N7; 
+	N6 -> N8; 
+	N5 -> N6; 
+	N1 -> N2; 
+	N1 -> N3; 
+	N1 -> N5; 
+	N0 -> N1;
+}
