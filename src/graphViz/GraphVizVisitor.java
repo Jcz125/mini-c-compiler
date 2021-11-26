@@ -88,23 +88,23 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
 
-    @Override
-    public String visit(DeclList decl_list) {
-
-        String nodeIdentifier = this.nextState();
-
-        this.addNode(nodeIdentifier, "Decl_List");
-
-        for (Ast ast:decl_list.instrList){
-
-            String astState = ast.accept(this);
-            this.addTransition(nodeIdentifier, astState);
-
-        }
-
-        return nodeIdentifier;
-
-    }
+//    @Override
+//    public String visit(DeclList decl_list) {
+//
+//        String nodeIdentifier = this.nextState();
+//
+//        this.addNode(nodeIdentifier, "Decl_List");
+//
+//        for (Ast ast:decl_list.instrList){
+//
+//            String astState = ast.accept(this);
+//            this.addTransition(nodeIdentifier, astState);
+//
+//        }
+//
+//        return nodeIdentifier;
+//
+//    }
 
 
     @Override

@@ -19,7 +19,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		for(int i=0; i<ctx.getChildCount()-1; i++) {
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new DeclList(list);
+		return new Program(list);
 	}
 	/**
 	 * {@inheritDoc}
@@ -387,9 +387,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 
 			switch (operation) {
-				case "==": noeudTemporaire = new EqualTo(noeudTemporaire, right);
-				case "!=": noeudTemporaire = new NotEqualTo(noeudTemporaire, right);
-				default: {}
+				case "==" :
+					noeudTemporaire = new EqualTo(noeudTemporaire, right);
+					break;
+				case "!=" :
+					noeudTemporaire = new NotEqualTo(noeudTemporaire, right);
+					break;
+				default :
+					break;
 			} // J'ai Java 11 ça me cause des erreurs haha.
 		}
 		return noeudTemporaire;
@@ -408,11 +413,20 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 
 			switch (operation) {
-				case "<": noeudTemporaire = new LessThan(noeudTemporaire, right);
-				case "<=": noeudTemporaire = new LessOrEqual(noeudTemporaire, right);
-				case ">": noeudTemporaire = new GreaterThan(noeudTemporaire, right);
-				case ">=": noeudTemporaire = new GreaterOrEqual(noeudTemporaire, right);
-				default: {}
+				case "<" :
+					noeudTemporaire = new LessThan(noeudTemporaire, right);
+					break;
+				case "<=" :
+					noeudTemporaire = new LessOrEqual(noeudTemporaire, right);
+					break;
+				case ">" :
+					noeudTemporaire = new GreaterThan(noeudTemporaire, right);
+					break;
+				case ">=" :
+					noeudTemporaire = new GreaterOrEqual(noeudTemporaire, right);
+					break;
+				default :
+					break;
 			}
 		}
 		return noeudTemporaire;
@@ -432,9 +446,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 
 			switch (operation) {
-				case "-": noeudTemporaire = new Minus(noeudTemporaire, right);
-				case "+": noeudTemporaire = new Plus(noeudTemporaire, right);
-				default: {}
+				case "-" :
+					noeudTemporaire = new Minus(noeudTemporaire, right);
+					break;
+				case "+" :
+					noeudTemporaire = new Plus(noeudTemporaire, right);
+					break;
+				default :
+					break;
 			}
 		}
 		return noeudTemporaire;
@@ -451,9 +470,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 			switch (operation) {
-				case "*": noeudTemporaire = new Mult(noeudTemporaire, right);
-				case "/": noeudTemporaire = new Divide(noeudTemporaire, right);
-				default: {}
+				case "*":
+					noeudTemporaire = new Mult(noeudTemporaire, right);
+					break;
+				case "/":
+					noeudTemporaire = new Divide(noeudTemporaire, right);
+					break;
+				default:
+					break;
 			}
 		}
 		return noeudTemporaire;
