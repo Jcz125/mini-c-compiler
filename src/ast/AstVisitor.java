@@ -33,7 +33,6 @@ public interface AstVisitor<T> {
     public T visit(StructFct structFct);
     public T visit(StructPointer structPointer);
     public T visit(WhileInst whileInst);
-    public T visit(DeclList instrList);
     public T visit(Affect affect);
 
 }

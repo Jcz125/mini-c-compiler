@@ -19,7 +19,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		for(int i=0; i<ctx.getChildCount()-1; i++) {
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new DeclList(list);
+		return new Program(list);
 	}
 	/**
 	 * {@inheritDoc}
@@ -465,7 +465,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitOppose(grammaireParser.OpposeContext ctx) {
 		int dernier = ctx.getChildCount();
-		return ctx.getChild(dernier).accept(this);
+		return ctx.getChild(dernier-1).accept(this);
 	} // peut-être qu'on aura besoin de distinguer le cas ! et -, et faire une classe Oppose
 	/**
 	 * {@inheritDoc}
