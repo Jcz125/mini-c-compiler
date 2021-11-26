@@ -1,7 +1,5 @@
 package ast;
 
-import java.util.ArrayList;
-
 public class Affect implements Ast{
 
     public <T> T accept(AstVisitor<T> visitor) {
