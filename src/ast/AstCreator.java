@@ -297,7 +297,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		// ArrayList<Ast> list = new ArrayList<>();
 
 		for (int i=0; i<ctx.getChildCount()-2; i+=2) {
-			if (""+ctx.getChild(i).getClass() == TerminalNodeclass) {
+			if (TerminalNodeclass.equals(""+ctx.getChild(i).getClass())) {
 				String idfString = ctx.getChild(i).toString();
 				noeudTemporaire = new Affect(new Idf(idfString), noeudTemporaire);
 				// list.add(idf);
