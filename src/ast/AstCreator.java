@@ -561,7 +561,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		for(int i=2;i<ctx.getChildCount()-1;i=i+2){
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new Function(idf, list); }
+		return new Function(idf, list);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
