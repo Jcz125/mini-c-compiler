@@ -1,43 +1,9 @@
 package graphViz;
 
+import ast.*;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-
-import ast.Ast;
-import ast.AstVisitor;
-import ast.Bloc;
-import ast.DeclInt;
-import ast.DeclList;
-import ast.DeclType;
-import ast.DeclStruct;
-import ast.Divide;
-import ast.EqualTo;
-import ast.EtLogique;
-import ast.Fleche;
-import ast.FlecheAffect;
-import ast.GreaterOrEqual;
-import ast.GreaterThan;
-import ast.Idf;
-import ast.IdfAffect;
-import ast.IfThen;
-import ast.IfThenElse;
-import ast.Entier;
-import ast.IntFct;
-import ast.IntParam;
-import ast.LessOrEqual;
-import ast.LessThan;
-import ast.Minus;
-import ast.Mult;
-import ast.NotEqualTo;
-import ast.OuLogique;
-import ast.Parametres;
-import ast.Plus;
-import ast.Program;
-import ast.StructFct;
-import ast.StructPointer;
-import ast.WhileInst;
-import ast.Function;
 
 public class GraphVizVisitor implements AstVisitor<String> {
 
@@ -207,10 +173,10 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         String nodeIdentifier = this.nextState();
 
-        String idf1State = intFunc.idf_struct.accept(this);
-        String idf2State = intFunc.idf.accept(this);
-        String paramsState = intFunc.params.accept(this);
-        String blocState = intFunc.bloc.accept(this);
+        String idf1State = StructFunc.idf_struct.accept(this);
+        String idf2State = StructFunc.idf.accept(this);
+        String paramsState = StructFunc.params.accept(this);
+        String blocState = StructFunc.bloc.accept(this);
 
         this.addNode(nodeIdentifier, "Decl_StructFct");
         this.addTransition(nodeIdentifier, idf1State);
@@ -224,7 +190,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
 
     @Override
-    public String visit(Devide div) {
+    public String visit(Divide div) {
 
         String nodeIdentifier = this.nextState();
 
@@ -279,8 +245,8 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         String nodeIdentifier = this.nextState();
 
-        String idf1State = paramINT.idf1.accept(this);
-        String idf2State = paramINT.idf2.accept(this);
+        String idf1State = pointer.idf1.accept(this);
+        String idf2State = pointer.idf2.accept(this);
 
         this.addNode(nodeIdentifier, " Struct_Pointer ");
         this.addTransition(nodeIdentifier, idf1State);
@@ -364,7 +330,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 //    }
 
 
-    @Override
+    /*@Override
     public String visit(FlecheAffect FlecheAffect) {
 
         String nodeIdentifier = this.nextState();
@@ -379,25 +345,25 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         return nodeIdentifier;
 
+    }*/
+
+
+    @Override
+    public String visit(Fleche Fleche) {
+
+        String nodeIdentifier = this.nextState();
+
+        this.addNode(nodeIdentifier, " --> ");
+
+        for (Ast ast:Fleche.idfList){
+
+            String astState = ast.accept(this);
+            this.addTransition(nodeIdentifier, astState);
+
+        }
+        return nodeIdentifier;
+
     }
-
-
-//    @Override
-//    public String visit(Fleche Fleche) {
-//
-//        String nodeIdentifier = this.nextState();
-//
-//        this.addNode(nodeIdentifier, " --> ");
-//
-//        for (Ast ast:Fleche.idflist){
-//
-//            String astState = ast.accept(this);
-//            this.addTransition(nodeIdentifier, astState);
-//
-//        }
-//        return nodeIdentifier;
-
-//    }
 
 
     @Override
@@ -522,22 +488,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
     }
 
-    @Override
-    public String visit(Divide divide) {
 
-        String nodeIdentifier = this.nextState();
-
-        String leftState = divide.left.accept(this);
-        String rightState = divide.right.accept(this);
-
-        this.addNode(nodeIdentifier, "/");
-
-        this.addTransition(nodeIdentifier, leftState);
-        this.addTransition(nodeIdentifier, rightState);
-
-        return nodeIdentifier;
-
-    }
 
     @Override
     public String visit(OuLogique ouLogique) {
