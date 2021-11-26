@@ -293,19 +293,20 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitAffect(grammaireParser.AffectContext ctx) {
 		// vérifier le type de IDF ou fleche pour traiter les deux cas
 		String TerminalNodeclass = "class org.antlr.v4.runtime.tree.TerminalNodeImpl";
-		Ast expr = ctx.getChild(ctx.getChildCount()-1).accept(this);
-		ArrayList<Ast> list = new ArrayList<>();
+		Ast noeudTemporaire = ctx.getChild(ctx.getChildCount()-1).accept(this); // expr
+		// ArrayList<Ast> list = new ArrayList<>();
 
 		for (int i=0; i<ctx.getChildCount()-2; i+=2) {
-			if (""+ctx.getChild(0).getClass() == TerminalNodeclass) {
-				String idfString = ctx.getChild(0).toString();
-				Idf idf = new Idf(idfString);
-				list.add(idf);
+			if (""+ctx.getChild(i).getClass() == TerminalNodeclass) {
+				String idfString = ctx.getChild(i).toString();
+				noeudTemporaire = new Affect(new Idf(idfString), noeudTemporaire);
+				// list.add(idf);
 			} else {
-				list.add(ctx.getChild(0).accept(this));
+				noeudTemporaire = new Affect(ctx.getChild(i).accept(this), noeudTemporaire);
+				// list.add(ctx.getChild(i).accept(this));
 			}
 		}
-		return new Affect(list, expr);
+		return noeudTemporaire;
 	}
 /*
 	@Override public Ast visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
@@ -386,9 +387,9 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 
 			switch (operation) {
-				case "==" -> noeudTemporaire = new EqualTo(noeudTemporaire, right);
-				case "!=" -> noeudTemporaire = new NotEqualTo(noeudTemporaire, right);
-				default -> {}
+				case "==": noeudTemporaire = new EqualTo(noeudTemporaire, right);
+				case "!=": noeudTemporaire = new NotEqualTo(noeudTemporaire, right);
+				default: {}
 			} // J'ai Java 11 ça me cause des erreurs haha.
 		}
 		return noeudTemporaire;
@@ -407,11 +408,11 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 
 			switch (operation) {
-				case "<" -> noeudTemporaire = new LessThan(noeudTemporaire, right);
-				case "<=" -> noeudTemporaire = new LessOrEqual(noeudTemporaire, right);
-				case ">" -> noeudTemporaire = new GreaterThan(noeudTemporaire, right);
-				case ">=" -> noeudTemporaire = new GreaterOrEqual(noeudTemporaire, right);
-				default -> {}
+				case "<": noeudTemporaire = new LessThan(noeudTemporaire, right);
+				case "<=": noeudTemporaire = new LessOrEqual(noeudTemporaire, right);
+				case ">": noeudTemporaire = new GreaterThan(noeudTemporaire, right);
+				case ">=": noeudTemporaire = new GreaterOrEqual(noeudTemporaire, right);
+				default: {}
 			}
 		}
 		return noeudTemporaire;
@@ -431,9 +432,9 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 
 			switch (operation) {
-				case "-" -> noeudTemporaire = new Minus(noeudTemporaire, right);
-				case "+" -> noeudTemporaire = new Plus(noeudTemporaire, right);
-				default -> {}
+				case "-": noeudTemporaire = new Minus(noeudTemporaire, right);
+				case "+": noeudTemporaire = new Plus(noeudTemporaire, right);
+				default: {}
 			}
 		}
 		return noeudTemporaire;
@@ -450,9 +451,9 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			String operation = ctx.getChild(2*i+1).toString();
 			Ast right = ctx.getChild(2*(i+1)).accept(this);
 			switch (operation) {
-				case "*" -> noeudTemporaire = new Mult(noeudTemporaire, right);
-				case "/" -> noeudTemporaire = new Divide(noeudTemporaire, right);
-				default -> {}
+				case "*": noeudTemporaire = new Mult(noeudTemporaire, right);
+				case "/": noeudTemporaire = new Divide(noeudTemporaire, right);
+				default: {}
 			}
 		}
 		return noeudTemporaire;
@@ -464,7 +465,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitOppose(grammaireParser.OpposeContext ctx) {
-		int dernier = ctx.getChildCount();
+		int dernier = ctx.getChildCount()-1;
 		return ctx.getChild(dernier).accept(this);
 	} // peut-être qu'on aura besoin de distinguer le cas ! et -, et faire une classe Oppose
 	/**
