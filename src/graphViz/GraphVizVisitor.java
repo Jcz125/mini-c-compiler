@@ -370,21 +370,18 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(Affect Affect) {
 
         String nodeIdentifier = this.nextState();
-        String expressionState = Affect.expression.accept(this);
-
-        this.addTransition(nodeIdentifier, expressionState);
+        String leftState = Affect.left.accept(this);
+        String rightState = Affect.right.accept(this);
 
         this.addNode(nodeIdentifier, " = ");
 
-        for (Ast ast:Affect.vars){
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
 
-            String astState = ast.accept(this);
-            this.addTransition(nodeIdentifier, astState);
-
-        }
         return nodeIdentifier;
 
     }
+
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
