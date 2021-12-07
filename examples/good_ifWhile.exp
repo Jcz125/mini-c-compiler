@@ -1,12 +1,12 @@
 // if_else | or | while --> simple function
 int mul(int a, int b) {
+    int res ;
+    int i ;
     if (a == 0 || b == 0) {
         return 0 ;
     }
     else {
-        int res ;
         res = a ;
-        int i ;
         i = 1 ;
         while (i != b) {
             res = res + a ;

@@ -16,9 +16,9 @@ int sum(int a1, int a2){
 //malloc, sizeof --> using a simple function with struct's var
 int main() {
     struct S2* abc1 ;
-    abc1 = malloc(sizeof(struct S2)) ;
     int a1 ;
     int b1 ;
+    abc1 = malloc(sizeof(struct S2)) ;
     a1 = abc1->a ;
     b1 = abc1->b ;
     return sum(a1,b1);
