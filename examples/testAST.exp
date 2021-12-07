@@ -1,0 +1,12 @@
+struct struct1 {
+    int a ;
+};
+
+int fct(int a ){
+    int b;
+    int c ;
+    struct struct1 * one;
+    print(a);
+    a + b + c ;
+    a->b ;
+}
