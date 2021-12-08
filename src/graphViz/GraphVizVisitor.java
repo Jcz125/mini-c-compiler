@@ -55,7 +55,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         this.addNode(nodeIdentifier, "Program");
 
-        for (Ast ast:program.program){
+        for (Ast ast:program.program) {
 
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
@@ -76,7 +76,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(nodeIdentifier, "Decl_Type");
         this.addTransition(nodeIdentifier, idfState);
 
-        for (Ast ast:decl_typ.list){
+        for (Ast ast:decl_typ.list) {
 
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
@@ -118,7 +118,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addTransition(nodeIdentifier, idfState);
 
 
-        for (Ast ast:decl_struct.list_idf){
+        for (Ast ast:decl_struct.list_idf) {
 
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
@@ -137,7 +137,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         this.addNode(nodeIdentifier, "Decl_Int");
 
-        for (Ast ast:decl_int.list){
+        for (Ast ast:decl_int.list) {
 
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
@@ -213,7 +213,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         this.addNode(nodeIdentifier, "Parameters");
 
-        for (Ast ast:params.list){
+        for (Ast ast:params.list) {
 
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
@@ -355,7 +355,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         this.addNode(nodeIdentifier, " --> ");
 
-        for (Ast ast:Fleche.idfList){
+        for (Ast ast:Fleche.idfList) {
 
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
@@ -406,7 +406,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         this.addNode(nodeIdentifier, "Bloc");
 
-        for (Ast ast:bloc.list){
+        for (Ast ast:bloc.list) {
 
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
@@ -426,7 +426,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(nodeIdentifier, "Function");
         this.addTransition(nodeIdentifier, idfState);
 
-        for (Ast ast: function.expression){
+        for (Ast ast: function.expression) {
             String astState = ast.accept(this);
             this.addTransition(nodeIdentifier, astState);
         }
