@@ -10,9 +10,7 @@ public class Parametres implements Ast {
 
     public ArrayList<Ast> list;
 
-    public Parametres (ArrayList<Ast> list) {
+    public Parametres(ArrayList<Ast> list) {
         this.list = list;
     }
-
-
 }

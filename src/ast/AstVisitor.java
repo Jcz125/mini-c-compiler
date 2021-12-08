@@ -9,13 +9,11 @@ public interface AstVisitor<T> {
     public T visit(Divide divide);
     public T visit(EqualTo equalTo);
     public T visit(EtLogique etLogique);
-    // public T visit(FlecheAffect flecheAffect);
     public T visit(Fleche fleche);
     public T visit(Function function);
     public T visit(GreaterOrEqual greaterOrEqual);
     public T visit(GreaterThan greaterThan);
     public T visit(Idf idf);
-    // public T visit(IdfAffect idfAffect);
     public T visit(IfThen ifThen);
     public T visit(IfThenElse ifThenElse);
     public T visit(Entier integer);
@@ -34,5 +32,7 @@ public interface AstVisitor<T> {
     public T visit(StructPointer structPointer);
     public T visit(WhileInst whileInst);
     public T visit(Affect affect);
+    public T visit(Return return1);
+    public T visit(Sizeof sizeof);
 
 }

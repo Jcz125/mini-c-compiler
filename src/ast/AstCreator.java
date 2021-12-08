@@ -395,7 +395,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 					break;
 				default :
 					break;
-			} // J'ai Java 11 ça me cause des erreurs haha.
+			}
 		}
 		return noeudTemporaire;
 	}
@@ -499,8 +499,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitFleche(grammaireParser.FlecheContext ctx) {
-		String idfString; // = ctx.getChild(0).toString();
-		Idf idf; // = new Idf(idfString);
+		String idfString;
+		Idf idf;
 		ArrayList<Ast> list = new ArrayList<>();
 
 		for (int i=0; i<ctx.getChildCount(); i+=2) {
@@ -509,14 +509,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			list.add(idf);
 		}
 		return new Fleche(list);
-	} // demander si l'on peut faire a->b->c etc. conséquence : modifier la règle en (IDF '->')* IDF
-/*
-		String idf1String = ctx.getChild(0).toString();
-		String idf2String = ctx.getChild(2).toString();
-		Idf idf1 = new Idf(idf1String);
-		Idf idf2 = new Idf(idf2String);
-		return new Fleche(idf1, idf2);
-*/
+	}
+
 	/**
 	 * {@inheritDoc}
 	 *
@@ -570,7 +564,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitSizeof(grammaireParser.SizeofContext ctx) {
-		return ctx.getChild(3).accept(this);
+		// return ctx.getChild(3).accept(this);
+		return new Sizeof(new Idf(ctx.getChild(3).toString()));
 	} // y a t-il besoin de faire une classe Sizeof ? certainement oui
 	/**
 	 * {@inheritDoc}
@@ -580,5 +575,5 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitParenthesis(grammaireParser.ParenthesisContext ctx) {
 		return ctx.getChild(1).accept(this);
-	} // IDEM : y a t-il besoin de faire une classe Sizeof ? certainement oui
+	} // IDEM : y a t-il besoin de faire une classe parenthesis ? peut-être pas
 }
