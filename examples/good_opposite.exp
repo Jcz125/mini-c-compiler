@@ -1,0 +1,9 @@
+int fct1( int a) {
+    int b ;
+    a = -b ;
+    return a
+}
+
+int main() {
+    return fct1(5) ;
+}
