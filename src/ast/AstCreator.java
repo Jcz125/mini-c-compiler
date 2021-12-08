@@ -121,10 +121,12 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitParametre(grammaireParser.ParametreContext ctx) {
+		ArrayList<Ast> param = new ArrayList<>();
+
 		if (ctx.getChildCount() != 0) {
-			return ctx.getChild(0).accept(this);
+			param.add(ctx.getChild(0).accept(this));
 		} // peut-être qu'on aura besoin dans une liste new Parametres(list) avec list : singleton ou list : vide
-		return null;
+		return new Parametres(param);
 	}
 	/**
 	 * {@inheritDoc}
