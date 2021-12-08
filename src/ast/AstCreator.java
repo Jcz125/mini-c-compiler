@@ -247,7 +247,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitReturn(grammaireParser.ReturnContext ctx) {
-		return ctx.getChild(1).accept(this);
+		return new Return(ctx.getChild(1).accept(this));
 	} // peut-être qu'il faudra ajouter un objet new Return
 	/**
 	 * {@inheritDoc}

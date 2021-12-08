@@ -208,20 +208,19 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Parametres params) {
-        if(params.list.size()==0){
-            return "";
-        }
+
         String nodeIdentifier = this.nextState();
 
         this.addNode(nodeIdentifier, "Parameters");
 
-        for (Ast ast:params.list) {
+        if (params.list.size()!=0) {
+            for (Ast ast:params.list) {
 
-            String astState = ast.accept(this);
-            this.addTransition(nodeIdentifier, astState);
+                String astState = ast.accept(this);
+                this.addTransition(nodeIdentifier, astState);
 
+            }
         }
-
         return nodeIdentifier;
 
     }
@@ -387,7 +386,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(Return return1) {
         String nodeIdentifier = this.nextState();
-        String value = return1.accept(this);
+        String value = return1.value.accept(this);
         this.addNode(nodeIdentifier, "return");
         this.addTransition(nodeIdentifier, value);
         return nodeIdentifier;
@@ -398,7 +397,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String nodeIdentifier = this.nextState();
         String idf = sizeof.idf.accept(this);
         this.addNode(nodeIdentifier, "sizeof");
-        this.addTransition(nodeIdentifier,idf);
+        this.addTransition(nodeIdentifier, idf);
         return nodeIdentifier;
     }
 
