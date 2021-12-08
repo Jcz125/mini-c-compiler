@@ -521,7 +521,11 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitInteger(grammaireParser.IntegerContext ctx) {
 		String str = ctx.getChild(0).toString();
-		int integer = Integer.parseInt(str);
+		int integer;
+		if (str.length() > 1)
+			integer = (int) str.charAt(str.length()-2);
+		else
+			integer = Integer.parseInt(str);
 		return new Entier(integer);
 	}
 	/**
