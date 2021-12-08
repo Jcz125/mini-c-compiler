@@ -1,0 +1,25 @@
+// an empty struct
+struct S1 {} ;
+
+struct S2 {
+    int a ;
+    int b ;
+};
+
+// simple function with "+"
+int sum(int a1, int a2){
+    int S ;
+    S = a1 + a2 ;
+    return S ;
+}
+
+//malloc, sizeof --> using a simple function with struct's var
+int main() {
+    struct S2* abc1 ;
+    abc1 = malloc(sizeof(struct S2)) ;
+    int a1 ;
+    int b1 ;
+    a1 = abc1->a ;
+    b1 = abc1->b ;
+    return sum(a1,b1);
+}
