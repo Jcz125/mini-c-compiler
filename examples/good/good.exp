@@ -1,0 +1,21 @@
+// simple condition with bool
+int simple_condition() {
+    int bool;
+    bool = 0 ;
+    if (!bool) return 1 ;
+}
+
+
+// simple condition with comparison
+int max(int a, int b) {
+    if (a < b) return b ;
+    else return a ;
+}
+
+
+int main() {
+    int bool ;
+    bool = simple_condition() ;
+    return bool ;
+}
+
