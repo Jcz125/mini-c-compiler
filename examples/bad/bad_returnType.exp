@@ -1,0 +1,13 @@
+struct S1 {
+    int one ;
+};
+
+struct S1 fct(int a) {
+    int b ;
+    b = a*2 ;
+    return b ;
+}
+
+int main(){
+    return 0 ;
+}

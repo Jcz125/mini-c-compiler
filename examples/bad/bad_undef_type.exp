@@ -1,0 +1,10 @@
+struct S1 fct(int a) {
+    int b ;
+    struct S1* st ;
+    st = malloc(sizeof(struct S1)) ;
+    return st ;
+}
+
+int main(){
+    return 0 ;
+}

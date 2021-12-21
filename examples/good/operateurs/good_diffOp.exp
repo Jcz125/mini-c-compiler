@@ -1,0 +1,13 @@
+int main() {
+    int res1 ;
+    int res2 ;
+    int res3 ;
+    int res4 ;
+
+    res1 = ((5!=6) && (6==6)) ;                   // res1 = 1
+    res2 = ((5==4) || (5>=5)) ;                   // res2 = 1
+    res3 = ( ((5==6) && (5!=5)) || (4==4) ) ;     // res3 = 1
+    res4 = ( ((5!=4) || (5!=5)) && (4!=4) ) ;      // res4 = 0
+
+    return ( res1+res2+res3+res4 == 3 ) ;
+}
