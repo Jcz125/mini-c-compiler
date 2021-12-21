@@ -1,0 +1,12 @@
+int operations(int a, int b, int c ){
+    int d, e, f, g ;
+    a + b + c ;
+    a + b - c ;
+    a + b * c ;
+    a * (b+c) ;
+    a + b/c -d+ e*f +g ;
+}
+
+int main() {
+    return 0 ;
+}
