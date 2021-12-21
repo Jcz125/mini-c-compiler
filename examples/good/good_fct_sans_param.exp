@@ -1,0 +1,12 @@
+int fct() {
+    int a, b ;
+    a = 10 ;
+    b = 50 ;
+    return a+b ;
+}
+
+int main() {
+    int res;
+    res = fct() ;
+    return res
+}

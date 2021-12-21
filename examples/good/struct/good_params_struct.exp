@@ -1,0 +1,29 @@
+struct S1 {
+    int a ;
+};
+
+// empty struct
+struct S2 { } ;
+
+/*
+    - param : struct
+    - return : struct
+    - "->"
+*/
+struct S1 * fctS(struct S1 * st1, struct S2 * st2) {
+    st1->a = 1;
+    return st1 ;
+}
+
+
+int main() {
+
+    struct S1 *abc1 ;
+    struct S2 *abc2 ;
+    abc1 = malloc(sizeof(struct S1)) ;  //malloc, sizeof
+    abc2 = malloc(sizeof(struct S2)) ;
+    abc1 = fctS(abc1, abc2);
+    print(abc1->a) ;
+
+    return 0 ;
+}

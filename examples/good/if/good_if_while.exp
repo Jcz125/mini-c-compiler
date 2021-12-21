@@ -1,0 +1,20 @@
+int fct(int a, int b) {
+    int res ;
+    if (a==b) {
+        res = a-b ;
+        return res ;
+    }
+    else if (a<b) {
+        while (a!=b) {
+            b = b-1 ;
+        }
+    }
+    else if (a>b)
+        while (a!=b) {
+            b = b-1 ;
+        }
+}
+
+int main() {
+    return fct(3, 5) ;
+}

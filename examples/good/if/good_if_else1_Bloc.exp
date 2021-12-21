@@ -1,0 +1,12 @@
+int fct() {
+    if (5==4) {
+        return 0 ;
+        }
+    else {
+        return 1 ;
+        }
+}
+
+int main() {
+    return fct() ;
+}

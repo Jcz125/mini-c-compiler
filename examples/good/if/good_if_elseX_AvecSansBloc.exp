@@ -1,0 +1,25 @@
+int fct(int a, int b ) {
+
+    int res ;
+
+    if (a==b) {
+        res = a ;
+        return res ;
+    }
+    else if (a<b) {
+        res = b-a ;
+        b = res ;
+        return res ;
+    }
+    else if (a>b) {
+        res = a-b ;
+        a = a-b ;
+        return res ;
+    }
+    else
+        return 1 ;
+}
+
+int main() {
+    return fct(5, 4) ;
+}

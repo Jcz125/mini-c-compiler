@@ -1,0 +1,8 @@
+int fct() {
+    if (5==4) return 0 ;
+    if (5!=4) return 1 ;
+}
+
+int main() {
+    return fct() ;
+}
