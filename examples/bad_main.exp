@@ -1,9 +1,0 @@
-
-int sum(int a1, a2){
-
-    int S ;
-    S = a1 + a2 ;
-
-    return S ;
-
-}
