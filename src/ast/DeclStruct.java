@@ -15,6 +15,4 @@ public class DeclStruct implements Ast {
         this.struct_name = struct;
         this.list_idf = list_idf;
     }
-
-
 }

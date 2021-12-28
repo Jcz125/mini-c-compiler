@@ -15,6 +15,4 @@ public class DeclType implements Ast {
         this.idf = idf;
         this.list = list;
     }
-
-
 }

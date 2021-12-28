@@ -1,17 +1,19 @@
 package ast;
 
-public class StructPointer implements Ast{
+public class StructPointer extends Param implements Ast{
 
     public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);
     }
 
-    public Ast idf1;
-    public Ast idf2;
+    public String type;
+    public Idf idftype;
+    public Idf idf;
 
-    public StructPointer(Ast idf1, Ast idf2) {
-        this.idf1 = idf1;
-        this.idf2 = idf2;
+    public StructPointer(Idf idf1, Idf idf2) {
+        this.type = "struct " + idf1.name;
+        this.idftype = idf1;
+        this.idf = idf2;
     }
 
 }

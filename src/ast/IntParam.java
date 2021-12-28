@@ -6,9 +6,11 @@ public class IntParam implements Ast{
         return visitor.visit(this);
     }
 
-    public Ast idf;
+    public String type;
+    public Idf idf;
 
-    public IntParam(Ast idf){
+    public IntParam(String str, Idf idf) {
+        this.type = str;
         this.idf = idf;
     }
 }

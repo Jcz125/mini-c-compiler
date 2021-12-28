@@ -14,6 +14,4 @@ public class DeclInt implements Ast {
     public DeclInt (ArrayList<Ast> list) {
         this.list = list;
     }
-
-
 }

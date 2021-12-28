@@ -158,7 +158,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		//Création des sous AST
 		Idf idf = new Idf(idfString);
 
-		return new IntParam(idf);
+		return new IntParam("int", idf);
 	} // nécessaire de faire un IntParam et y mettre un Idf ?
 	/**
 	 * {@inheritDoc}
