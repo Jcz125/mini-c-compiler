@@ -4,7 +4,6 @@ bin
 .idea
 
 examples
-lib/
 src/parser/
 out/
 
