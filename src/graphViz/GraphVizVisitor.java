@@ -5,7 +5,6 @@ import ast.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.w3c.dom.Node;
 
 public class GraphVizVisitor implements AstVisitor<String> {
 
@@ -267,7 +266,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(StructPointer pointer) {
 
         String nodeIdentifier = this.nextState();
-        
+
         this.addNode(nodeIdentifier, "Param");
 
         String nodeType = this.nextState();
