@@ -14,10 +14,10 @@ public class SymbolTable {
     }
 
 
-    public void addLine(String idf, String nature, String type, String value, String returnParam, ArrayList<String> fctParams) {
+    public LineElement addLine(String idf, String nature, String type, String value, String returnParam, ArrayList<String> fctParams) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                System.out.println("Name already used");
+                System.out.println("Idf already used");     //ajouter le numéro de ligne
                 return ;
             }
         }
@@ -29,7 +29,7 @@ public class SymbolTable {
 //        }
 
 //        SymbolTable newTab = newRegion(this) ;
-        return;
+        return newLine;
     }
 
 
