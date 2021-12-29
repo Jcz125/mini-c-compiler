@@ -1,18 +1,18 @@
 
-import java.util.Arrays;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import parser.grammaireLexer;
+import parser.grammaireParser;
+import parser.grammaireParser.ProgramContext;
+
 
 import java.io.IOException;
 
-import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 
-import parser.*;
-import parser.grammaireParser.ProgramContext;
+import ast.*;
+import graphViz.GraphVizVisitor;
 
 public class Main {
 
@@ -28,35 +28,33 @@ public class Main {
         try {
 
             //chargement du fichier et construction du parser
+
             CharStream input = CharStreams.fromFileName(testFile);
-            grammaireLexer lexer = new grammaireLexer(input); 
+            grammaireLexer lexer = new grammaireLexer(input);
             CommonTokenStream stream = new CommonTokenStream(lexer);
             grammaireParser parser = new grammaireParser(stream);
 
+            // Récupération du noeud program (le noeud à la racine)
             ProgramContext program = parser.program();
 
-            // code d'affichage de l'arbre syntaxique
-            JFrame frame = new JFrame("Antlr AST");
-            JPanel panel = new JPanel();
-            TreeViewer viewer = new TreeViewer(Arrays.asList(
-                    parser.getRuleNames()),program);
-            viewer.setScale(1.5); // Scale a little
-            panel.add(viewer);
-            frame.add(panel);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.pack();
-            frame.setVisible(true);
+            // Visiteur de création de l'AST + création de l'AST
+            AstCreator creator = new AstCreator();
+            Ast ast = program.accept(creator);
+
+            // Visiteur de représentation graphique + appel
+            GraphVizVisitor graphViz = new GraphVizVisitor();
+            ast.accept(graphViz);
+        
+            graphViz.dumpGraph("./out/tree.dot");
 
 
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         catch (RecognitionException e) {
             e.printStackTrace();
         }
         
-
     }
     
 }

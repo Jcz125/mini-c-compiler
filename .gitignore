@@ -5,5 +5,7 @@ bin
 
 lib/
 src/parser/
+out/
 
-grammaire_cir-c.g4
+
+brouillon.c
