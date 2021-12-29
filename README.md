@@ -7,12 +7,12 @@ Céline ZHANG            G3 ;
 
 Pour compiler le parser et générer les visiteurs :
 Linux :
-java -jar ./lib/antlr-4.9.2-complete.jar expr.g4 -no-listener -visitor -o ./src/parser
+java -jar ./lib/antlr-4.9.2-complete.jar grammaire.g4 -no-listener -visitor -o ./src/parser
 ou
 make parser
 
 Windows :
-java -jar ./lib/antlr-4.9.2-complete.jar expr.g4 -no-listener -visitor -o ./src/parser
+java -jar ./lib/antlr-4.9.2-complete.jar grammaire.g4 -no-listener -visitor -o ./src/parser
 
 Pour construire l'AST :
 Linux :
