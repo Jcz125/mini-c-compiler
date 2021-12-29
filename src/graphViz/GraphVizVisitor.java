@@ -252,9 +252,10 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(nodeIdentifier, "Param");
 
         String nodeType = this.nextState();
+        this.addNode(nodeType, "int");
+
         String idfState = intParam.idf.accept(this);
 
-        this.addNode(nodeType, "int");
         this.addTransition(nodeIdentifier, nodeType);
         this.addTransition(nodeIdentifier, idfState);
 
@@ -270,9 +271,10 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(nodeIdentifier, "Param");
 
         String nodeType = this.nextState();
+        this.addNode(nodeType, pointer.type);
+
         String idfState = pointer.idf.accept(this);
 
-        this.addNode(nodeType, pointer.type);
         this.addTransition(nodeIdentifier, nodeType);
         this.addTransition(nodeIdentifier, idfState);
 
