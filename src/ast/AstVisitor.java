@@ -35,5 +35,6 @@ public interface AstVisitor<T> {
     public T visit(Return return1);
     public T visit(Sizeof sizeof);
     // public T visit(Param param);
+    public T visit(Oppose oppose);
 
 }

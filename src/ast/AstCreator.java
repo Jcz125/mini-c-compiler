@@ -302,7 +302,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		Ast noeudTemporaire = ctx.getChild(ctx.getChildCount()-1).accept(this); // expr
 		// ArrayList<Ast> list = new ArrayList<>();
 
-		for (int i=0; i<ctx.getChildCount()-2; i+=2) {
+		for (int i=ctx.getChildCount()-3; i>=0; i-=2) {
 			if (TerminalNodeclass.equals(""+ctx.getChild(i).getClass())) {
 				String idfString = ctx.getChild(i).toString();
 				noeudTemporaire = new Affect(new Idf(idfString), noeudTemporaire);
@@ -314,31 +314,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		}
 		return noeudTemporaire;
 	}
-/*
-	@Override public Ast visitIdfAffect(grammaireParser.IdfAffectContext ctx) {
 
-		Ast expr = ctx.getChild(2).accept(this);
-		String idfString = ctx.getChild(0).toString();
-
-		Idf idf = new Idf(idfString);
-
-		return new IdfAffect(idf,expr);
-	}
-*/
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-/*
-	@Override public Ast visitFlecheAffect(grammaireParser.FlecheAffectContext ctx) {
-		Ast expr = ctx.getChild(2).accept(this);
-		Ast fleche = ctx.getChild(0).accept(this);
-
-		return new FlecheAffect(fleche,expr);
-	}
-*/
 	/**
 	 * {@inheritDoc}
 	 *
@@ -496,7 +472,10 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitOppose(grammaireParser.OpposeContext ctx) {
 		int dernier = ctx.getChildCount()-1;
-		return ctx.getChild(dernier).accept(this);
+		if (ctx.getChildCount()>1)
+			return new Oppose(ctx.getChild(0).toString(), ctx.getChild(dernier).accept(this));
+		else
+			return ctx.getChild(dernier).accept(this);
 	} // peut-être qu'on aura besoin de distinguer le cas ! et -, et faire une classe Oppose
 	/**
 	 * {@inheritDoc}
@@ -505,16 +484,23 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitFleche(grammaireParser.FlecheContext ctx) {
-		String idfString;
-		Idf idf;
-		ArrayList<Ast> list = new ArrayList<>();
-
-		for (int i=0; i<ctx.getChildCount(); i+=2) {
-			idfString = ctx.getChild(i).toString();
-			idf = new Idf(idfString);
-			list.add(idf);
+		Ast noeudTemporaire = new Idf(ctx.getChild(0).toString());
+		for (int i=1; 2*i<ctx.getChildCount(); i++) {
+			// Ast right = ctx.getChild(2*(i+1)).accept(this);
+			String idfString = ctx.getChild(2*i).toString();
+			noeudTemporaire = new Fleche(noeudTemporaire, new Idf(idfString));
 		}
-		return new Fleche(list);
+		return noeudTemporaire;
+		// String idfString;
+		// Idf idf;
+		// ArrayList<Ast> list = new ArrayList<>();
+
+		// for (int i=0; i<ctx.getChildCount(); i+=2) {
+		// 	idfString = ctx.getChild(i).toString();
+		// 	idf = new Idf(idfString);
+		// 	list.add(idf);
+		// }
+		// return new Fleche(list);
 	}
 
 	/**

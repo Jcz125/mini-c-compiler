@@ -335,66 +335,35 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
 
-//    @Override
-//    public String visit(IdfAffect IdfAffect) {
-//
-//        String nodeIdentifier = this.nextState();
-//
-//        String idfState = IdfAffect.idf.accept(this);
-//        String expressionState = IdfAffect.expression.accept(this);
-//
-//        this.addNode(nodeIdentifier, " = ");
-//
-//        this.addTransition(nodeIdentifier, idfState);
-//        this.addTransition(nodeIdentifier, expressionState);
-//
-//        return nodeIdentifier;
-//
-//    }
-
-
-    /*@Override
-    public String visit(FlecheAffect FlecheAffect) {
-
-        String nodeIdentifier = this.nextState();
-
-        String flecheState = FlecheAffect.fleche.accept(this);
-        String expressionState = FlecheAffect.expression.accept(this);
-
-        this.addNode(nodeIdentifier, " = ");
-
-        this.addTransition(nodeIdentifier, flecheState);
-        this.addTransition(nodeIdentifier, expressionState);
-
-        return nodeIdentifier;
-
-    }*/
-
-
     @Override
-    public String visit(Fleche Fleche) {
+    public String visit(Fleche fleche) {
 
         String nodeIdentifier = this.nextState();
+        String leftState = fleche.left.accept(this);
+        String rightState = fleche.right.accept(this);
 
         this.addNode(nodeIdentifier, " --> ");
 
-        for (Ast ast:Fleche.idfList) {
+        this.addTransition(nodeIdentifier, leftState);
+        this.addTransition(nodeIdentifier, rightState);
 
-            String astState = ast.accept(this);
-            this.addTransition(nodeIdentifier, astState);
+        // for (Ast ast:Fleche.idfList) {
 
-        }
+        //     String astState = ast.accept(this);
+        //     this.addTransition(nodeIdentifier, astState);
+
+        // }
         return nodeIdentifier;
 
     }
 
 
     @Override
-    public String visit(Affect Affect) {
+    public String visit(Affect affect) {
 
         String nodeIdentifier = this.nextState();
-        String leftState = Affect.left.accept(this);
-        String rightState = Affect.right.accept(this);
+        String leftState = affect.left.accept(this);
+        String rightState = affect.right.accept(this);
 
         this.addNode(nodeIdentifier, " = ");
 
@@ -659,6 +628,19 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         this.addTransition(nodeIdentifier, leftState);
         this.addTransition(nodeIdentifier, rightState);
+
+        return nodeIdentifier;
+
+    }
+
+    @Override
+    public String visit(Oppose oppose) {
+        
+        String nodeIdentifier = this.nextState();
+        String op = oppose.op;
+
+        this.addNode(nodeIdentifier, op);
+        this.addTransition(nodeIdentifier, oppose.value.accept(this));
 
         return nodeIdentifier;
 
