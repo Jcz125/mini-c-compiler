@@ -5,6 +5,8 @@ import ast.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.w3c.dom.Node;
+
 public class GraphVizVisitor implements AstVisitor<String> {
 
     private int state;
@@ -248,11 +250,13 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         String nodeIdentifier = this.nextState();
 
-        String idfState = intParam.idf.accept(this);
-        String type = intParam.type;
-
         this.addNode(nodeIdentifier, "Param");
-        this.addTransition(nodeIdentifier, type);
+
+        String nodeType = this.nextState();
+        String idfState = intParam.idf.accept(this);
+
+        this.addNode(nodeType, "int");
+        this.addTransition(nodeIdentifier, nodeType);
         this.addTransition(nodeIdentifier, idfState);
 
         return nodeIdentifier;
@@ -263,12 +267,14 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(StructPointer pointer) {
 
         String nodeIdentifier = this.nextState();
+        
+        this.addNode(nodeIdentifier, "Param");
 
-        String typeState = pointer.type;
+        String nodeType = this.nextState();
         String idfState = pointer.idf.accept(this);
 
-        this.addNode(nodeIdentifier, "Param");
-        this.addTransition(nodeIdentifier, typeState);
+        this.addNode(nodeType, pointer.type);
+        this.addTransition(nodeIdentifier, nodeType);
         this.addTransition(nodeIdentifier, idfState);
 
         return nodeIdentifier;
