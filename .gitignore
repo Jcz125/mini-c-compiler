@@ -3,7 +3,7 @@ bin
 .antlr
 .idea
 
-lib/
+src/lib/
 src/parser/
 
 grammaire_cir-c.g4
