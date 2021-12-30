@@ -8,11 +8,13 @@ public class DeclType implements Ast {
         return visitor.visit(this);
     }
 
-    public Ast idf;
+    public String type;
+    public Idf idf;
     public ArrayList<Ast> list;
 
-    public DeclType (Ast idf, ArrayList<Ast> list) {
+    public DeclType (Idf idf, ArrayList<Ast> list) {
         this.idf = idf;
         this.list = list;
+        this.type = "struct " + idf.name;
     }
 }

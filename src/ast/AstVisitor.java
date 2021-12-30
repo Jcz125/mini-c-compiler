@@ -3,9 +3,9 @@ package ast;
 public interface AstVisitor<T> {
 
     public T visit(Bloc bloc);
-    public T visit(DeclInt delcint);
-    public T visit(DeclStruct delcstruct);
-    public T visit(DeclType decltype);
+    public T visit(VarInt varInt);
+    public T visit(VarStruct varStruct);
+    public T visit(DeclType declType);
     public T visit(Divide divide);
     public T visit(EqualTo equalTo);
     public T visit(EtLogique etLogique);
