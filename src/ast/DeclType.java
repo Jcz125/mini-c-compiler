@@ -9,11 +9,11 @@ public class DeclType implements Ast {
     }
 
     public String type;
-    public Idf idf;
+    public Idf idf_name;
     public ArrayList<Ast> list;
 
     public DeclType (Idf idf, ArrayList<Ast> list) {
-        this.idf = idf;
+        this.idf_name = idf;
         this.list = list;
         this.type = "struct " + idf.name;
     }
