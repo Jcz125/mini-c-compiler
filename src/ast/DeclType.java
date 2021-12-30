@@ -14,5 +14,6 @@ public class DeclType implements Ast {
     public DeclType (Ast idf, ArrayList<Ast> list) {
         this.idf = idf;
         this.list = list;
+
     }
 }

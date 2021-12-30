@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class FctSymbole extends Symbole {
 
+   // private String idf;
     private String typeRetour ;
     private ArrayList<Symbole> fctParams ;
     private int nbParam ;
