@@ -16,39 +16,52 @@ public class SymbolTable {
     }
 
 
-    public LineElement addLine(String idf, String nature, String type, String value, String returnParam, ArrayList<String> fctParams) {
-        for (LineElement line:lines) {
-            if (line.getIdf().equals(idf)) {
-                System.out.println("Idf already used");     //ajouter le numéro de ligne
-                return null;
-            }
-        }
-        LineElement newLine = new LineElement(idf, nature, type, value, returnParam, fctParams);
-        lines.add(newLine) ;
-//        if (type.equals("")) {
-//            SymbolTable newTab = new SymbolTable(this) ;
-//            this.children.add(newTab) ;
+//    public LineElement addLine(String idf, String nature, String type, String value, String returnParam, ArrayList<String> fctParams) {
+//        for (LineElement line:lines) {
+//            if (line.getIdf().equals(idf)) {
+//                System.out.println("Idf already used");     //ajouter le numéro de ligne
+//                return null;
+//            }
 //        }
+//        LineElement newLine = new LineElement(idf, nature, type, value, returnParam, fctParams);
+//        lines.add(newLine) ;
+////        if (type.equals("")) {
+////            SymbolTable newTab = new SymbolTable(this) ;
+////            this.children.add(newTab) ;
+////        }
+//
+////        SymbolTable newTab = newRegion(this) ;
+//        return newLine;
+//    }
 
-//        SymbolTable newTab = newRegion(this) ;
-        return newLine;
-    }
 
-
-    public LineElement search(String idf, SymbolTable st) {
-        for (LineElement line:lines) {
-            if (line.getIdf().equals(idf)) {
-                System.out.println("Var declared ");
-                return line;
-            }
-        }
-        System.out.println("Not found in the current table, searching in parent : ");
-
-        if (st.parent != null)
-            return search(idf, st.parent);
-
-        return null ;
-    }
+//
+//    public LineElement updateLineInt(String idf, String value) {
+//        for (LineElement line:lines) {
+//            if (line.getIdf().equals(idf) && (line.getValue().equals(""))) {
+//                line.setValue(value);
+//                return line;
+//            }
+//        }
+//        System.out.println("Undeclared var");
+//        return null ;
+//    }
+//
+//
+//    public LineElement search(String idf, SymbolTable st) {
+//        for (LineElement line:lines) {
+//            if (line.getIdf().equals(idf)) {
+//                System.out.println("Var declared ");
+//                return line;
+//            }
+//        }
+//        System.out.println("Not found in the current table, searching in parent : ");
+//
+//        if (st.parent != null)
+//            return search(idf, st.parent);
+//
+//        return null ;
+//    }
 
 
     public SymbolTable newRegion(SymbolTable currentSt) {
