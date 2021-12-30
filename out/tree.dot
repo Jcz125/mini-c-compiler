@@ -4,6 +4,8 @@ digraph "ast"{
 	ranksep=1;
 
 	N0 [label="Program", shape="box"];
+	N1 [label="Decl_Fct", shape="box"];
+	int [label="int", shape="box"];
 	N2 [label="func", shape="box"];
 	N3 [label="Parameters", shape="box"];
 	N4 [label="Param", shape="box"];
@@ -37,7 +39,6 @@ digraph "ast"{
 	N16 [label=" = ", shape="box"];
 	N34 [label="n", shape="box"];
 	N33 [label="return", shape="box"];
-	N1 [label="Decl_IntFct", shape="box"];
 	N36 [label="oneStruct", shape="box"];
 	N35 [label="Decl_Type:Struct", shape="box"];
 	N37 [label="Decl_Int", shape="box"];
@@ -48,6 +49,10 @@ digraph "ast"{
 	N41 [label="decl_struct", shape="box"];
 	N43 [label="root", shape="box"];
 	N44 [label="child", shape="box"];
+	N46 [label="oneStruct", shape="box"];
+	N45 [label="decl_struct", shape="box"];
+	N47 [label="blabla", shape="box"];
+	N48 [label="blibli", shape="box"];
 
 	N4 -> N5; 
 	N4 -> N6; 
@@ -79,6 +84,7 @@ digraph "ast"{
 	N13 -> N16; 
 	N33 -> N34; 
 	N13 -> N33; 
+	N1 -> int; 
 	N1 -> N2; 
 	N1 -> N3; 
 	N1 -> N13; 
@@ -92,5 +98,9 @@ digraph "ast"{
 	N41 -> N43; 
 	N41 -> N44; 
 	N35 -> N41; 
+	N45 -> N46; 
+	N45 -> N47; 
+	N45 -> N48; 
+	N35 -> N45; 
 	N0 -> N35; 
 }

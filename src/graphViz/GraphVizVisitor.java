@@ -154,12 +154,16 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(IntFct intFunc) {
 
         String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier, "Decl_Fct");
 
+        String nodeType = intFunc.type;
+        this.addNode(nodeType, "int");
+        
         String idfState = intFunc.idf.accept(this);
         String paramsState = intFunc.params.accept(this);
         String blocState = intFunc.bloc.accept(this);
 
-        this.addNode(nodeIdentifier, "Decl_IntFct");
+        this.addTransition(nodeIdentifier, nodeType);
         this.addTransition(nodeIdentifier, idfState);
         this.addTransition(nodeIdentifier, paramsState);
         this.addTransition(nodeIdentifier, blocState);
@@ -170,16 +174,20 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
 
     @Override
-    public String visit(StructFct StructFunc) {
+    public String visit(StructFct structFunc) {
 
         String nodeIdentifier = this.nextState();
-
-        String idf1State = StructFunc.idf_struct.accept(this);
-        String idf2State = StructFunc.idf.accept(this);
-        String paramsState = StructFunc.params.accept(this);
-        String blocState = StructFunc.bloc.accept(this);
-
         this.addNode(nodeIdentifier, "Decl_StructFct");
+
+        String nodeType = structFunc.type;
+        this.addNode(nodeType, structFunc.type);
+
+        String idf1State = structFunc.idf_struct.accept(this);
+        String idf2State = structFunc.idf.accept(this);
+        String paramsState = structFunc.params.accept(this);
+        String blocState = structFunc.bloc.accept(this);
+
+        this.addTransition(nodeIdentifier, nodeType);
         this.addTransition(nodeIdentifier, idf1State);
         this.addTransition(nodeIdentifier, idf2State);
         this.addTransition(nodeIdentifier, paramsState);
@@ -248,7 +256,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(IntParam intParam) {
 
         String nodeIdentifier = this.nextState();
-
         this.addNode(nodeIdentifier, "Param");
 
         String nodeType = this.nextState();
@@ -267,7 +274,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(StructPointer pointer) {
 
         String nodeIdentifier = this.nextState();
-
         this.addNode(nodeIdentifier, "Param");
 
         String nodeType = this.nextState();
