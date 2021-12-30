@@ -16,5 +16,6 @@ public class DeclType implements Ast {
         this.idf_name = idf;
         this.list = list;
         this.type = "struct " + idf.name;
+
     }
 }
