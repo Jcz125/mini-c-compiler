@@ -13,11 +13,11 @@ public class StructFct implements Ast{
     public Ast bloc;
 
     public StructFct(Ast struct, Ast idf,Ast params,Ast bloc) {
-        this.type = "struct " + idf_struct;
         this.idf_struct = struct;
         this.idf = idf;
         this.params = params;
         this.bloc = bloc;
+        this.type = "struct " + idf_struct;
     }
 
 }
