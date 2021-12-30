@@ -9,6 +9,14 @@ public class StructSymbole extends Symbole{
     private String type ;
     private ArrayList<Symbole> champs ;
 
+    public StructSymbole(){} ;
+
+    public StructSymbole(String type, ArrayList champs) {
+        super();
+        this.type = type ;
+        this.champs = champs ;
+    }
+
     public String getType() {
         return type;
     }

@@ -10,6 +10,15 @@ public class FctSymbole extends Symbole {
     private ArrayList<Symbole> fctParams ;
     private int nbParam ;
 
+    public FctSymbole() {} ;
+
+    public FctSymbole(String  typeRetour, ArrayList<Symbole> fctParams, int nbParam) {
+        super();
+        this.typeRetour = typeRetour ;
+        this.fctParams = fctParams ;
+        this.nbParam = nbParam ;
+    }
+
     public ArrayList<Symbole> getFctParams() {
         return fctParams;
     }

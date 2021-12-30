@@ -9,9 +9,10 @@ public class LineElement {
     private Symbole symbole ;
 
 
-    public LineElement(String idf, String type, NatureSymboles nature) {
+    public LineElement(String idf, NatureSymboles nature, Symbole s) {
         this.idf = idf ;
         this.nature = nature ;
+        this.symbole = s;
     }
 
     public String getIdf() {
