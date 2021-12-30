@@ -1,3 +1,5 @@
+package TDS;
+
 import java.util.ArrayList;
 
 public class SymbolTable {
@@ -18,7 +20,7 @@ public class SymbolTable {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
                 System.out.println("Idf already used");     //ajouter le numéro de ligne
-                return ;
+                return null;
             }
         }
         LineElement newLine = new LineElement(idf, nature, type, value, returnParam, fctParams);
