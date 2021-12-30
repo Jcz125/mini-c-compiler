@@ -3,7 +3,8 @@ bin
 .antlr
 .idea
 
-lib/
+examples
 src/parser/
+out/
 
-grammaire_cir-c.g4
+brouillon.c

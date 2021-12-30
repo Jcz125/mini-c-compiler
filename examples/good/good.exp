@@ -18,4 +18,3 @@ int main() {
     bool = simple_condition() ;
     return bool ;
 }
-
