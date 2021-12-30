@@ -6,6 +6,7 @@ public class IntFct implements Ast{
         return visitor.visit(this);
     }
 
+    public String type = "int";
     public Ast idf;
     public Ast params;
     public Ast bloc;

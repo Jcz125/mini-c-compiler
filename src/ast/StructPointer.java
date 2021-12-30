@@ -11,7 +11,7 @@ public class StructPointer extends Param{
     public Idf idf;
 
     public StructPointer(Idf idf1, Idf idf2) {
-        this.type = "struct_" + idf1.name;
+        this.type = "struct " + idf1.name;
         this.idftype = idf1;
         this.idf = idf2;
     }
