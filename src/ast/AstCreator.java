@@ -58,14 +58,14 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitIntDecl(grammaireParser.IntDeclContext ctx) {
-		ArrayList<Ast> list = new ArrayList<>();
+		ArrayList<Idf> list = new ArrayList<>();
 		
 		for (int i=1; i<ctx.getChildCount()-1; i+=2) {
 			String idfString = ctx.getChild(i).toString();
 			Idf idf = new Idf(idfString);
 			list.add(idf);
 		}
-		return new DeclInt(list);
+		return new VarInt(list);
 	}
 	/**
 	 * {@inheritDoc}
@@ -74,7 +74,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitStructDecl(grammaireParser.StructDeclContext ctx) {
-		ArrayList<Ast> list= new ArrayList<>();
+		ArrayList<Idf> list= new ArrayList<>();
 
 		String idfStruct = ctx.getChild(1).toString();
 		Idf idf_struct = new Idf(idfStruct);
@@ -84,7 +84,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Idf idf = new Idf(idfString);
 			list.add(idf);
 		}
-		return new DeclStruct(idf_struct, list);
+		return new VarStruct(idf_struct, list);
 	}
 	/**
 	 * {@inheritDoc}

@@ -9,6 +9,6 @@ public class Entier implements Ast {
     public int value;
 
     public Entier(int value) {
-        this.value=value;
+        this.value = value;
     }
 }

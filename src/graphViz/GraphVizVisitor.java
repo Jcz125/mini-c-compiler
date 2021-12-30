@@ -71,16 +71,22 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(DeclType decl_typ) {
 
         String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier, "Decl_Type");
 
-        String idfState = decl_typ.idf.accept(this);
+        String nodeType = this.nextState();
+        this.addNode(nodeType, decl_typ.type);
 
-        this.addNode(nodeIdentifier, "Decl_Type:Struct");
-        this.addTransition(nodeIdentifier, idfState);
+        this.addTransition(nodeIdentifier, nodeType);
+
+        String nodeChamps = this.nextState();
+        this.addNode(nodeChamps, "Champ");
+
+        this.addTransition(nodeIdentifier, nodeChamps);
 
         for (Ast ast:decl_typ.list) {
 
             String astState = ast.accept(this);
-            this.addTransition(nodeIdentifier, astState);
+            this.addTransition(nodeChamps, astState);
 
         }
 
@@ -89,35 +95,16 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
 
-//    @Override
-//    public String visit(DeclList decl_list) {
-//
-//        String nodeIdentifier = this.nextState();
-//
-//        this.addNode(nodeIdentifier, "Decl_List");
-//
-//        for (Ast ast:decl_list.instrList){
-//
-//            String astState = ast.accept(this);
-//            this.addTransition(nodeIdentifier, astState);
-//
-//        }
-//
-//        return nodeIdentifier;
-//
-//    }
-
-
     @Override
-    public String visit(DeclStruct decl_struct) {
+    public String visit(VarStruct decl_struct) {
 
         String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier, "Var");
 
-        String idfState = decl_struct.struct_name.accept(this);
-
-        this.addNode(nodeIdentifier, "decl_struct");
-        this.addTransition(nodeIdentifier, idfState);
-
+        String nodeType = this.nextState();
+        this.addNode(nodeType, decl_struct.type);
+        
+        this.addTransition(nodeIdentifier, nodeType);
 
         for (Ast ast:decl_struct.list_idf) {
 
@@ -132,11 +119,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
 
     @Override
-    public String visit(DeclInt decl_int) {
+    public String visit(VarInt decl_int) {
 
         String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier, "Var");
 
-        this.addNode(nodeIdentifier, "Decl_Int");
+        String nodeType = this.nextState();
+        this.addNode(nodeType, "int");
+
+        this.addTransition(nodeIdentifier, nodeType);
 
         for (Ast ast:decl_int.list) {
 
@@ -182,14 +173,12 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String nodeType = structFunc.type;
         this.addNode(nodeType, structFunc.type);
 
-        String idf1State = structFunc.idf_struct.accept(this);
-        String idf2State = structFunc.idf.accept(this);
+        String idfState = structFunc.idf.accept(this);
         String paramsState = structFunc.params.accept(this);
         String blocState = structFunc.bloc.accept(this);
 
         this.addTransition(nodeIdentifier, nodeType);
-        this.addTransition(nodeIdentifier, idf1State);
-        this.addTransition(nodeIdentifier, idf2State);
+        this.addTransition(nodeIdentifier, idfState);
         this.addTransition(nodeIdentifier, paramsState);
         this.addTransition(nodeIdentifier, blocState);
 
