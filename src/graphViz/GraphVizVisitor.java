@@ -79,7 +79,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addTransition(nodeIdentifier, nodeType);
 
         String nodeChamps = this.nextState();
-        this.addNode(nodeChamps, "Champ");
+        this.addNode(nodeChamps, "Champs");
 
         this.addTransition(nodeIdentifier, nodeChamps);
 
