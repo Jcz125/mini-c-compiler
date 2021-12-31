@@ -1,6 +1,7 @@
 package TDS;
 
 import TDS.Symboles.IntSymbole;
+import TDS.Symboles.StructSymbole;
 import ast.*;
 
 public class TdsVisitor implements AstVisitor<String> {
@@ -8,20 +9,37 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Bloc bloc) {
+        for(Ast ast:bloc.list){
+            ast.accept(this);
+        }
         return null;
     }
 
     @Override
-    public String visit(DeclInt delcint) {
-        IntSymbole s = new IntSymbole();
-        //LineElement l = new LineElement();
+    public String visit(VarInt varInt) {
+        for(Idf idf:varInt.list ){
+            String name= idf.name;
+            IntSymbole intSymbole = new IntSymbole(name);
+            LineElement lineElement = new LineElement(name,NatureSymboles.VARIABLE,intSymbole);
+            //addLineElement(lineElement);
+        }
         return null;
     }
 
     @Override
-    public String visit(DeclStruct delcstruct) {
+    public String visit(VarStruct varStruct) {
+        for(int i=1; i<varStruct.list_idf.size();i++){
+            Idf idf=varStruct.list_idf.get(i);
+            String name= idf.name;
+            StructSymbole structSymbole = new StructSymbole(varStruct.type, name);
+            LineElement lineElement = new LineElement(name,NatureSymboles.VARIABLE,structSymbole);
+            //addLineElement(lineElement);
+        }
+
         return null;
     }
+
+
 
     @Override
     public String visit(DeclType decltype) {

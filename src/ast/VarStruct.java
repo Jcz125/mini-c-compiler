@@ -1,5 +1,7 @@
 package ast;
 
+import TDS.Symboles.StructSymbole;
+
 import java.util.ArrayList;
 
 public class VarStruct implements Ast {
@@ -16,5 +18,6 @@ public class VarStruct implements Ast {
         this.struct_name = struct;
         this.list_idf = list_idf;
         this.type = "struct " + struct.name;
+
     }
 }
