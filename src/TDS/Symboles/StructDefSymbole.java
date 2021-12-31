@@ -2,18 +2,18 @@ package TDS.Symboles;
 
 import TDS.SymbolTable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StructDefSymbole extends Symbole{
 
     private String type ;
-    private HashMap<String,String> champs ;
+    private HashMap<String,Symbole> champs ;
 
     public StructDefSymbole(){} ;
 
-    public StructDefSymbole(String type, HashMap<String, String> champs) {
+    public StructDefSymbole(String idf, String type, HashMap<String,Symbole> champs) {
         super();
+        this.idf=idf;
         this.type = type ;
         this.champs = champs ;
     }
@@ -26,16 +26,16 @@ public class StructDefSymbole extends Symbole{
         this.type = type;
     }
 
-    public HashMap<String, String> getChamps() {
+    public HashMap<String,Symbole> getChamps() {
         return champs;
     }
 
-    public void setChamps(HashMap<String, String> champs) {
+    public void setChamps(HashMap<String,Symbole> champs) {
         this.champs = champs;
     }
 
     public void addChamps(Symbole champs) {
-        this.champs.add(champs) ;
+        this.champs.put(champs.idf, champs) ;
     }
 
     @Override

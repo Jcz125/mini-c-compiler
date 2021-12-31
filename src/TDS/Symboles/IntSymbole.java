@@ -2,10 +2,12 @@ package TDS.Symboles;
 
 public class IntSymbole extends Symbole{
 
-    private String idf;
+    //private String idf;
     private String type = "int" ;
 
-    public IntSymbole() {} ;
+    public IntSymbole(String idf) {
+        this.idf=idf;
+    } ;
 
     public String getType() {
         return type;
