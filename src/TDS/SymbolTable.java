@@ -4,20 +4,56 @@ import TDS.Symboles.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class SymbolTable {
 
+    private String name ;
     private ArrayList<LineElement> lines;
     private SymbolTable parent;
     private ArrayList<SymbolTable> children;
 
 
-    public SymbolTable(SymbolTable parent){
+    public SymbolTable(String name, SymbolTable parent){
+        this.name = name ;
         this.parent = parent;
         this.lines = new ArrayList<>() ;
         this.children = new ArrayList<>() ;
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public SymbolTable getParent() {
+        return parent;
+    }
+
+    public ArrayList<LineElement> getLines() {
+        return lines;
+    }
+
+    public ArrayList<SymbolTable> getChildren() {
+        return children;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLines(ArrayList<LineElement> lines) {
+        this.lines = lines;
+    }
+
+    public void setChildren(ArrayList<SymbolTable> children) {
+        this.children = children;
+    }
+
+    public void setParent(SymbolTable parent) {
+        this.parent = parent;
+    }
 
     public LineElement addLineInt(String idf, NatureSymboles nature) {
         for (LineElement line:lines) {
@@ -92,8 +128,6 @@ public class SymbolTable {
 
 
 
-
-
 //    public LineElement updateLineInt(String idf, String value) {
 //        for (LineElement line:lines) {
 //            if (line.getIdf().equals(idf) && (line.getValue().equals(""))) {
@@ -122,8 +156,8 @@ public class SymbolTable {
 //    }
 
 
-    public SymbolTable newRegion(SymbolTable currentSt) {
-        SymbolTable newRegionTable = new SymbolTable(currentSt);
+    public SymbolTable newRegion(String name, SymbolTable currentSt) {
+        SymbolTable newRegionTable = new SymbolTable(name, currentSt);
         currentSt.children.add(newRegionTable);
         return newRegionTable ;
     }
