@@ -1,6 +1,9 @@
 package TDS;
 
+import TDS.Symboles.*;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SymbolTable {
 
@@ -15,24 +18,57 @@ public class SymbolTable {
         this.children = new ArrayList<>() ;
     }
 
+    public LineElement addLineInt(String idf, NatureSymboles nature) {
+        for (LineElement line:lines) {
+            if (line.getIdf().equals(idf)) {
+                System.out.println("Idf already used");     //ajouter le numéro de ligne
+                return null;
+            }
+        }
+        Symbole newSymbole = new IntSymbole(idf);
+        LineElement newLine = new LineElement(idf, nature, newSymbole);
+        lines.add(newLine) ;
+        return newLine;
+    }
 
-//    public LineElement addLine(String idf, String nature, String type, String value, String returnParam, ArrayList<String> fctParams) {
-//        for (LineElement line:lines) {
-//            if (line.getIdf().equals(idf)) {
-//                System.out.println("Idf already used");     //ajouter le numéro de ligne
-//                return null;
-//            }
-//        }
-//        LineElement newLine = new LineElement(idf, nature, type, value, returnParam, fctParams);
-//        lines.add(newLine) ;
-////        if (type.equals("")) {
-////            SymbolTable newTab = new SymbolTable(this) ;
-////            this.children.add(newTab) ;
-////        }
-//
-////        SymbolTable newTab = newRegion(this) ;
-//        return newLine;
-//    }
+    public LineElement addLineStruct(String idf, NatureSymboles nature, String type) {
+        for (LineElement line:lines) {
+            if (line.getIdf().equals(idf)) {
+                System.out.println("Idf already used");
+                return null;
+            }
+        }
+        Symbole newSymbole = new StructSymbole(idf, type);
+        LineElement newLine = new LineElement(idf, nature, newSymbole);
+        lines.add(newLine) ;
+        return newLine;
+    }
+
+    public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, HashMap<String, Symbole> fctParams, int nbParams) {
+        for (LineElement line:lines) {
+            if (line.getIdf().equals(idf)) {
+                System.out.println("Idf already used");
+                return null;
+            }
+        }
+        Symbole newSymbole = new FctSymbole(typeRetour, fctParams, nbParams);
+        LineElement newLine = new LineElement(idf, nature, newSymbole);
+        lines.add(newLine) ;
+        return newLine;
+    }
+
+    public LineElement addLineStructDef(String idf, NatureSymboles nature, String type, HashMap<String, Symbole> champs) {
+        for (LineElement line:lines) {
+            if (line.getIdf().equals(idf)) {
+                System.out.println("Idf already used");
+                return null;
+            }
+        }
+        Symbole newSymbole = new StructDefSymbole(idf, type, champs);
+        LineElement newLine = new LineElement(idf, nature, newSymbole);
+        lines.add(newLine) ;
+        return newLine;
+    }
 
 
 //

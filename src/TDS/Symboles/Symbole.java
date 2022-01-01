@@ -5,7 +5,8 @@ import TDS.SymbolTable;
 public abstract class Symbole {
 
     public SymbolTable st = null;
-    protected String idf;
+    protected String idf ;
+    protected String type ;
 
     public SymbolTable getSt() {
         return st;
