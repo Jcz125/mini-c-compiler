@@ -86,6 +86,8 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
         if (line != null) {
             tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
+            intFct.bloc.accept(this);
+            tds_current = tds_current.exitRegion(tds_current);
         }
         return tds_current;
     }
