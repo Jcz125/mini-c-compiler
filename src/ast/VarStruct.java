@@ -1,7 +1,5 @@
 package ast;
 
-import TDS.Symboles.StructSymbole;
-
 import java.util.ArrayList;
 
 public class VarStruct implements Ast {

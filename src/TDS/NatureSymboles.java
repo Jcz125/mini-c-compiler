@@ -2,6 +2,6 @@ package TDS;
 
 public enum NatureSymboles {
     
-    FUNC, PARAM_FUNC, VARIABLE, STRUCT
+    FUNCTION, PARAM_FUNC, VARIABLE, STRUCT
 
 }

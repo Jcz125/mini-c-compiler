@@ -7,13 +7,13 @@ import java.util.HashMap;
 public class StructDefSymbole extends Symbole{
 
     private String type ;
-    private HashMap<String,Symbole> champs ;
+    private HashMap<Symbole, String> champs ;
 
     public StructDefSymbole(){} ;
 
-    public StructDefSymbole(String idf, String type, HashMap<String,Symbole> champs) {
+    public StructDefSymbole(String struct_name, String type, HashMap<Symbole, String> champs) {
         super();
-        this.idf=idf;
+        this.idf = struct_name;
         this.type = type ;
         this.champs = champs ;
     }
@@ -26,16 +26,16 @@ public class StructDefSymbole extends Symbole{
         this.type = type;
     }
 
-    public HashMap<String,Symbole> getChamps() {
+    public HashMap<Symbole, String> getChamps() {
         return champs;
     }
 
-    public void setChamps(HashMap<String,Symbole> champs) {
+    public void setChamps(HashMap<Symbole, String> champs) {
         this.champs = champs;
     }
 
     public void addChamps(Symbole champs) {
-        this.champs.put(champs.idf, champs) ;
+        this.champs.put(champs, champs.idf) ;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package ast;
 
-public class IntParam implements Ast{
+public class IntParam extends Param {
 
     public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);

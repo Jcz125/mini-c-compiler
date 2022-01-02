@@ -93,7 +93,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitIntFct(grammaireParser.IntFctContext ctx) {
-		Ast params = ctx.getChild(3).accept(this);
+		Parametres params = (Parametres) ctx.getChild(3).accept(this);
 		Ast bloc = ctx.getChild(5).accept(this);
 
 		String idfString = ctx.getChild(1).toString();

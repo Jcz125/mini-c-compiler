@@ -2,26 +2,25 @@ package TDS.Symboles;
 
 import TDS.SymbolTable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FctSymbole extends Symbole {
 
    // private String idf;
     private String typeRetour ;
-    private HashMap<String,Symbole> fctParams;
+    private HashMap<Symbole, String> fctParams;
     private int nbParam ;
 
     public FctSymbole() {} ;
 
-    public FctSymbole(String  typeRetour, HashMap<String, Symbole> fctParams, int nbParam) {
+    public FctSymbole(String  typeRetour, HashMap<Symbole, String> fctParams, int nbParam) {
         super();
         this.typeRetour = typeRetour ;
         this.fctParams = fctParams ;
         this.nbParam = nbParam ;
     }
 
-    public HashMap<String, Symbole> getFctParams() {
+    public HashMap<Symbole, String> getFctParams() {
         return fctParams;
     }
 
@@ -33,7 +32,7 @@ public class FctSymbole extends Symbole {
         return nbParam;
     }
 
-    public void setFctParams(HashMap<String, Symbole> fctParams) {
+    public void setFctParams(HashMap<Symbole, String> fctParams) {
         this.fctParams = fctParams;
     }
 
@@ -41,7 +40,7 @@ public class FctSymbole extends Symbole {
 //        this.fctParams.add(param);
 //    }
     public void addFctParam(Symbole param) {
-        this.fctParams.put(param.idf, param) ;
+        this.fctParams.put(param, param.idf) ;
     }
 
     public void setTypeRetour(String typeRetour) {

@@ -11,6 +11,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 
+import TDS.SymbolTable;
+import TDS.TdsVisitor;
 import ast.*;
 import graphViz.GraphVizVisitor;
 
@@ -46,6 +48,10 @@ public class Main {
             ast.accept(graphViz);
         
             graphViz.dumpGraph("./out/tree.dot");
+
+            // Visiteur de l'AST + création de la TDS + contrôle sémentique
+            TdsVisitor tds_visitor = new TdsVisitor();
+            SymbolTable tds = ast.accept(tds_visitor);
 
 
         } catch (IOException e) {

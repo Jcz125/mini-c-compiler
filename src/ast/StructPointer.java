@@ -1,6 +1,6 @@
 package ast;
 
-public class StructPointer extends Param{
+public class StructPointer extends Param {
 
     public <T> T accept(AstVisitor<T> visitor) {
         return visitor.visit(this);

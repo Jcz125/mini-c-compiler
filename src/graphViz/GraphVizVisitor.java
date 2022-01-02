@@ -22,7 +22,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
             
         FileOutputStream output = new FileOutputStream(filepath);
 
-        String buffer = this.nodeBuffer + this.linkBuffer;
+        String buffer = this.nodeBuffer+"}" + this.linkBuffer;
         byte[] strToBytes = buffer.getBytes();
 
         output.write(strToBytes);

@@ -4,7 +4,7 @@ import TDS.Symboles.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+
 
 public class SymbolTable {
 
@@ -83,7 +83,7 @@ public class SymbolTable {
     }
 
 
-    public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, HashMap<String, Symbole> fctParams, int nbParams) {
+    public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, HashMap<Symbole, String> fctParams, int nbParams) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
                 System.out.println("Idf already used");
@@ -97,15 +97,15 @@ public class SymbolTable {
     }
 
 
-    public LineElement addLineStructDef(String idf, NatureSymboles nature, String type, HashMap<String, Symbole> champs) {
+    public LineElement addLineStructDef(String struct_name, NatureSymboles nature, String type, HashMap<Symbole, String> champs) {
         for (LineElement line:lines) {
-            if (line.getIdf().equals(idf)) {
+            if (line.getIdf().equals(struct_name)) {
                 System.out.println("Idf already used");
                 return null;
             }
         }
-        Symbole newSymbole = new StructDefSymbole(idf, type, champs);
-        LineElement newLine = new LineElement(idf, nature, newSymbole);
+        Symbole newSymbole = new StructDefSymbole(struct_name, type, champs);
+        LineElement newLine = new LineElement(struct_name, nature, newSymbole);
         lines.add(newLine) ;
         return newLine;
     }
