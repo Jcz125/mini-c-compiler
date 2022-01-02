@@ -1,5 +1,5 @@
 // simple condition with bool
-int simple_condition() {
+int simple() {
     int bool;
     bool = 0 ;
     if (!bool) return 1 ;
@@ -15,6 +15,6 @@ int max(int a, int b) {
 
 int main() {
     int bool ;
-    bool = simple_condition() ;
+    bool = simple() ;
     return bool ;
 }

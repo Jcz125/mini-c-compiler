@@ -23,4 +23,7 @@ public class LineElement {
         return nature;
     }
 
+    public Symbole getSymbole() {
+        return symbole;
+    }
 }

@@ -13,4 +13,9 @@ public class IntSymbole extends Symbole{
     public String getType() {
         return type;
     }
+
+    @Override
+    public void displaySymbole() {
+        System.out.print(" Type : int ");
+    }
 }

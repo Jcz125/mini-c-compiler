@@ -16,4 +16,6 @@ public abstract class Symbole {
         this.st = st;
     }
 
+    public abstract void displaySymbole();
+
 }

@@ -42,4 +42,15 @@ public class StructDefSymbole extends Symbole{
     public SymbolTable getSt() {
         return super.getSt();
     }
+
+    @Override
+    public void displaySymbole() {
+        System.out.print("Type: " + this.type + "       " );
+        System.out.print("Champs : ") ;
+        for (Symbole s : champs.keySet()){
+            String name = s.idf.toString() ;
+            String type = s.type.toString() ;
+            System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
+        }
+    }
 }

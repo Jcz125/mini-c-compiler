@@ -3,6 +3,7 @@ package TDS.Symboles;
 import TDS.SymbolTable;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class FctSymbole extends Symbole {
 
@@ -36,9 +37,6 @@ public class FctSymbole extends Symbole {
         this.fctParams = fctParams;
     }
 
-//    public void addFctParam(Symbole param) {
-//        this.fctParams.add(param);
-//    }
     public void addFctParam(Symbole param) {
         this.fctParams.put(param, param.idf) ;
     }
@@ -54,5 +52,21 @@ public class FctSymbole extends Symbole {
     @Override
     public SymbolTable getSt() {
         return super.getSt();
+    }
+
+
+    @Override
+    public void displaySymbole() {
+        System.out.print("Type de retour : " + this.typeRetour + "       " );
+        System.out.print("Nbre de params : " +  this.nbParam + "       ") ;
+
+        if (this.nbParam != 0) {
+            System.out.print("Params : ") ;
+            for (Symbole s : fctParams.keySet()){
+                String name = s.idf.toString() ;
+                String type = s.type.toString() ;
+                System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
+            }
+        }
     }
 }

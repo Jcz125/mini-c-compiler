@@ -2,8 +2,10 @@ package TDS;
 
 import TDS.Symboles.*;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class SymbolTable {
@@ -111,7 +113,7 @@ public class SymbolTable {
     }
 
 
-    public LineElement search(String idf, SymbolTable st) {
+    public LineElement lookUp(String idf, SymbolTable st) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
                 System.out.println("Var declared ");
@@ -121,11 +123,50 @@ public class SymbolTable {
         System.out.println("Not found in the current table, searching in parent : ");
 
         if (st.parent != null)
-            return search(idf, st.parent);
+            return lookUp(idf, st.parent);
 
         return null ;
     }
 
+
+    public void displayTDS() {
+        if(this != null) {
+            String father = "Pas de parent";
+            if(this.parent != null) {
+                father = this.parent.getName();
+            }
+            System.out.println("\nTable courante:  " + this.name + "       " + "mon pere:  " + father );
+            System.out.print("-------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------");
+            System.out.println("IDF         NATURE         CARACTERISTIQUES SYMBOLE              ");
+            System.out.print("-------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------");
+            for (LineElement line : this.lines){
+                String idf = line.getIdf();
+                NatureSymboles nature = line.getNature();
+                Symbole s = line.getSymbole() ;
+                System.out.print(idf + "       " + nature + "       ");
+                s.displaySymbole();
+                System.out.println();
+            }
+            System.out.print("-------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------");
+            System.out.println() ;
+        }
+    }
+
+
+    public void displayAll() {
+        if(this != null) {
+            this.displayTDS();
+            for (SymbolTable s : this.children ) {
+                s.displayAll();
+            }
+        }
+        else {
+            System.out.println("Vide");
+        }
+    }
 
 
 //    public LineElement updateLineInt(String idf, String value) {
@@ -140,20 +181,6 @@ public class SymbolTable {
 //    }
 //
 //
-//    public LineElement search(String idf, SymbolTable st) {
-//        for (LineElement line:lines) {
-//            if (line.getIdf().equals(idf)) {
-//                System.out.println("Var declared ");
-//                return line;
-//            }
-//        }
-//        System.out.println("Not found in the current table, searching in parent : ");
-//
-//        if (st.parent != null)
-//            return search(idf, st.parent);
-//
-//        return null ;
-//    }
 
 
     public SymbolTable newRegion(String name, SymbolTable currentSt) {
