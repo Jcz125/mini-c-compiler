@@ -3,9 +3,10 @@ bin
 .antlr
 .idea
 
+examples
 lib/
 src/parser/
-out/
 
+out/
 
 brouillon.c
