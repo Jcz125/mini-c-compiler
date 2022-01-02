@@ -20,7 +20,8 @@ public class TdsVisitor implements AstVisitor<String> {
         for(Idf idf:varInt.list ){
             String name= idf.name;
             IntSymbole intSymbole = new IntSymbole(name);
-            LineElement lineElement = new LineElement(name,NatureSymboles.VARIABLE,intSymbole);
+            // LineElement lineElement = new LineElement(name,NatureSymboles.VARIABLE,intSymbole);
+            // la fonction ci-dessus doit être mis dans addLineElement
             //addLineElement(lineElement);
         }
         return null;
