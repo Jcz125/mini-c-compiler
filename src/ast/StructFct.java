@@ -7,12 +7,12 @@ public class StructFct implements Ast{
     }
 
     public String type;
-    public Ast idf_struct;
-    public Ast idf;
-    public Ast params;
+    public Idf idf_struct;
+    public Idf idf;
+    public Parametres params;
     public Ast bloc;
 
-    public StructFct(Ast struct, Ast idf,Ast params,Ast bloc) {
+    public StructFct(Idf struct, Idf idf, Parametres params, Ast bloc) {
         this.idf_struct = struct;
         this.idf = idf;
         this.params = params;

@@ -16,6 +16,5 @@ public class VarStruct implements Ast {
         this.struct_name = struct;
         this.list_idf = list_idf;
         this.type = "struct " + struct.name;
-
     }
 }

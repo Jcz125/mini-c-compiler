@@ -3,6 +3,7 @@ package TDS;
 import TDS.Symboles.*;
 import ast.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import TDS.SymbolTable;
@@ -71,30 +72,51 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         return tds_current;
     }
 
-    @Override // pas terminer à finaliser manque le contrôle sémantique et repérage région
-    public SymbolTable visit(IntFct intFct) {
+    public HashMap<Symbole, String> create_hashmap_param(ArrayList<Ast> list) {
         HashMap<Symbole, String> params = new HashMap<>();
-        for (Ast ast : intFct.params.list) {
+        ArrayList<String> idfs = new ArrayList<>();
+        for (Ast ast : list) {
             if (ast instanceof IntParam) {
                 IntParam param = (IntParam) ast;
-                params.put(new IntSymbole(param.idf.name), "int");
+                if (idfs.contains(param.idf.name)) {
+                    idfs.add(param.idf.name);
+                    params.put(new IntSymbole(param.idf.name), "int");
+                } else {
+                    System.out.println("Function params : Idf already used"); // améliorer le message d'erreur
+                } // de préférence stocker l'erreur quelque part et afficher tous les erreurs
             } else {
                 StructPointer param = (StructPointer) ast;
                 params.put(new StructSymbole(param.type, param.idf.name), param.type);
             }
         }
+        return params;
+    }
+
+    @Override // pas terminer à finaliser manque le contrôle sémantique et repérage région
+    public SymbolTable visit(IntFct intFct) {
+        HashMap<Symbole, String> params = create_hashmap_param(intFct.params.list);
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
         if (line != null) {
             tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
+            tds_current.addListVar(intFct.params.list, NatureSymboles.PARAM_FUNC);
             intFct.bloc.accept(this);
             tds_current = tds_current.exitRegion(tds_current);
         }
         return tds_current;
     }
 
+
     @Override
     public SymbolTable visit(StructFct structFct) {
-        return null;
+        HashMap<Symbole, String> params = create_hashmap_param(structFct.params.list);
+        LineElement line = tds_current.addLineFct(structFct.idf_struct.name, NatureSymboles.FUNCTION, structFct.type, params, params.size());
+        if (line != null) {
+            tds_current = tds_current.newRegion(structFct.idf.name, tds_current);
+            tds_current.addListVar(structFct.params.list, NatureSymboles.PARAM_FUNC);
+            structFct.bloc.accept(this);
+            tds_current = tds_current.exitRegion(tds_current);
+        }
+        return tds_current;
     }
 
     @Override
@@ -102,21 +124,11 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         for(Ast ast:bloc.list){
             ast.accept(this);
         }
-        return null;
+        return tds_current;
     }
 
     @Override
-    public SymbolTable visit(Divide divide) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(EqualTo equalTo) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(EtLogique etLogique) {
+    public SymbolTable visit(Affect affect) {
         return null;
     }
 
@@ -126,7 +138,22 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     }
 
     @Override
-    public SymbolTable visit(Function function) {
+    public SymbolTable visit(OuLogique ouLogique) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(EtLogique etLogique) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(EqualTo equalTo) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(NotEqualTo notEqualTo) {
         return null;
     }
 
@@ -137,6 +164,51 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(GreaterThan greaterThan) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(LessOrEqual lessOrEqual) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(LessThan lessThan) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(Plus plus) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(Minus minus) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(Mult mult) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(Divide divide) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(Oppose oppose) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(Function function) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(Sizeof sizeof) {
         return null;
     }
 
@@ -156,67 +228,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     }
 
     @Override
-    public SymbolTable visit(Entier integer) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(IntParam intParam) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(LessOrEqual lessOrEqual) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(LessThan lessThan) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(Minus minus) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(Mult mult) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(NotEqualTo notEqualTo) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(OuLogique ouLogique) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(Parametres parametres) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(Plus plus) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(StructPointer structPointer) {
-        return null;
-    }
-
-    @Override
     public SymbolTable visit(WhileInst whileInst) {
-        return null;
-    }
-
-    @Override
-    public SymbolTable visit(Affect affect) {
         return null;
     }
 
@@ -226,12 +238,23 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     }
 
     @Override
-    public SymbolTable visit(Sizeof sizeof) {
+    public SymbolTable visit(Entier integer) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Oppose oppose) {
+    public SymbolTable visit(Parametres parametres) {
         return null;
     }
+
+    @Override
+    public SymbolTable visit(IntParam intParam) {
+        return null;
+    }
+
+    @Override
+    public SymbolTable visit(StructPointer structPointer) {
+        return null;
+    }
+
 }

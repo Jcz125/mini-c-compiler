@@ -1,6 +1,7 @@
 package TDS;
 
 import TDS.Symboles.*;
+import ast.*;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -110,6 +111,34 @@ public class SymbolTable {
         LineElement newLine = new LineElement(struct_name, nature, newSymbole);
         lines.add(newLine) ;
         return newLine;
+    }
+
+    /* Cette fonction permet d'ajouter la liste des vars (params ou decls) l'un à la suite de l'autre dans la TDS */
+    public void addListVar(ArrayList<Ast> list, NatureSymboles nature) {
+        if (nature == NatureSymboles.PARAM_FUNC) {
+            for (Ast ast : list) {
+                if (ast instanceof IntParam) {
+                    IntParam param = (IntParam) ast;
+                    addLineInt(param.idf.name, nature);
+                } else {
+                    StructPointer param = (StructPointer) ast;
+                    addLineStruct(param.idf.name, nature, param.type);
+                }
+            }
+        } else if (nature == NatureSymboles.VARIABLE) {
+            for (Ast ast : list) {
+                if (ast instanceof VarInt) {
+                    VarInt var = (VarInt) ast;
+                    for (Idf idf : var.list)
+                        addLineInt(idf.name, nature);
+                } else {
+                    VarStruct var = (VarStruct) ast;
+                    for (Idf idf : var.list_idf)
+                        addLineStruct(idf.name, nature, var.type);
+                }
+            }
+        }
+
     }
 
 
