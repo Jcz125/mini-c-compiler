@@ -49,20 +49,42 @@ public class StructDefSymbole extends Symbole{
         System.out.print("Type: " + this.type + "       " );
         System.out.print("Champs : ") ;
         if (champs.size() != 0) {
-            ArrayList<String> intTab = new ArrayList<>() ;
-            for (Symbole s : champs.keySet()){
+            HashMap<String, ArrayList<String>> types = new HashMap<>();
+            for (Symbole s : champs.keySet()) {
+                String t = s.type.toString();
+                String name = s.idf.toString();
+                if (types.containsKey(t)) {
+                    types.get(t).add(name);
+                } else {
+                    ArrayList<String> tab = new ArrayList<>();
+                    tab.add(name);
+                    types.put(t, tab);
+                }
 //                if (s instanceof IntSymbole){
 //                    intTab.add(s.idf.toString()) ;
 ////                    String name = s.idf.toString();
 ////                    System.out.print("( int: " + name + ")" + "  |  ") ;
 //                }
-//                else if (s instanceof StructSymbole) {
-//                    ArrayList<String> StructTab1 = new ArrayList<>() ;
-//
+//                else {
+//                    String name = s.idf.toString() ;
+//                    String type = s.type.toString() ;
+//                    System.out.print("(" + type + " : " + name + ")" + "  |  ") ;
 //                }
-            String name = s.idf.toString() ;
-            String type = s.type.toString() ;
-            System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
+//            }
+//            System.out.print( "(int : ") ;
+//            for (String i: intTab) {
+//                System.out.print( i + ", ") ;
+//            }
+//            System.out.print( ")") ;
+
+            }
+            for (String name: types.keySet()) {
+                String key = name.toString();
+                System.out.print("(");
+                System.out.print(key + " : " );
+                System.out.print(types.get(name));
+                System.out.print(")");
+                System.out.print("      ");
             }
         }
         else {
