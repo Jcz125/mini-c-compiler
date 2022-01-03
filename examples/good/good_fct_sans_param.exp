@@ -8,5 +8,5 @@ int fct() {
 int main() {
     int res;
     res = fct() ;
-    return res
+    return res;
 }
