@@ -119,12 +119,21 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Affect affect) {
+        if (affect.left instanceof Idf) {
 
+        }
         return null;
     }
 
     @Override
     public SymbolTable visit(Fleche fleche) {
+        String left= ((Idf) fleche.left).name;
+        String right= ((Idf) fleche.right).name;
+        LineElement lineElement = tds_current.lookUp(left,tds_current);
+        if(lineElement == null){
+            //Errors.add("Erreur dans "+lineElement.)
+        }
+        //((lineElement.getSymbole().
         return null;
     }
 
@@ -200,7 +209,13 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Sizeof sizeof) {
-        return null;
+        if(tds_current.lookUp(sizeof.idf.name,tds_current)!=null){
+            return tds_current;
+        }
+        else {
+            Errors.add("Erreur dans"+tds_current.getName()+"sizeof invalid identifier: "+sizeof.idf.name);
+            return null;
+        }
     }
 
     @Override

@@ -57,6 +57,8 @@ public class SymbolTable {
         this.parent = parent;
     }
 
+
+
     public LineElement addLineInt(String idf, NatureSymboles nature) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
@@ -156,6 +158,18 @@ public class SymbolTable {
         return null ;
     }
 
+    public SymbolTable lookUpLine(LineElement lineElement, SymbolTable symbolTable){
+            for(LineElement line : symbolTable.lines){
+                if(line == lineElement){
+                    return symbolTable;
+                }
+            }
+            if(symbolTable.parent != null){
+                return lookUpLine(lineElement, symbolTable.parent);
+            }
+
+            return null;
+    }
 
     public void displayTDS() {
         if(this != null) {
