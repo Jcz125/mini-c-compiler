@@ -6,9 +6,11 @@ public class Sizeof implements Ast {
     return visitor.visit(this);
   }
 
-  public Ast idf;
+  public String type;
+  public Idf idf;
 
-  public Sizeof(Ast idf) {
+  public Sizeof(Idf idf) {
     this.idf = idf;
+    this.type = "struct " + idf.name;
   }
 }

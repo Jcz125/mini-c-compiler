@@ -159,7 +159,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 		Idf idf = new Idf(idfString);
 
 		return new IntParam("int", idf);
-	} // nécessaire de faire un IntParam et y mettre un Idf ?
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -306,10 +306,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			if (TerminalNodeclass.equals(""+ctx.getChild(i).getClass())) {
 				String idfString = ctx.getChild(i).toString();
 				noeudTemporaire = new Affect(new Idf(idfString), noeudTemporaire);
-				// list.add(idf);
 			} else {
 				noeudTemporaire = new Affect(ctx.getChild(i).accept(this), noeudTemporaire);
-				// list.add(ctx.getChild(i).accept(this));
 			}
 		}
 		return noeudTemporaire;
@@ -491,16 +489,6 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			noeudTemporaire = new Fleche(noeudTemporaire, new Idf(idfString));
 		}
 		return noeudTemporaire;
-		// String idfString;
-		// Idf idf;
-		// ArrayList<Ast> list = new ArrayList<>();
-
-		// for (int i=0; i<ctx.getChildCount(); i+=2) {
-		// 	idfString = ctx.getChild(i).toString();
-		// 	idf = new Idf(idfString);
-		// 	list.add(idf);
-		// }
-		// return new Fleche(list);
 	}
 
 	/**
@@ -512,7 +500,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	@Override public Ast visitInteger(grammaireParser.IntegerContext ctx) {
 		String str = ctx.getChild(0).toString();
 		int integer;
-		if (str.length() > 1)
+		if (str.charAt(0) == '\'')
 			integer = (int) str.charAt(str.length()-2);
 		else
 			integer = Integer.parseInt(str);
@@ -560,9 +548,8 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitSizeof(grammaireParser.SizeofContext ctx) {
-		// return ctx.getChild(3).accept(this);
 		return new Sizeof(new Idf(ctx.getChild(3).toString()));
-	} // y a t-il besoin de faire une classe Sizeof ? certainement oui
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -571,5 +558,5 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 */
 	@Override public Ast visitParenthesis(grammaireParser.ParenthesisContext ctx) {
 		return ctx.getChild(1).accept(this);
-	} // IDEM : y a t-il besoin de faire une classe parenthesis ? peut-être pas
+	}
 }

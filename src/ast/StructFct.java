@@ -17,7 +17,6 @@ public class StructFct implements Ast{
         this.idf = idf;
         this.params = params;
         this.bloc = bloc;
-        this.type = "struct " + idf_struct;
+        this.type = "struct " + idf_struct.name;
     }
-
 }

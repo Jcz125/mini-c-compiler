@@ -224,23 +224,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
     }
 
 
-    // @Override
-    // public String visit(Param param) {
-
-    //     String nodeIdentifier = this.nextState();
-
-    //     String idfState = param.idf.accept(this);
-
-    //     String type = param.type;
-
-    //     this.addNode(nodeIdentifier, "Param");
-    //     this.addTransition(nodeIdentifier, type);
-    //     this.addTransition(nodeIdentifier, idfState);
-
-    //     return nodeIdentifier;
-    // }
-
-
     @Override
     public String visit(IntParam intParam) {
 
@@ -383,14 +366,17 @@ public class GraphVizVisitor implements AstVisitor<String> {
     @Override
     public String visit(Sizeof sizeof) {
         String nodeIdentifier = this.nextState();
-        String idf = sizeof.idf.accept(this);
         this.addNode(nodeIdentifier, "sizeof");
-        this.addTransition(nodeIdentifier, idf);
+
+        String nodeType = this.nextState();
+        this.addNode(nodeType, sizeof.type);
+        // String idf = sizeof.idf.accept(this);
+        
+        this.addTransition(nodeIdentifier, nodeType);
+        
         return nodeIdentifier;
     }
 
-
-    /* ------------------------------------------------------------------------------------------------------------- */
 
     @Override
     public String visit(Entier entier) {
@@ -431,11 +417,16 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String idfState = function.idf.accept(this);
 
         this.addNode(nodeIdentifier, "Function");
+
+        String nodeParams = this.nextState();
+        this.addNode(nodeParams, "Params");
+
         this.addTransition(nodeIdentifier, idfState);
+        this.addTransition(nodeIdentifier, nodeParams);
 
         for (Ast ast: function.expression) {
             String astState = ast.accept(this);
-            this.addTransition(nodeIdentifier, astState);
+            this.addTransition(nodeParams, astState);
         }
         return nodeIdentifier;
     }
