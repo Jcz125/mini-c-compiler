@@ -78,7 +78,7 @@ public class SymbolTable {
                 return null;
             }
         }
-        Symbole newSymbole = new StructSymbole(idf, type);
+        Symbole newSymbole = new StructSymbole(type, idf);
         LineElement newLine = new LineElement(idf, nature, newSymbole);
         lines.add(newLine) ;
         return newLine;
@@ -163,17 +163,17 @@ public class SymbolTable {
             if(this.parent != null) {
                 father = this.parent.getName();
             }
-            System.out.println("\nTable courante:  " + this.name + "       " + "mon pere:  " + father );
+            System.out.println("\nTable courante:  " + this.name + "              " + "mon pere:  " + father );
             System.out.print("-------------------------------------------------------------------------------------");
             System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println("IDF         NATURE         CARACTERISTIQUES SYMBOLE              ");
+            System.out.println("IDF                NATURE                CARACTERISTIQUES SYMBOLE              ");
             System.out.print("-------------------------------------------------------------------------------------");
             System.out.println("-------------------------------------------------------------------------------------");
             for (LineElement line : this.lines){
                 String idf = line.getIdf();
                 NatureSymboles nature = line.getNature();
                 Symbole s = line.getSymbole() ;
-                System.out.print(idf + "       " + nature + "       ");
+                System.out.print(idf + "              " + nature + "              ");
                 s.displaySymbole();
                 System.out.println();
             }

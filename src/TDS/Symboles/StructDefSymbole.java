@@ -2,6 +2,7 @@ package TDS.Symboles;
 
 import TDS.SymbolTable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StructDefSymbole extends Symbole{
@@ -47,10 +48,47 @@ public class StructDefSymbole extends Symbole{
     public void displaySymbole() {
         System.out.print("Type: " + this.type + "       " );
         System.out.print("Champs : ") ;
-        for (Symbole s : champs.keySet()){
-            String name = s.idf.toString() ;
-            String type = s.type.toString() ;
-            System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
+        if (champs.size() != 0) {
+            HashMap<String, ArrayList<String>> types = new HashMap<>();
+            for (Symbole s : champs.keySet()) {
+                String t = s.type.toString();
+                String name = s.idf.toString();
+                if (types.containsKey(t)) {
+                    types.get(t).add(name);
+                } else {
+                    ArrayList<String> tab = new ArrayList<>();
+                    tab.add(name);
+                    types.put(t, tab);
+                }
+//                if (s instanceof IntSymbole){
+//                    intTab.add(s.idf.toString()) ;
+////                    String name = s.idf.toString();
+////                    System.out.print("( int: " + name + ")" + "  |  ") ;
+//                }
+//                else {
+//                    String name = s.idf.toString() ;
+//                    String type = s.type.toString() ;
+//                    System.out.print("(" + type + " : " + name + ")" + "  |  ") ;
+//                }
+//            }
+//            System.out.print( "(int : ") ;
+//            for (String i: intTab) {
+//                System.out.print( i + ", ") ;
+//            }
+//            System.out.print( ")") ;
+
+            }
+            for (String name: types.keySet()) {
+                String key = name.toString();
+                System.out.print("(");
+                System.out.print(key + " : " );
+                System.out.print(types.get(name));
+                System.out.print(")");
+                System.out.print("      ");
+            }
+        }
+        else {
+            System.out.println(" Vide ");
         }
     }
 }
