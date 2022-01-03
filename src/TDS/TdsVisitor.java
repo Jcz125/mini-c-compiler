@@ -48,10 +48,6 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     public SymbolTable visit(VarInt varInt) {
         for(Idf idf : varInt.list){
             tds_current.addLineInt(idf.name, NatureSymboles.VARIABLE);
-            // IntSymbole intSymbole = new IntSymbole(name);
-            // LineElement lineElement = new LineElement(name,NatureSymboles.VARIABLE,intSymbole);
-            // la fonction ci-dessus doit être mis dans addLineElement
-            //addLineElement(lineElement);
         }
         return tds_current;
     }
@@ -62,13 +58,6 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         for (Idf idf : varStruct.list_idf) {
             tds_current.addLineStruct(idf.name, NatureSymboles.VARIABLE, type);
         }
-        // for(int i=1; i<varStruct.list_idf.size();i++){
-        //     Idf idf = varStruct.list_idf.get(i);
-        //     String name= idf.name;
-        //     StructSymbole structSymbole = new StructSymbole(varStruct.type, name);
-        //     LineElement lineElement = new LineElement(name,NatureSymboles.VARIABLE,structSymbole);
-            //addLineElement(lineElement);
-        // }
         return tds_current;
     }
 

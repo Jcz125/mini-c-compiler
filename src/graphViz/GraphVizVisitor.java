@@ -147,7 +147,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String nodeIdentifier = this.nextState();
         this.addNode(nodeIdentifier, "Decl_Fct");
 
-        String nodeType = intFunc.type;
+        String nodeType = this.nextState();
         this.addNode(nodeType, "int");
         
         String idfState = intFunc.idf.accept(this);
@@ -170,7 +170,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         String nodeIdentifier = this.nextState();
         this.addNode(nodeIdentifier, "Decl_StructFct");
 
-        String nodeType = structFunc.type;
+        String nodeType = this.nextState();
         this.addNode(nodeType, structFunc.type);
 
         String idfState = structFunc.idf.accept(this);
