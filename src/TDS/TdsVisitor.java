@@ -1,18 +1,19 @@
 package TDS;
 
-import TDS.Symboles.*;
+import TDS.Symboles.IntSymbole;
+import TDS.Symboles.StructSymbole;
+import TDS.Symboles.Symbole;
 import ast.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import TDS.SymbolTable;
 
 public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     SymbolTable tds_root;
     SymbolTable tds_current;
     boolean main = false;
+    ArrayList<String> Errors =tds_root.Errors;
 
     @Override
     public SymbolTable visit(Program program) {
@@ -118,6 +119,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Affect affect) {
+
         return null;
     }
 

@@ -3,14 +3,13 @@ package TDS;
 import TDS.Symboles.*;
 import ast.*;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class SymbolTable {
 
+    public static ArrayList<String> Errors;
     private String name ;
     private ArrayList<LineElement> lines;
     private SymbolTable parent;
