@@ -53,7 +53,7 @@ digraph "ast"{
 	N41 [label=" = ", shape="box"];
 	N46 [label="bool", shape="box"];
 	N45 [label="return", shape="box"];
-}
+
 	N5 -> N6; 
 	N5 -> N7; 
 	N4 -> N5; 
@@ -103,3 +103,4 @@ digraph "ast"{
 	N34 -> N36; 
 	N34 -> N37; 
 	N0 -> N34; 
+}
