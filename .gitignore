@@ -3,7 +3,6 @@ bin
 .antlr
 .idea
 
-examples
 src/parser/
 out/
 
