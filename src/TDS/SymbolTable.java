@@ -193,7 +193,7 @@ public class SymbolTable {
             }
         }
         else {
-            System.out.println("Vide");
+            System.out.print("Vide");
         }
     }
 

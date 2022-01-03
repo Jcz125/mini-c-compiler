@@ -17,7 +17,7 @@ public class StructSymbole extends Symbole{
 
     @Override
     public void displaySymbole() {
-        System.out.print(" idf : " + this.idf + "       ");
+        //System.out.print(" idf : " + this.idf + "       ");
         System.out.print(" type : " + this.type + "       ");
     }
 }

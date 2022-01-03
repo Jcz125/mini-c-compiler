@@ -15,7 +15,7 @@ struct S3 {
     - return : struct
     - "->"
 */
-struct S1 * struct_function(struct S1 * abc) {
+struct S1 * struct_fct(struct S1 * abc) {
     abc->a = 1;
     return abc ;
 }
