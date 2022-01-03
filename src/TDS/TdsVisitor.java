@@ -78,7 +78,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         for (Ast ast : list) {
             if (ast instanceof IntParam) {
                 IntParam param = (IntParam) ast;
-                if (idfs.contains(param.idf.name)) {
+                if (!idfs.contains(param.idf.name)) {
                     idfs.add(param.idf.name);
                     params.put(new IntSymbole(param.idf.name), "int");
                 } else {
