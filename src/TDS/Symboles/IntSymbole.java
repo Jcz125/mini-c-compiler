@@ -7,7 +7,7 @@ public class IntSymbole extends Symbole{
 
     public IntSymbole(String idf) {
         this.type = "int" ;
-        this.idf=idf;
+        this.idf = idf;
     } ;
 
     public String getType() {
