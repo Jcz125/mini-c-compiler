@@ -98,9 +98,9 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     @Override
     public SymbolTable visit(StructFct structFct) {
         HashMap<Symbole, String> params = create_hashmap_param(structFct.params.list);
-        LineElement line = tds_current.addLineFct(structFct.idf_struct.name, NatureSymboles.FUNCTION, structFct.type, params, params.size());
+        LineElement line = tds_current.addLineFct(structFct.idf_fct.name, NatureSymboles.FUNCTION, structFct.type, params, params.size());
         if (line != null) {
-            tds_current = tds_current.newRegion(structFct.idf.name, tds_current);
+            tds_current = tds_current.newRegion(structFct.idf_fct.name, tds_current);
             tds_current.addListVar(structFct.params.list, NatureSymboles.PARAM_FUNC);
             structFct.bloc.accept(this);
             tds_current = tds_current.exitRegion(tds_current);
