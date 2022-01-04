@@ -106,13 +106,32 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         ArrayList<Symbole> params = create_array_param(intFct.params.list);
 
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
+        //on check si le idf est déjà utilisé
+        if(line==null){
+            Errors.add("Error in "+tds_current.getName()+" : idf "+intFct.idf.name+" already used");
+        }
         if (line != null) {
             tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
             tds_current.addListVar(intFct.params.list, NatureSymboles.PARAM_FUNC);
             intFct.bloc.accept(this);
             tds_current = tds_current.exitRegion(tds_current);
         }
+
+        //controle type de return
+        Ast bloc = intFct.bloc;
+        String result = lookUpReturnType(bloc);
+        if(result==null){
+            Errors.add("Error in "+tds_current.getName()+" : no return for function "+line.getIdf());
+        }
+
         return tds_current;
+    }
+
+    String lookUpReturnType(Ast bloc){
+        //renvoie le type de l'expr de return du bloc (c'est le bloc d'une déclaration de function)
+        //S'il n'y a pas de "return", revoie null
+
+        return null;
     }
 
 
@@ -378,6 +397,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(IntParam intParam) {
+
         return null;
     }
 
