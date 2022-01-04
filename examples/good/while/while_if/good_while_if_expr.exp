@@ -1,0 +1,16 @@
+struct S2 {
+    int a ;
+    int b ;
+};
+
+int fct(struct S2 * ab, int c) {
+    while (c > 0)
+        if (ab->a == 0)
+            ab->b ;
+    return 1;
+}
+
+int main() {
+    struct S2 * d = malloc(sizeof(struct S2));
+    return fct(d, 5) ;
+}

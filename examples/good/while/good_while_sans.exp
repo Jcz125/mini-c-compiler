@@ -1,0 +1,8 @@
+int fct(int a, int b) {
+    while (a > 0) ; ;
+    return 0;
+}
+
+int main() {
+    return fct(3, 5) ;
+}
