@@ -158,17 +158,21 @@ public class SymbolTable {
         return null ;
     }
 
-    public SymbolTable lookUpLine(LineElement lineElement, SymbolTable symbolTable){
+    public LineElement lookUpStructDef(String idf, SymbolTable symbolTable){
+
             for(LineElement line : symbolTable.lines){
-                if(line == lineElement){
-                    return symbolTable;
+                if(line.getIdf().equals(idf) && line.getNature()==NatureSymboles.STRUCT){
+                    return line;
                 }
             }
             if(symbolTable.parent != null){
-                return lookUpLine(lineElement, symbolTable.parent);
+                return lookUpStructDef(idf, symbolTable.parent);
             }
 
+
             return null;
+
+
     }
 
     public void displayTDS() {

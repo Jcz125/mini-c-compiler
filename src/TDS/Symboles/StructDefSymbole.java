@@ -4,6 +4,8 @@ import TDS.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
 
 public class StructDefSymbole extends Symbole{
 
@@ -21,6 +23,17 @@ public class StructDefSymbole extends Symbole{
 
     public String getType() {
         return type;
+    }
+
+    public Symbole lookUpChamp(String idf){
+
+        for (Map.Entry mapentry : champs.entrySet()) {
+            if (mapentry.getValue().equals(idf)) {
+                return (Symbole) mapentry.getKey();
+            }
+        }
+
+        return null;
     }
 
     public void setType(String type) {
