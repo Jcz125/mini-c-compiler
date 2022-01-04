@@ -1,0 +1,6 @@
+int fct(int a) {
+  print(a);
+  a = b;
+  int c;
+  c = '\'';
+}

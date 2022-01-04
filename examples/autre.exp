@@ -1,0 +1,20 @@
+/* Une déclaration de struct qui utilise autres struct comme attributs */
+struct testStruct {
+    int a ;
+    struct struct1 *one, *two ;
+};
+
+/*  --> déclaration d'une fonction avec :
+        paramètres : un pointeur sur une structure de type test_struct
+        retourne : un pointeur sur une structure de type test_struct
+*/
+struct testStruct * structF(struct testStruct * ab) {
+    while (a < b > c*5) {   // test d'une boucle while
+        ab->a = a - b*10 +'c' ;
+        if (a == b != c)  // test de if then else
+          return NULL;
+        else
+          return ab;
+    }
+    return ab ;
+}
