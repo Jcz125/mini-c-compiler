@@ -138,16 +138,38 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         return tds_current;
     }
 
+    boolean checkType(Ast ast, String type){
+        //renvoie true si le type de l'ast == type
+
+        return true;
+    }
+
+
     @Override
     public SymbolTable visit(Affect affect) {
         // à faire avec funct check
         if (affect.left instanceof Idf) {
+            LineElement lineElement= tds_current.lookUp(((Idf) affect.left).name,tds_current);
+            String typeIdf = lineElement.getSymbole().getType();
+            if(!checkType(affect.right,typeIdf)){
+                Errors.add("Error in "+tds_current.getName()+": "+lineElement.getIdf()+" cannot be affected a type different to "+lineElement.getSymbole().getType());
+            }
+        }
+        else{
+            String typeFleche = getTypeFleche((Fleche) affect.left);
+
+            if(!checkType(affect.right,typeFleche)){
+                Errors.add("Error in "+tds_current.getName()+" : affect types dont match"+typeFleche);
+            }
 
         }
         return null;
     }
 
-
+    public String getTypeFleche(Fleche fleche){
+        //renvoie le type de fleche
+        return null;
+    }
     //à vérifier,Céline will check
     @Override
     public SymbolTable visit(Fleche fleche) {
@@ -236,6 +258,18 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     @Override
     public SymbolTable visit(Oppose oppose) {
         // error pour -pointer
+        if(oppose.op.equals("-")){
+            if(oppose.value instanceof Fleche){
+                Errors.add("Error in "+tds_current.getName()+" : -value needs value to be an arithmetic type");
+            }
+            if(oppose.value instanceof Function){
+                LineElement lineElement = tds_current.lookUp(((Idf) ((Function) oppose.value).idf).name,tds_current);
+                if(lineElement.getSymbole() instanceof StructSymbole){
+                    Errors.add("Error in "+tds_current.getName()+" : -value needs value to be an arithmetic type");
+                }
+            }
+            //manque check pour Parenthesis quand expr c'est un pointeur
+        }
 
         /*if(oppose.value instanceof Idf){
             LineElement lineElement = tds_current.lookUp(((Idf) oppose.value).name,tds_current);
@@ -263,7 +297,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         //control sémantique
         String FunctIdf= ((Idf) function.idf).name;
 
-        LineElement lineElement = tds_current.lookUpFunctDecl(FunctIdf,tds_current);
+        LineElement lineElement = tds_current.lookUpFunctDef(FunctIdf,tds_current);
         //on vérifie que la funct left soit bien définie
         if(lineElement == null){
             Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
@@ -275,6 +309,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         //on vérifie que le nombre de params de la fonction correspond bien au nombre attendu
         if(nb!=fctSymbole.getNbParam()){
             Errors.add("Error in "+tds_current.getName()+" : params number doesnt match expected number in"+lineElement.getIdf());
+            //return null
         }
 
         ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
@@ -285,14 +320,12 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
         for(int i=0 ; i<fctSymbole.getNbParam() ; i++){
             String typeDecl = paramsDecl.get(i).getType();
-            boolean typeExec = checkType(paramsExec.get(i),typeDecl);
+            if(!checkType(paramsExec.get(i),typeDecl)){
+                Errors.add("Error in "+tds_current.getName()+ "type of param number "+i+" doesnt match function"+fctSymbole.getIdf()+" definition" );
+            }
             //checkType(Ast ast, String type) renvoie un boolean (true si les 2 types pareils et false sinon)
 
         }
-
-
-
-
 
         return tds_current;
     }

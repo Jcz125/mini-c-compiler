@@ -175,6 +175,23 @@ public class SymbolTable {
 
     }
 
+    public LineElement lookUpFunctDef(String idf, SymbolTable symbolTable){
+
+        for(LineElement line : symbolTable.lines){
+            if(line.getIdf().equals(idf) && line.getNature()==NatureSymboles.FUNCTION){
+                return line;
+            }
+        }
+        if(symbolTable.parent != null){
+            return lookUpStructDef(idf, symbolTable.parent);
+        }
+
+
+        return null;
+
+
+    }
+
     public void displayTDS() {
         if(this != null) {
             String father = "Pas de parent";
