@@ -232,6 +232,24 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Oppose oppose) {
+        /*if(oppose.value instanceof Idf){
+            LineElement lineElement = tds_current.lookUp(((Idf) oppose.value).name,tds_current);
+            if(lineElement==null){
+                Errors.add("Error in "+tds_current.getName()+" : "+"identifier "+((Idf) oppose.value).name+" not defined");
+                return null;
+            }
+            else{
+                if(lineElement.getSymbole() instanceof IntSymbole){
+                    return tds_current;
+                }
+                else{
+                    Errors.add("Error in "+tds_current.getName()+" : "+((Idf) oppose.value).name+" not an integer");
+                }
+            }
+        }
+
+        if( oppose.value instanceof Function)*/
+
         return null;
     }
 
@@ -239,7 +257,6 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     public SymbolTable visit(Function function) {
         //control sémantique
         String FunctIdf= ((Idf) function.idf).name;
-
 
         LineElement lineElement = tds_current.lookUp(FunctIdf,tds_current);
         //on vérifie que la struct left soit bien définie
@@ -255,9 +272,17 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
             Errors.add("Error in "+tds_current.getName()+" : params number doesnt match expected number in"+lineElement.getIdf());
         }
 
-        ArrayList<Symbole> params = fctSymbole.getFctParams();
+        ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
 
         //Il manque vérifier les types des params
+
+        ArrayList<Ast> paramsExec = function.expression;
+
+        for(int i=0 ; i<fctSymbole.getNbParam() ; i++){
+            String typeDecl = paramsDecl.get(i).getType();
+
+
+        }
 
 
 
