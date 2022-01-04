@@ -7,3 +7,5 @@ src/parser/
 out/
 
 brouillon*
+src/TDS/test.c
+src/a.exe

@@ -1,0 +1,9 @@
+int fct(int a, int b) {
+    int res ;
+    if (a==b)
+        50 ;
+}
+
+int main() {
+    return fct(5, 4) ;
+}

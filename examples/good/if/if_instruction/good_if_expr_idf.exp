@@ -1,0 +1,12 @@
+int fct(int a, int b) {
+    int res ;
+    res = 50 ;
+    if (a==b)
+        res ;
+    // le if --> ça fonctionne comme un return
+    return 0 ;
+}
+
+int main() {
+    return fct(5, 4) ;
+}

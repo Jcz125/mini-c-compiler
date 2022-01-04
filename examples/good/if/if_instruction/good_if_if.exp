@@ -1,0 +1,12 @@
+int fct(int a, int b) {
+    int res ;
+    res = 2 ;
+    if (a < b)
+        if ( a-b < res )
+            res = a-b ;
+    return res ;
+}
+
+int main() {
+    return fct(5, 4) ;
+}
