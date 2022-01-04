@@ -140,12 +140,15 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Affect affect) {
+        // à faire avec funct check
         if (affect.left instanceof Idf) {
 
         }
         return null;
     }
 
+
+    //à vérifier,Céline will check
     @Override
     public SymbolTable visit(Fleche fleche) {
         //control sémantique
@@ -232,6 +235,8 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Oppose oppose) {
+        // error pour -pointer
+
         /*if(oppose.value instanceof Idf){
             LineElement lineElement = tds_current.lookUp(((Idf) oppose.value).name,tds_current);
             if(lineElement==null){
@@ -258,8 +263,8 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         //control sémantique
         String FunctIdf= ((Idf) function.idf).name;
 
-        LineElement lineElement = tds_current.lookUp(FunctIdf,tds_current);
-        //on vérifie que la struct left soit bien définie
+        LineElement lineElement = tds_current.lookUpFunctDecl(FunctIdf,tds_current);
+        //on vérifie que la funct left soit bien définie
         if(lineElement == null){
             Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
             // return null;
@@ -280,7 +285,8 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
         for(int i=0 ; i<fctSymbole.getNbParam() ; i++){
             String typeDecl = paramsDecl.get(i).getType();
-
+            boolean typeExec = checkType(paramsExec.get(i),typeDecl);
+            //checkType(Ast ast, String type) renvoie un boolean (true si les 2 types pareils et false sinon)
 
         }
 
@@ -293,11 +299,11 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Sizeof sizeof) {
-        if(tds_current.lookUp(sizeof.idf.name,tds_current)!=null){
+        if(tds_current.lookUpStructDef(sizeof.idf.name,tds_current)!=null){
             return tds_current;
         }
         else {
-            Errors.add("Erreur dans"+tds_current.getName()+"sizeof invalid identifier: "+sizeof.idf.name);
+            Errors.add("Error in"+tds_current.getName()+"sizeof invalid identifier: "+sizeof.idf.name);
             return null;
         }
     }

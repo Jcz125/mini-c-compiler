@@ -3,8 +3,6 @@ package TDS.Symboles;
 import TDS.SymbolTable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
 
 public class FctSymbole extends Symbole {
 
@@ -63,11 +61,16 @@ public class FctSymbole extends Symbole {
 
         if (this.nbParam != 0) {
             System.out.print("Params : ") ;
-            for (Symbole s : fctParams.keySet()){
+            for(Symbole s : fctParams){
+                String name = s.idf;
+                String type = s.type;
+                System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
+            }
+            /*for (Symbole s : fctParams.keySet()){
                 String name = s.idf.toString() ;
                 String type = s.type.toString() ;
                 System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
-            }
+            }*/
         }
     }
 }

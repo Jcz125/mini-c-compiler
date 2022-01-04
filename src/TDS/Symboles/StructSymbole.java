@@ -21,3 +21,4 @@ public class StructSymbole extends Symbole{
         System.out.print(" type : " + this.type + "       ");
     }
 }
+//good luck
