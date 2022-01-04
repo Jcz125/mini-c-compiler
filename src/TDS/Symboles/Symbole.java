@@ -18,4 +18,9 @@ public abstract class Symbole {
 
     public abstract void displaySymbole();
 
+    public String getIdf(){return this.idf;};
+
+    public String getType(){return this.type;}
+
+
 }

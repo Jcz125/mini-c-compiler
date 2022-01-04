@@ -1,9 +1,6 @@
 package TDS;
 
-import TDS.Symboles.IntSymbole;
-import TDS.Symboles.StructDefSymbole;
-import TDS.Symboles.StructSymbole;
-import TDS.Symboles.Symbole;
+import TDS.Symboles.*;
 import ast.*;
 
 import java.util.ArrayList;
@@ -83,9 +80,31 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         return params;
     }
 
+    public ArrayList<Symbole> create_array_param(ArrayList<Ast> list) {
+        ArrayList<Symbole> params = new ArrayList<>();
+        ArrayList<String> idfs = new ArrayList<>();
+        for (Ast ast : list) {
+            if (ast instanceof IntParam) {
+                IntParam param = (IntParam) ast;
+                if (!idfs.contains(param.idf.name)) {
+                    idfs.add(param.idf.name);
+                    params.add(new IntSymbole(param.idf.name));
+                } else {
+                    System.out.println("Function params : Idf already used"); // améliorer le message d'erreur
+                } // de préférence stocker l'erreur quelque part et afficher tous les erreurs
+            } else {
+                StructPointer param = (StructPointer) ast;
+                params.add(new StructSymbole(param.type, param.idf.name));
+            }
+        }
+        return params;
+    }
+
     @Override // pas terminer à finaliser manque le contrôle sémantique et repérage région
     public SymbolTable visit(IntFct intFct) {
-        HashMap<Symbole, String> params = create_hashmap_param(intFct.params.list);
+        //HashMap<Symbole, String> params = create_hashmap_param(intFct.params.list);
+        ArrayList<Symbole> params = create_array_param(intFct.params.list);
+
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
         if (line != null) {
             tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
@@ -99,7 +118,8 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(StructFct structFct) {
-        HashMap<Symbole, String> params = create_hashmap_param(structFct.params.list);
+        //HashMap<Symbole, String> params = create_hashmap_param(structFct.params.list);
+        ArrayList<Symbole> params = create_array_param(structFct.params.list);
         LineElement line = tds_current.addLineFct(structFct.idf_fct.name, NatureSymboles.FUNCTION, structFct.type, params, params.size());
         if (line != null) {
             tds_current = tds_current.newRegion(structFct.idf_fct.name, tds_current);
@@ -217,7 +237,33 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Function function) {
-        return null;
+        //control sémantique
+        String FunctIdf= ((Idf) function.idf).name;
+
+
+        LineElement lineElement = tds_current.lookUp(FunctIdf,tds_current);
+        //on vérifie que la struct left soit bien définie
+        if(lineElement == null){
+            Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
+            // return null;
+        }
+
+        int nb = function.expression.size();
+        FctSymbole fctSymbole = (FctSymbole) lineElement.getSymbole();
+        //on vérifie que le nombre de params de la fonction correspond bien au nombre attendu
+        if(nb!=fctSymbole.getNbParam()){
+            Errors.add("Error in "+tds_current.getName()+" : params number doesnt match expected number in"+lineElement.getIdf());
+        }
+
+        ArrayList<Symbole> params = fctSymbole.getFctParams();
+
+        //Il manque vérifier les types des params
+
+
+
+
+
+        return tds_current;
     }
 
     @Override

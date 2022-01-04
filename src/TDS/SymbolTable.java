@@ -87,7 +87,7 @@ public class SymbolTable {
     }
 
 
-    public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, HashMap<Symbole, String> fctParams, int nbParams) {
+    public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, ArrayList<Symbole> fctParams, int nbParams) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
                 System.out.println("Idf already used");
