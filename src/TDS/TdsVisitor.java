@@ -157,12 +157,6 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         return tds_current;
     }
 
-    boolean checkType(Ast ast, String type){
-        //renvoie true si le type de l'ast == type
-
-        return true;
-    }
-
 
     @Override
     public SymbolTable visit(Affect affect) {
@@ -310,6 +304,13 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
         return null;
     }
+
+
+    public boolean checkType(Ast ast, String type) {
+        
+        return true;
+    }
+
 
     @Override
     public SymbolTable visit(Function function) {
