@@ -260,41 +260,42 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Function function) {
-        //control sémantique
-        String FunctIdf= ((Idf) function.idf).name;
-
-        LineElement lineElement = tds_current.lookUpFunctDecl(FunctIdf,tds_current);
-        //on vérifie que la funct left soit bien définie
-        if(lineElement == null){
-            Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
-            // return null;
-        }
-
-        int nb = function.expression.size();
-        FctSymbole fctSymbole = (FctSymbole) lineElement.getSymbole();
-        //on vérifie que le nombre de params de la fonction correspond bien au nombre attendu
-        if(nb!=fctSymbole.getNbParam()){
-            Errors.add("Error in "+tds_current.getName()+" : params number doesnt match expected number in"+lineElement.getIdf());
-        }
-
-        ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
-
-        //Il manque vérifier les types des params
-
-        ArrayList<Ast> paramsExec = function.expression;
-
-        for(int i=0 ; i<fctSymbole.getNbParam() ; i++){
-            String typeDecl = paramsDecl.get(i).getType();
-            boolean typeExec = checkType(paramsExec.get(i),typeDecl);
-            //checkType(Ast ast, String type) renvoie un boolean (true si les 2 types pareils et false sinon)
-
-        }
-
-
-
-
-
-        return tds_current;
+//        //control sémantique
+//        String FunctIdf= ((Idf) function.idf).name;
+//
+//        LineElement lineElement = tds_current.lookUpFunctDecl(FunctIdf,tds_current);
+//        //on vérifie que la funct left soit bien définie
+//        if(lineElement == null){
+//            Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
+//            // return null;
+//        }
+//
+//        int nb = function.expression.size();
+//        FctSymbole fctSymbole = (FctSymbole) lineElement.getSymbole();
+//        //on vérifie que le nombre de params de la fonction correspond bien au nombre attendu
+//        if(nb!=fctSymbole.getNbParam()){
+//            Errors.add("Error in "+tds_current.getName()+" : params number doesnt match expected number in"+lineElement.getIdf());
+//        }
+//
+//        ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
+//
+//        //Il manque vérifier les types des params
+//
+//        ArrayList<Ast> paramsExec = function.expression;
+//
+//        for(int i=0 ; i<fctSymbole.getNbParam() ; i++){
+//            String typeDecl = paramsDecl.get(i).getType();
+//            boolean typeExec = checkType(paramsExec.get(i),typeDecl);
+//            //checkType(Ast ast, String type) renvoie un boolean (true si les 2 types pareils et false sinon)
+//
+//        }
+//
+//
+//
+//
+//
+//        return tds_current;
+    return null ;
     }
 
     @Override

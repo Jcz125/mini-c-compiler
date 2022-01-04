@@ -5,9 +5,13 @@ struct S2 {
 
 int fct(struct S2 * ab, int c) {
     while (c > 0)
+        int d ;
         if (ab->a > 0)
+            int e ;
             while (ab->a > 0)  {
+                int f ;
                 if (ab->b > 0) {
+                    int g ;
                     while (ab->b > 0) {
                         int res ;
                         c = c-1 ;

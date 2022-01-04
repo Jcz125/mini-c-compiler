@@ -1,0 +1,21 @@
+struct S1 {
+} ;
+
+struct S2 {
+    int a ;
+    int b ;
+};
+
+int fct(struct S1 * rien, struct S2 * ab, int c) {
+    while ( sizeof(struct S1) || sizeof(struct S2) )
+       return 0 ;
+    return 1;
+}
+
+int main() {
+    struct S1 * d ;
+    struct S2 * e ;
+    d = malloc(sizeof(struct S1));
+    e = malloc(sizeof(struct S2));
+    return fct(d, e, 5) ;
+}

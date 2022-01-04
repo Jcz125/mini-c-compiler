@@ -4,8 +4,8 @@ struct S2 {
 };
 
 int fct(struct S2 * ab, int c) {
-    while (c > 0)
-        if (ab->a == 0) ; ;
+    while ( ab->a || ab->b )
+       return 0 ;
     return 1;
 }
 

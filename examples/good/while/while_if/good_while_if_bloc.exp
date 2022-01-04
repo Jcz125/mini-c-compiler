@@ -14,6 +14,7 @@ int fct(struct S2 * ab, int c) {
 }
 
 int main() {
-    struct S2 * d = malloc(sizeof(struct S2));
+    struct S2 * d ;
+    d = malloc(sizeof(struct S2));
     return fct(d, 5) ;
 }

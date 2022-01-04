@@ -1,0 +1,15 @@
+struct S2 {
+    int a ;
+    int b ;
+};
+
+int main() {
+    struct S2 * d;
+    d = malloc(sizeof(struct S2));
+    d->a = 10;
+    d->b = 5;
+    while (d->a == 10) {
+        return 1 ;
+    }
+    return 0 ;
+}
