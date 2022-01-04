@@ -1,6 +1,7 @@
 package TDS;
 
 import TDS.Symboles.IntSymbole;
+import TDS.Symboles.StructDefSymbole;
 import TDS.Symboles.StructSymbole;
 import TDS.Symboles.Symbole;
 import ast.*;
@@ -127,14 +128,26 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
     @Override
     public SymbolTable visit(Fleche fleche) {
+        //control sémantique
         String left= ((Idf) fleche.left).name;
         String right= ((Idf) fleche.right).name;
-        LineElement lineElement = tds_current.lookUp(left,tds_current);
+        //LineElement lineElement = tds_current.lookUp(left,tds_current);
+        LineElement lineElement = tds_current.lookUpStructDef(left,tds_current);
+        //on vérifie que la struct left soit bien définie
         if(lineElement == null){
-            //Errors.add("Erreur dans "+lineElement.)
+            Errors.add("Error in "+tds_current.getName()+": "+left+" not defined");
+           // return null;
         }
-        //((lineElement.getSymbole().
-        return null;
+
+        StructDefSymbole structDefSymbole = (StructDefSymbole) lineElement.getSymbole();
+        Symbole symbole=structDefSymbole.lookUpChamp(right);
+        //on vérifie que le champ right soit bien un champ de left
+        if(symbole == null){
+            Errors.add("Error in "+tds_current.getName()+": "+right+" not champ of "+left);
+            //return null;
+        }
+
+        return tds_current;
     }
 
     @Override
