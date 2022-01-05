@@ -170,10 +170,7 @@ public class SymbolTable {
                 return lookUpStructDef(idf, symbolTable.parent);
             }
 
-
             return null;
-
-
     }
 
     public LineElement lookUpFunctDef(String idf, SymbolTable symbolTable){
@@ -187,10 +184,7 @@ public class SymbolTable {
             return lookUpStructDef(idf, symbolTable.parent);
         }
 
-
         return null;
-
-
     }
 
     public void displayTDS() {

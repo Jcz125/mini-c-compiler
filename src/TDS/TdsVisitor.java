@@ -124,6 +124,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if(result==null){
             Errors.add("Error in "+tds_current.getName()+" : no return for function "+line.getIdf());
         }
+        // controle type retour == type return
 
         return null;
     }
@@ -181,6 +182,7 @@ public class TdsVisitor implements AstVisitor<String> {
     }
 
     public String getTypeFleche(Fleche fleche){
+        //voir si les champs des structs sont vraiment dans les structs
         //renvoie le type de fleche
         return null;
     }
@@ -321,7 +323,7 @@ public class TdsVisitor implements AstVisitor<String> {
         String FunctIdf= ((Idf) function.idf).name;
 
         LineElement lineElement = tds_current.lookUpFunctDef(FunctIdf,tds_current);
-        //on vérifie que la funct left soit bien définie
+        //on vérifie que la funct left (idf) soit bien définie
         if(lineElement == null){
             Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
             return null;
@@ -359,6 +361,7 @@ public class TdsVisitor implements AstVisitor<String> {
             return null;
         }
         else {
+            //idf doit etre defini
             Errors.add("Error in"+tds_current.getName()+"sizeof invalid identifier: "+sizeof.idf.name);
             return null;
         }
