@@ -25,17 +25,28 @@ public class TdsVisitor implements AstVisitor<String> {
     @Override
     public String visit(DeclType decltype) {
         HashMap<Symbole, String> table = new HashMap<Symbole, String>(); // Symbole est la clé K et String la valeur V
+        ArrayList<String> idfs = new ArrayList<>();
         for (Ast champ : decltype.list) { // remplissage des champs selon le type
             if (champ instanceof VarInt) {
                 for (Idf idf : ((VarInt) champ).list) {
-                    IntSymbole sb = new IntSymbole(idf.name);
-                    table.put(sb, "int");
+                    if (!idfs.contains(idf.name)) {
+                        idfs.add(idf.name);
+                        IntSymbole sb = new IntSymbole(idf.name);
+                        table.put(sb, "int");
+                    } else {
+                        Errors.add("Error in "+tds_current.getName()+", "+decltype.type+", champs"+": "+idf.name+" already used.");
+                    }
                 }
             } else {
                 VarStruct s = (VarStruct) champ;
                 for (Idf idf : s.list_idf) {
-                    StructSymbole sb = new StructSymbole(s.type, idf.name);
-                    table.put(sb, s.type);
+                    if (!idfs.contains(idf.name)) {
+                        idfs.add(idf.name);
+                        StructSymbole sb = new StructSymbole(s.type, idf.name);
+                        table.put(sb, s.type);
+                    } else {
+                        Errors.add("Error in "+tds_current.getName()+", "+decltype.type+", champs"+": "+idf.name+" already used.");
+                    }
                 }
             }
         }
@@ -60,7 +71,7 @@ public class TdsVisitor implements AstVisitor<String> {
         return null;
     }
 
-    public HashMap<Symbole, String> create_hashmap_param(ArrayList<Ast> list) {
+    public HashMap<Symbole, String> create_hashmap_param(ArrayList<Ast> list, String name) {
         HashMap<Symbole, String> params = new HashMap<>();
         ArrayList<String> idfs = new ArrayList<>();
         for (Ast ast : list) {
@@ -70,7 +81,8 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.put(new IntSymbole(param.idf.name), "int");
                 } else {
-                    System.out.println("Function params : Idf already used"); // améliorer le message d'erreur
+                    this.Errors.add("Error in "+tds_current.getName()+", "+name+", params"+": idf "+param.idf.name+" already used.");
+                    Errors.add("Function params : Idf already used"); // améliorer le message d'erreur
                 } // de préférence stocker l'erreur quelque part et afficher tous les erreurs
             } else {
                 StructPointer param = (StructPointer) ast;
@@ -80,7 +92,7 @@ public class TdsVisitor implements AstVisitor<String> {
         return params;
     }
 
-    public ArrayList<Symbole> create_array_param(ArrayList<Ast> list) {
+    public ArrayList<Symbole> create_array_param(ArrayList<Ast> list, String name) {
         ArrayList<Symbole> params = new ArrayList<>();
         ArrayList<String> idfs = new ArrayList<>();
         for (Ast ast : list) {
@@ -90,8 +102,8 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.add(new IntSymbole(param.idf.name));
                 } else {
-                    System.out.println("Function params : Idf already used"); // améliorer le message d'erreur
-                } // de préférence stocker l'erreur quelque part et afficher tous les erreurs
+                    this.Errors.add("Error in "+tds_current.getName()+", "+name+", params"+": idf "+param.idf.name+" already used."); // améliorer le message d'erreur
+                }
             } else {
                 StructPointer param = (StructPointer) ast;
                 params.add(new StructSymbole(param.type, param.idf.name));
@@ -100,29 +112,32 @@ public class TdsVisitor implements AstVisitor<String> {
         return params;
     }
 
-    @Override // pas terminer à finaliser manque le contrôle sémantique et repérage région
+    public void checkMain(LineElement line) {
+        if (line.getIdf().equals("main") && (line.getNature() == NatureSymboles.FUNCTION) && (((FctSymbole) line.getSymbole()).getNbParam() == 0)) {
+            this.main = true;
+        }
+    }
+
+    @Override // pas terminer à finaliser manque le contrôle sémantique
     public String visit(IntFct intFct) {
-        //HashMap<Symbole, String> params = create_hashmap_param(intFct.params.list);
-        ArrayList<Symbole> params = create_array_param(intFct.params.list);
+        // HashMap<Symbole, String> params = create_hashmap_param(intFct.params.list);
+        ArrayList<Symbole> params = create_array_param(intFct.params.list, intFct.type+" "+intFct.idf);
 
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
-        //on check si le idf est déjà utilisé
-        if(line==null){
-            Errors.add("Error in "+tds_current.getName()+" : idf "+intFct.idf.name+" already used");
-        }
+        // on check si le idf est déjà utilisé
         if (line != null) {
             tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
             tds_current.addListVar(intFct.params.list, NatureSymboles.PARAM_FUNC);
             intFct.bloc.accept(this);
             tds_current = tds_current.exitRegion(tds_current);
-            // ajout de vérif main
+            checkMain(line);
         }
 
         //controle type de return
         Ast bloc = intFct.bloc;
-        String result = lookUpReturnType(bloc);
-        if(result==null){
-            Errors.add("Error in "+tds_current.getName()+" : no return for function "+line.getIdf());
+        String result = lookUpReturnType(bloc); // à écrire
+        if (result==null) {
+            Errors.add("Warning in "+tds_current.getName()+" : no return for function "+line.getIdf());
         }
         // controle type retour == type return
 
@@ -140,7 +155,7 @@ public class TdsVisitor implements AstVisitor<String> {
     @Override
     public String visit(StructFct structFct) {
         //HashMap<Symbole, String> params = create_hashmap_param(structFct.params.list);
-        ArrayList<Symbole> params = create_array_param(structFct.params.list);
+        ArrayList<Symbole> params = create_array_param(structFct.params.list, structFct.type+" * "+structFct.idf_fct);
         LineElement line = tds_current.addLineFct(structFct.idf_fct.name, NatureSymboles.FUNCTION, structFct.type, params, params.size());
         if (line != null) {
             tds_current = tds_current.newRegion(structFct.idf_fct.name, tds_current);

@@ -399,11 +399,13 @@ public class GraphVizVisitor implements AstVisitor<String> {
 
         this.addNode(nodeIdentifier, "Bloc");
 
-        for (Ast ast:bloc.list) {
+        if (bloc.list.size() != 0) {
+            for (Ast ast:bloc.list) {
 
-            String astState = ast.accept(this);
-            this.addTransition(nodeIdentifier, astState);
+                String astState = ast.accept(this);
+                this.addTransition(nodeIdentifier, astState);
 
+            }
         }
 
         return nodeIdentifier;

@@ -11,7 +11,6 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 
-import TDS.SymbolTable;
 import TDS.TdsVisitor;
 import ast.*;
 import graphViz.GraphVizVisitor;
