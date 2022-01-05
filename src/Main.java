@@ -51,9 +51,8 @@ public class Main {
 
             // Visiteur de l'AST + création de la TDS + contrôle sémentique
             TdsVisitor tds_visitor = new TdsVisitor();
-            SymbolTable tds = ast.accept(tds_visitor);
-            tds.displayAll() ;
-
+            ast.accept(tds_visitor);
+            tds_visitor.tds_root.displayAll() ;
         } catch (IOException e) {
             e.printStackTrace();
         }

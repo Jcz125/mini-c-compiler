@@ -6,24 +6,24 @@ import ast.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TdsVisitor implements AstVisitor<SymbolTable> {
+public class TdsVisitor implements AstVisitor<String> {
 
-    SymbolTable tds_root;
-    SymbolTable tds_current;
-    boolean main = false;
-    ArrayList<String> Errors =tds_root.Errors;
+    public SymbolTable tds_root;
+    public SymbolTable tds_current;
+    public boolean main = false;
+    public ArrayList<String> Errors = SymbolTable.Errors;
 
     @Override
-    public SymbolTable visit(Program program) {
+    public String visit(Program program) {
         SymbolTable root = new SymbolTable("root", null);
         this.tds_root = this.tds_current = root;
         for (Ast ast : program.program)
             ast.accept(this);
-        return root;
+        return null;
     }
 
     @Override
-    public SymbolTable visit(DeclType decltype) {
+    public String visit(DeclType decltype) {
         HashMap<Symbole, String> table = new HashMap<Symbole, String>(); // Symbole est la clé K et String la valeur V
         for (Ast champ : decltype.list) { // remplissage des champs selon le type
             if (champ instanceof VarInt) {
@@ -40,24 +40,24 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
             }
         }
         tds_current.addLineStructDef(decltype.idf_name.name, NatureSymboles.STRUCT, decltype.type, table);
-        return tds_current;
+        return null;
     }
 
     @Override
-    public SymbolTable visit(VarInt varInt) {
+    public String visit(VarInt varInt) {
         for(Idf idf : varInt.list){
             tds_current.addLineInt(idf.name, NatureSymboles.VARIABLE);
         }
-        return tds_current;
+        return null;
     }
 
     @Override
-    public SymbolTable visit(VarStruct varStruct) {
+    public String visit(VarStruct varStruct) {
         String type = varStruct.type;
         for (Idf idf : varStruct.list_idf) {
             tds_current.addLineStruct(idf.name, NatureSymboles.VARIABLE, type);
         }
-        return tds_current;
+        return null;
     }
 
     public HashMap<Symbole, String> create_hashmap_param(ArrayList<Ast> list) {
@@ -101,7 +101,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     }
 
     @Override // pas terminer à finaliser manque le contrôle sémantique et repérage région
-    public SymbolTable visit(IntFct intFct) {
+    public String visit(IntFct intFct) {
         //HashMap<Symbole, String> params = create_hashmap_param(intFct.params.list);
         ArrayList<Symbole> params = create_array_param(intFct.params.list);
 
@@ -115,6 +115,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
             tds_current.addListVar(intFct.params.list, NatureSymboles.PARAM_FUNC);
             intFct.bloc.accept(this);
             tds_current = tds_current.exitRegion(tds_current);
+            // ajout de vérif main
         }
 
         //controle type de return
@@ -124,7 +125,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
             Errors.add("Error in "+tds_current.getName()+" : no return for function "+line.getIdf());
         }
 
-        return tds_current;
+        return null;
     }
 
     String lookUpReturnType(Ast bloc){
@@ -136,7 +137,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
 
     @Override
-    public SymbolTable visit(StructFct structFct) {
+    public String visit(StructFct structFct) {
         //HashMap<Symbole, String> params = create_hashmap_param(structFct.params.list);
         ArrayList<Symbole> params = create_array_param(structFct.params.list);
         LineElement line = tds_current.addLineFct(structFct.idf_fct.name, NatureSymboles.FUNCTION, structFct.type, params, params.size());
@@ -146,20 +147,20 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
             structFct.bloc.accept(this);
             tds_current = tds_current.exitRegion(tds_current);
         }
-        return tds_current;
+        return null;
     }
 
     @Override
-    public SymbolTable visit(Bloc bloc) {
+    public String visit(Bloc bloc) {
         for(Ast ast:bloc.list){
             ast.accept(this);
         }
-        return tds_current;
+        return null;
     }
 
 
     @Override
-    public SymbolTable visit(Affect affect) {
+    public String visit(Affect affect) {
         // à faire avec funct check
         if (affect.left instanceof Idf) {
             LineElement lineElement= tds_current.lookUp(((Idf) affect.left).name,tds_current);
@@ -185,7 +186,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     }
     //à vérifier,Céline will check
     @Override
-    public SymbolTable visit(Fleche fleche) {
+    public String visit(Fleche fleche) {
         //control sémantique
         String left= ((Idf) fleche.left).name;
         String right= ((Idf) fleche.right).name;
@@ -205,71 +206,71 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
             //return null;
         }
 
-        return tds_current;
-    }
-
-    @Override
-    public SymbolTable visit(OuLogique ouLogique) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(EtLogique etLogique) {
+    public String visit(OuLogique ouLogique) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(EqualTo equalTo) {
+    public String visit(EtLogique etLogique) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(NotEqualTo notEqualTo) {
+    public String visit(EqualTo equalTo) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(GreaterOrEqual greaterOrEqual) {
+    public String visit(NotEqualTo notEqualTo) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(GreaterThan greaterThan) {
+    public String visit(GreaterOrEqual greaterOrEqual) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(LessOrEqual lessOrEqual) {
+    public String visit(GreaterThan greaterThan) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(LessThan lessThan) {
+    public String visit(LessOrEqual lessOrEqual) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Plus plus) {
+    public String visit(LessThan lessThan) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Minus minus) {
+    public String visit(Plus plus) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Mult mult) {
+    public String visit(Minus minus) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Divide divide) {
+    public String visit(Mult mult) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Oppose oppose) {
+    public String visit(Divide divide) {
+        return null;
+    }
+
+    @Override
+    public String visit(Oppose oppose) {
         // error pour -pointer
         if(oppose.op.equals("-")){
             if(oppose.value instanceof Fleche){
@@ -307,13 +308,15 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
 
     public boolean checkType(Ast ast, String type) {
+        // String left = ast.left.accept(this);
+        // String right = ast.right.accept(this);
         
         return true;
     }
 
 
     @Override
-    public SymbolTable visit(Function function) {
+    public String visit(Function function) {
         //control sémantique
         String FunctIdf= ((Idf) function.idf).name;
 
@@ -321,7 +324,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         //on vérifie que la funct left soit bien définie
         if(lineElement == null){
             Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
-            // return null;
+            return null;
         }
 
         int nb = function.expression.size();
@@ -347,13 +350,13 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
 
         }
 
-        return tds_current;
+        return null;
     }
 
     @Override
-    public SymbolTable visit(Sizeof sizeof) {
+    public String visit(Sizeof sizeof) {
         if(tds_current.lookUpStructDef(sizeof.idf.name,tds_current)!=null){
-            return tds_current;
+            return null;
         }
         else {
             Errors.add("Error in"+tds_current.getName()+"sizeof invalid identifier: "+sizeof.idf.name);
@@ -362,48 +365,48 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     }
 
     @Override
-    public SymbolTable visit(Idf idf) {
+    public String visit(Idf idf) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(IfThen ifThen) {
+    public String visit(IfThen ifThen) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(IfThenElse ifThenElse) {
+    public String visit(IfThenElse ifThenElse) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(WhileInst whileInst) {
+    public String visit(WhileInst whileInst) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Return return1) {
+    public String visit(Return return1) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Entier integer) {
+    public String visit(Entier integer) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(Parametres parametres) {
+    public String visit(Parametres parametres) {
         return null;
     }
 
     @Override
-    public SymbolTable visit(IntParam intParam) {
+    public String visit(IntParam intParam) {
 
         return null;
     }
 
     @Override
-    public SymbolTable visit(StructPointer structPointer) {
+    public String visit(StructPointer structPointer) {
         return null;
     }
 

@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class SymbolTable {
 
-    public static ArrayList<String> Errors;
+    public static ArrayList<String> Errors = new ArrayList<>();
     private String name ;
     private ArrayList<LineElement> lines;
     private SymbolTable parent;
@@ -104,7 +104,8 @@ public class SymbolTable {
     public LineElement addLineStructDef(String struct_name, NatureSymboles nature, String type, HashMap<Symbole, String> champs) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(struct_name)) {
-                System.out.println("Idf already used");
+                Errors.add("Error in "+this.name+" : idf already used "+line.getIdf());
+                // System.out.println("Idf already used");
                 return null;
             }
         }
@@ -146,11 +147,11 @@ public class SymbolTable {
     public LineElement lookUp(String idf, SymbolTable st) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                System.out.println("Var declared ");
+                // System.out.println("Var declared ");
                 return line;
             }
         }
-        System.out.println("Not found in the current table, searching in parent : ");
+        // System.out.println("Not found in the current table, searching in parent : ");
 
         if (st.parent != null)
             return lookUp(idf, st.parent);
