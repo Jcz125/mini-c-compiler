@@ -323,7 +323,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         //on vérifie que la funct left (idf) soit bien définie
         if(lineElement == null){
             Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
-            // return null;
+            return null;
         }
 
         int nb = function.expression.size();
