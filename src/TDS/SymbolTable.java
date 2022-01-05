@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class SymbolTable {
 
-    public static ArrayList<String> Errors;
+    public static ArrayList<String> Errors = new ArrayList<>();
     private String name ;
     private ArrayList<LineElement> lines;
     private SymbolTable parent;

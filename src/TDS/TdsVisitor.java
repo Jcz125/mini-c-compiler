@@ -11,7 +11,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     SymbolTable tds_root;
     SymbolTable tds_current;
     boolean main = false;
-    ArrayList<String> Errors =tds_root.Errors;
+    ArrayList<String> Errors = SymbolTable.Errors;
 
     @Override
     public SymbolTable visit(Program program) {
@@ -123,6 +123,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         if(result==null){
             Errors.add("Error in "+tds_current.getName()+" : no return for function "+line.getIdf());
         }
+        // controle type retour == type return
 
         return tds_current;
     }
@@ -180,6 +181,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
     }
 
     public String getTypeFleche(Fleche fleche){
+        //voir si les champs des structs sont vraiment dans les structs
         //renvoie le type de fleche
         return null;
     }
@@ -318,7 +320,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
         String FunctIdf= ((Idf) function.idf).name;
 
         LineElement lineElement = tds_current.lookUpFunctDef(FunctIdf,tds_current);
-        //on vérifie que la funct left soit bien définie
+        //on vérifie que la funct left (idf) soit bien définie
         if(lineElement == null){
             Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
             // return null;
@@ -356,6 +358,7 @@ public class TdsVisitor implements AstVisitor<SymbolTable> {
             return tds_current;
         }
         else {
+            //idf doit etre defini
             Errors.add("Error in"+tds_current.getName()+"sizeof invalid identifier: "+sizeof.idf.name);
             return null;
         }
