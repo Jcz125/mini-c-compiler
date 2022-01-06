@@ -1,0 +1,9 @@
+int fct(int c) {
+    if ( ! 0 )
+       return 0 ;
+    return 1;
+}
+
+int main() {
+    return fct(5) ;
+}
