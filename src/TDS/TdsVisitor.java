@@ -12,6 +12,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public SymbolTable tds_current;
     public boolean main = false;
     public ArrayList<String> Errors = SymbolTable.Errors;
+    public ArrayList<Ast> list_var = null;
 
     @Override
     public String visit(Program program) {
@@ -128,10 +129,11 @@ public class TdsVisitor implements AstVisitor<String> {
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
         // on check si le idf est déjà utilisé
         if (line != null) { // finalement le newRegion ici n'est pas approprié, trouver un moyen de faire autrement car Bloc le fait déjà
-            tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
-            tds_current.addListVar(intFct.params.list, NatureSymboles.PARAM_FUNC);
+            // tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
+            // tds_current.addListVar(intFct.params.list, NatureSymboles.PARAM_FUNC);
+            this.list_var = intFct.params.list;
             String typeRetour = intFct.bloc.accept(this);
-            tds_current = tds_current.exitRegion(tds_current);
+            // tds_current = tds_current.exitRegion(tds_current);
             checkMain(line);
 
             //controle type de return
@@ -179,6 +181,10 @@ public class TdsVisitor implements AstVisitor<String> {
     @Override
     public String visit(Bloc bloc) { // doit faire newRegion ici vérifier
         tds_current = tds_current.newRegion(tds_current.getName()+"#"+tds_current.getChildren().size()+1, tds_current);
+        if (list_var != null) {
+            tds_current.addListVar(list_var, NatureSymboles.PARAM_FUNC);
+            list_var = null;
+        }
         String returnType = null;
         for(Ast ast:bloc.list) {
             if (ast instanceof Return || ast instanceof IfThen || ast instanceof IfThenElse || ast instanceof WhileInst || ast instanceof Bloc) {
