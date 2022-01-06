@@ -6,7 +6,7 @@ struct S2 {
 int fct(struct S2 * ab1, int c) {
     while (c > 0) {
         int d ;
-        struct S2 * ab2, ab3;
+        struct S2 * ab2, * ab3;
         if (ab1->a > 0) {
             int e, f ;
             while (ab1->a > 0)  {
@@ -15,7 +15,7 @@ int fct(struct S2 * ab1, int c) {
                     int g ;
                     while (ab1->b > 0) {
                         int res ;
-                        struct S2 * ab2, ab3;
+                        struct S2 * ab2, *ab3;
                         c = c-1 ;
                         res = c;
                     }

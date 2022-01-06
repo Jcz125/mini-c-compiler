@@ -1,0 +1,56 @@
+//vide
+struct S1 {
+};
+
+struct S2 {
+    int a ;
+    int b ;
+};
+
+struct S3 {
+    struct S1 * one, *two;
+    struct S2 * three, *four;
+    int c, d;
+}
+
+//fonction avec type de retour : INT
+int fct(struct S3 * ab1, int c) {
+    while (c > 0) {
+        int a;
+        struct S3 * ab2, *ab3;
+        if (ab1->three->a > 0) {
+            int b, c ;
+            while (ab1->three->a > 0)  {
+                int d ;
+                if (ab1->c > 0) {
+                    int f ;
+                    while (ab1->c > 0) {
+                        int res ;
+                        struct S2 * ab2, *ab3;
+                        c = c-1 ;
+                        res = c;
+                    }
+                }
+                ab1->three->a = ab1->three->a - 1;
+            }
+        }
+    }
+    return res;
+}
+
+//fonction avec type de retour : Struct
+//TODO
+
+int main() {
+    int res ;
+    struct S3 * s ;
+    struct S2 * d ;
+
+    d = malloc(sizeof(struct S2));
+    s = malloc(sizeof(struct S3));
+    d->a = 10;                          // affectation (typage)
+    d->b = 5;
+
+    res = fct(s, 5) ;                   // ordre de param et bonne manip d'une fct
+    return res;                         // type de retour d'une fonction
+}

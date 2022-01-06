@@ -73,35 +73,24 @@ public class StructDefSymbole extends Symbole{
                     tab.add(name);
                     types.put(t, tab);
                 }
-//                if (s instanceof IntSymbole){
-//                    intTab.add(s.idf.toString()) ;
-////                    String name = s.idf.toString();
-////                    System.out.print("( int: " + name + ")" + "  |  ") ;
-//                }
-//                else {
-//                    String name = s.idf.toString() ;
-//                    String type = s.type.toString() ;
-//                    System.out.print("(" + type + " : " + name + ")" + "  |  ") ;
-//                }
-//            }
-//            System.out.print( "(int : ") ;
-//            for (String i: intTab) {
-//                System.out.print( i + ", ") ;
-//            }
-//            System.out.print( ")") ;
 
             }
             for (String name: types.keySet()) {
                 String key = name.toString();
                 System.out.print("(");
-                System.out.print(key + " : " );
+                if (!key.equals("int")){
+                    System.out.print(key + " * : " );
+                }
+                else {
+                    System.out.print(key + " : " );
+                }
                 System.out.print(types.get(name));
                 System.out.print(")");
                 System.out.print("      ");
             }
         }
         else {
-            System.out.println(" Vide ");
+            System.out.print(" Vide ");
         }
     }
 }
