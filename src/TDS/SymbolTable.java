@@ -144,7 +144,7 @@ public class SymbolTable {
     }
 
 
-    public LineElement lookUp(String idf, SymbolTable st) {
+    public LineElement lookUp(String idf, SymbolTable st) { // inutile de mettre st ici !
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
                 // System.out.println("Var declared ");

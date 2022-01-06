@@ -17,6 +17,8 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Program program) {
         SymbolTable root = new SymbolTable("root", null);
         this.tds_root = this.tds_current = root;
+        root.addLineFct("malloc", NatureSymboles.FUNCTION, "void *", new ArrayList<Symbole>(){{add(new IntSymbole("n"));}}, 1);
+        root.addLineFct("print", NatureSymboles.FUNCTION, "void", new ArrayList<Symbole>(){{add(new IntSymbole("n"));}}, 1);
         for (Ast ast : program.program)
             ast.accept(this);
         return null;
@@ -125,22 +127,30 @@ public class TdsVisitor implements AstVisitor<String> {
 
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
         // on check si le idf est déjà utilisé
-        if (line != null) {
+        if (line != null) { // finalement le newRegion ici n'est pas approprié, trouver un moyen de faire autrement car Bloc le fait déjà
             tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
             tds_current.addListVar(intFct.params.list, NatureSymboles.PARAM_FUNC);
-            intFct.bloc.accept(this);
+            String typeRetour = intFct.bloc.accept(this);
             tds_current = tds_current.exitRegion(tds_current);
             checkMain(line);
-        }
 
-        //controle type de return
-        Ast bloc = intFct.bloc;
-        String result = lookUpReturnType(bloc); // à écrire
-        if (result==null) {
-            Errors.add("Warning in "+tds_current.getName()+" : no return for function "+line.getIdf());
-        }
+            //controle type de return
+            if (typeRetour == null) {
+                Errors.add("Warning in "+tds_current.getName()+" : no return for function int "+line.getIdf());
+                return null;
+            }
+            else if (!typeRetour.equals("int")) {
+                Errors.add("Warning in "+tds_current.getName()+" : no identical return type for function "+line.getIdf());
+                return null;
+            }
+
+            // Ast bloc = intFct.bloc;
+            // String result = lookUpReturnType(bloc); // à écrire
+            // if (result==null) {
+            //     Errors.add("Warning in "+tds_current.getName()+" : no return for function "+line.getIdf());
+            // }
         // controle type retour == type return
-
+        }
         return null;
     }
 
@@ -167,11 +177,20 @@ public class TdsVisitor implements AstVisitor<String> {
     }
 
     @Override
-    public String visit(Bloc bloc) {
-        for(Ast ast:bloc.list){
+    public String visit(Bloc bloc) { // doit faire newRegion ici vérifier
+        tds_current = tds_current.newRegion(tds_current.getName()+"#"+tds_current.getChildren().size()+1, currentSt)
+        String returnType = null;
+        for(Ast ast:bloc.list) {
+            if (ast instanceof Return || ast instanceof IfThen || ast instanceof IfThenElse || ast instanceof WhileInst || ast instanceof Bloc) {
+                if (returnType == null)
+                    returnType = ast.accept(this);
+                else if (!returnType.equals(ast.accept(this)))
+                    returnType = "";
+            }
             ast.accept(this);
         }
-        return null;
+        tds_current = tds_current.exitRegion(tds_current);
+        return returnType;
     }
 
 
@@ -204,6 +223,10 @@ public class TdsVisitor implements AstVisitor<String> {
     //à vérifier,Céline will check
     @Override
     public String visit(Fleche fleche) {
+        String left = fleche.accept(this);
+        String right = fleche.accept(this);
+        LineElement line = tds_current.look
+
         //control sémantique
         String left= ((Idf) fleche.left).name;
         String right= ((Idf) fleche.right).name;
@@ -228,79 +251,150 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(OuLogique ouLogique) {
+        String left = ouLogique.left.accept(this);
+        String right = ouLogique.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(EtLogique etLogique) {
+        String left = etLogique.left.accept(this);
+        String right = etLogique.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(EqualTo equalTo) {
+        String left = equalTo.left.accept(this);
+        String right = equalTo.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(NotEqualTo notEqualTo) {
+        String left = notEqualTo.left.accept(this);
+        String right = notEqualTo.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(GreaterOrEqual greaterOrEqual) {
+        String left = greaterOrEqual.left.accept(this);
+        String right = greaterOrEqual.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(GreaterThan greaterThan) {
+        String left = greaterThan.left.accept(this);
+        String right = greaterThan.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(LessOrEqual lessOrEqual) {
+        String left = lessOrEqual.left.accept(this);
+        String right = lessOrEqual.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(LessThan lessThan) {
+        String left = lessThan.left.accept(this);
+        String right = lessThan.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(Plus plus) {
+        String left = plus.left.accept(this);
+        String right = plus.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(Minus minus) {
+        String left = minus.left.accept(this);
+        String right = minus.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(Mult mult) {
+        String left = mult.left.accept(this);
+        String right = mult.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(Divide divide) {
+        String left = divide.left.accept(this);
+        String right = divide.right.accept(this);
+        if (left.equals(right)) {
+            return right;
+        }
         return null;
     }
 
     @Override
     public String visit(Oppose oppose) {
+        String type = oppose.value.accept(this);
         // error pour -pointer
-        if(oppose.op.equals("-")){
-            if(oppose.value instanceof Fleche){
-                Errors.add("Error in "+tds_current.getName()+" : -value needs value to be an arithmetic type");
-            }
-            if(oppose.value instanceof Function){
-                LineElement lineElement = tds_current.lookUp(((Idf) ((Function) oppose.value).idf).name,tds_current);
-                if(lineElement.getSymbole() instanceof StructSymbole){
-                    Errors.add("Error in "+tds_current.getName()+" : -value needs value to be an arithmetic type");
-                }
-            }
-            //manque check pour Parenthesis quand expr c'est un pointeur
+        if (oppose.op.equals("-") && !type.equals("int")) {
+            Errors.add("Error in "+tds_current.getName()+" : -value needs value to be an arithmetic type");
+            return null;
         }
+            
+
+            // if (oppose.value instanceof Fleche) {
+            //     type = oppose.value.accept(this);
+            //     if (!type.equals("int")) {
+            //         Errors.add("Error in "+tds_current.getName()+" : -value needs value to be an arithmetic type");
+            //         return null;
+            //     }
+            // }
+            // else if (oppose.value instanceof Function) {
+            //     type = oppose.value.accept(this);
+            //     LineElement lineElement = tds_current.lookUp(((Idf) ((Function) oppose.value).idf).name, tds_current);
+            //     if (lineElement != null && lineElement.getSymbole() instanceof FctSymbole && !((FctSymbole) lineElement.getSymbole()).getTypeRetour().equals("int")) {
+            //         Errors.add("Error in "+tds_current.getName()+" : -value needs value to be an arithmetic type");
+            //     }
+            // }
+            //manque check pour Parenthesis quand expr c'est un pointeur
+        
 
         /*if(oppose.value instanceof Idf){
             LineElement lineElement = tds_current.lookUp(((Idf) oppose.value).name,tds_current);
@@ -320,13 +414,14 @@ public class TdsVisitor implements AstVisitor<String> {
 
         if( oppose.value instanceof Function)*/
 
-        return null;
+        return type;
     }
 
 
     public boolean checkType(Ast ast, String type) {
-        // String left = ast.left.accept(this);
-        // String right = ast.right.accept(this);
+        String left = ast.left.accept(this);
+        String right = ast.right.accept(this);
+
         
         return true;
     }
@@ -384,7 +479,7 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Idf idf) {
-        return null;
+        return tds_current.lookUp(idf.name, tds_current).getSymbole().getType();
     }
 
     @Override
@@ -404,12 +499,12 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Return return1) {
-        return null;
+        return return1.accept(this);
     }
 
     @Override
     public String visit(Entier integer) {
-        return null;
+        return "int";
     }
 
     @Override
