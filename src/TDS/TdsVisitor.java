@@ -178,7 +178,7 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Bloc bloc) { // doit faire newRegion ici vérifier
-        tds_current = tds_current.newRegion(tds_current.getName()+"#"+tds_current.getChildren().size()+1, currentSt)
+        tds_current = tds_current.newRegion(tds_current.getName()+"#"+tds_current.getChildren().size()+1, tds_current);
         String returnType = null;
         for(Ast ast:bloc.list) {
             if (ast instanceof Return || ast instanceof IfThen || ast instanceof IfThenElse || ast instanceof WhileInst || ast instanceof Bloc) {
@@ -225,11 +225,11 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Fleche fleche) {
         String left = fleche.accept(this);
         String right = fleche.accept(this);
-        LineElement line = tds_current.look
+        LineElement line; // faire un look peut-être
 
         //control sémantique
-        String left= ((Idf) fleche.left).name;
-        String right= ((Idf) fleche.right).name;
+        // String left= ((Idf) fleche.left).name;
+        // String right= ((Idf) fleche.right).name;
         //LineElement lineElement = tds_current.lookUp(left,tds_current);
         LineElement lineElement = tds_current.lookUpStructDef(left,tds_current);
         //on vérifie que la struct left soit bien définie
@@ -419,8 +419,8 @@ public class TdsVisitor implements AstVisitor<String> {
 
 
     public boolean checkType(Ast ast, String type) {
-        String left = ast.left.accept(this);
-        String right = ast.right.accept(this);
+        // String left = ast.left.accept(this);
+        // String right = ast.right.accept(this);
 
         
         return true;
