@@ -1,0 +1,15 @@
+struct S1 {
+    int a ;
+};
+
+
+struct S1 * fctS() {
+    struct S1 * abc1 ;
+    abc1 = malloc(sizeof(struct S1)) ;
+    return abc1 ;
+}
+
+
+int main() {
+    return 0 ;
+}

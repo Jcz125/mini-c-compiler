@@ -1,0 +1,8 @@
+int fct() {
+   int a;
+   a = 5;
+}
+
+int main() {
+    return fct();
+}
