@@ -3,24 +3,28 @@ struct S2 {
     int b ;
 };
 
-int fct(struct S2 * ab, int c) {
-    while (c > 0)
+int fct(struct S2 * ab1, int c) {
+    while (c > 0) {
         int d ;
-        if (ab->a > 0)
-            int e ;
-            while (ab->a > 0)  {
+        struct S2 * ab2, ab3;
+        if (ab1->a > 0) {
+            int e, f ;
+            while (ab1->a > 0)  {
                 int f ;
-                if (ab->b > 0) {
+                if (ab1->b > 0) {
                     int g ;
-                    while (ab->b > 0) {
+                    while (ab1->b > 0) {
                         int res ;
+                        struct S2 * ab2, ab3;
                         c = c-1 ;
                         res = c;
                     }
                 }
             }
-
+        }
+    }
     return 1;
+
 }
 
 int main() {

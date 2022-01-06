@@ -1,0 +1,17 @@
+int true() {
+    return 1 ;
+}
+
+int false() {
+    return 0 ;
+}
+
+int fct(int c) {
+    if ( true() || false() )
+       return 0 ;
+    return 1;
+}
+
+int main() {
+    return fct(5) ;
+}

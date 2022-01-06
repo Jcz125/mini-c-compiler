@@ -1,0 +1,17 @@
+struct S2 {
+    int a ;
+    int b ;
+};
+
+int fct(struct S2 * ab, int a, int b) {
+    int res ;
+    if ((ab->a < 0) || (ab->b < 0) )
+        res = a-b ;
+    return res ;
+}
+
+int main() {
+    struct S2 * e ;
+    e = malloc(sizeof(struct S2));
+    return fct(e, 5, 4) ;
+}

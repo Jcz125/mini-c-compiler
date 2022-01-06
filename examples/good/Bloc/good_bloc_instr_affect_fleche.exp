@@ -1,0 +1,18 @@
+struct S1 {
+    int a;
+};
+
+struct S2 {
+    struct S1 * s1;
+    int b ;
+};
+
+int fct(struct S2 * ab, int c) {
+    return ab->s1->a ;
+}
+
+int main() {
+    struct S2 * d ;
+    d = malloc(sizeof(struct S2));
+    return fct(d, 5) ;
+}

@@ -1,0 +1,6 @@
+int fct() {
+}
+
+int main() {
+    return fct();
+}

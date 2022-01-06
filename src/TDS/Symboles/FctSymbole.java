@@ -56,7 +56,12 @@ public class FctSymbole extends Symbole {
 
     @Override
     public void displaySymbole() {
-        System.out.print("Type de retour : " + this.typeRetour + "       " );
+        if (!this.typeRetour.equals("int")) {
+            System.out.print("Type de retour : " + this.typeRetour + " *       " );
+        }
+        else {
+            System.out.print("Type de retour : " + this.typeRetour + "       " );
+        }
         System.out.print("Nbre de params : " +  this.nbParam + "       ") ;
 
         if (this.nbParam != 0) {
@@ -64,7 +69,12 @@ public class FctSymbole extends Symbole {
             for(Symbole s : fctParams){
                 String name = s.idf;
                 String type = s.type;
-                System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
+                if (!type.equals("int")){
+                    System.out.print("(" + name + " __ " + type + " *)" + "  |  ") ;
+                }
+                else {
+                    System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
+                }
             }
             /*for (Symbole s : fctParams.keySet()){
                 String name = s.idf.toString() ;

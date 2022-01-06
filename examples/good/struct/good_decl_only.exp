@@ -1,0 +1,16 @@
+struct S1 {
+    int a, b, c, d ;
+};
+
+// empty struct
+struct S2 { } ;
+
+struct S3 {
+    struct S1 * one, two, three;
+    struct S2 * five, six ;
+} ;
+
+
+int main(){
+    return 0;
+}
