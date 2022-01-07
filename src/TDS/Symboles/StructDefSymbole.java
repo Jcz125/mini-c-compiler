@@ -25,14 +25,14 @@ public class StructDefSymbole extends Symbole{
         return type;
     }
 
-    public Symbole lookUpChamp(String idf){
-
-        for (Map.Entry mapentry : champs.entrySet()) {
-            if (mapentry.getValue().equals(idf)) {
-                return (Symbole) mapentry.getKey();
+    public Symbole lookUpChamp(String idf_champ, String type) {
+        for (Map.Entry<Symbole, String> mapentry : champs.entrySet()) {
+            if (mapentry.getValue().equals(type)) {
+                if (((Symbole) mapentry.getKey()).idf.equals(idf_champ)) {
+                    return (Symbole) mapentry.getKey();
+                }
             }
         }
-
         return null;
     }
 

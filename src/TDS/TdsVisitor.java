@@ -123,7 +123,6 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override // pas terminer à finaliser manque le contrôle sémantique
     public String visit(IntFct intFct) {
-        // HashMap<Symbole, String> params = create_hashmap_param(intFct.params.list);
         ArrayList<Symbole> params = create_array_param(intFct.params.list, intFct.type+" "+intFct.idf);
 
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
@@ -142,7 +141,7 @@ public class TdsVisitor implements AstVisitor<String> {
                 return null;
             }
             else if (!typeRetour.equals("int")) {
-                Errors.add("Warning in "+tds_current.getName()+" : no identical return type for function "+line.getIdf());
+                Errors.add("Error in "+tds_current.getName()+" : no identical return type for function "+line.getIdf());
                 return null;
             }
 
@@ -188,6 +187,7 @@ public class TdsVisitor implements AstVisitor<String> {
         String returnType = null;
         for(Ast ast:bloc.list) {
             if (ast instanceof Return || ast instanceof IfThen || ast instanceof IfThenElse || ast instanceof WhileInst || ast instanceof Bloc) {
+                // revoir les cas IfThen etc.. déléguer au visiteurs ou traiter autrement
                 if (returnType == null)
                     returnType = ast.accept(this);
                 else if (!returnType.equals(ast.accept(this)))
@@ -229,30 +229,27 @@ public class TdsVisitor implements AstVisitor<String> {
     //à vérifier,Céline will check
     @Override
     public String visit(Fleche fleche) {
-        String left = fleche.accept(this);
-        String right = fleche.accept(this);
-        LineElement line; // faire un look peut-être
-
-        //control sémantique
-        // String left= ((Idf) fleche.left).name;
-        // String right= ((Idf) fleche.right).name;
-        //LineElement lineElement = tds_current.lookUp(left,tds_current);
-        LineElement lineElement = tds_current.lookUpStructDef(left,tds_current);
-        //on vérifie que la struct left soit bien définie
-        if(lineElement == null){
+        String left = fleche.left.accept(this);
+        String right = fleche.right.accept(this);
+        LineElement lineElement = tds_current.lookUpStructDef(left, tds_current);
+        if (lineElement != null) { // on vérifie que la struct left soit bien définie
+            if (fleche.right instanceof Idf) {
+                StructDefSymbole structDefSymbole = (StructDefSymbole) lineElement.getSymbole();
+                Symbole symbole = structDefSymbole.lookUpChamp(((Idf) fleche.right).name, tds_current.lookUp(((Idf) fleche.right).name, tds_current).getSymbole().getType());
+                if (symbole != null) { // on vérifie que le champ right soit bien un champ de left
+                    return symbole.getType();
+                } else {
+                    Errors.add("Error in "+tds_current.getName()+": "+right+" not champ of "+left);
+                    return null;
+                }
+            } else {
+                Errors.add("Error in"+tds_current.getName()+": arrow problem");
+                return null;
+            }
+        } else {
             Errors.add("Error in "+tds_current.getName()+": "+left+" not defined");
-           // return null;
+            return null;
         }
-
-        StructDefSymbole structDefSymbole = (StructDefSymbole) lineElement.getSymbole();
-        Symbole symbole=structDefSymbole.lookUpChamp(right);
-        //on vérifie que le champ right soit bien un champ de left
-        if(symbole == null){
-            Errors.add("Error in "+tds_current.getName()+": "+right+" not champ of "+left);
-            //return null;
-        }
-
-        return null;
     }
 
     @Override
@@ -435,40 +432,34 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Function function) {
-        //control sémantique
+        // control sémantique
         String FunctIdf= ((Idf) function.idf).name;
+        LineElement lineElement = tds_current.lookUpFunctDef(FunctIdf, tds_current);
 
-        LineElement lineElement = tds_current.lookUpFunctDef(FunctIdf,tds_current);
-        //on vérifie que la funct left (idf) soit bien définie
-        if(lineElement == null){
+        // on vérifie que la funct left (idf) soit bien définie
+        if (lineElement == null) {
             Errors.add("Error in "+tds_current.getName()+": "+FunctIdf+" not defined");
             return null;
         }
 
         int nb = function.expression.size();
         FctSymbole fctSymbole = (FctSymbole) lineElement.getSymbole();
-        //on vérifie que le nombre de params de la fonction correspond bien au nombre attendu
-        if(nb!=fctSymbole.getNbParam()){
+
+        // on vérifie que le nombre de params de la fonction correspond bien au nombre attendu
+        if (nb != fctSymbole.getNbParam()) {
             Errors.add("Error in "+tds_current.getName()+" : params number doesnt match expected number in"+lineElement.getIdf());
-            //return null
-        }
+        } else {
+            ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
+            ArrayList<Ast> paramsExec = function.expression;
 
-        ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
-
-        //Il manque vérifier les types des params
-
-        ArrayList<Ast> paramsExec = function.expression;
-
-        for(int i=0 ; i<fctSymbole.getNbParam() ; i++){
-            String typeDecl = paramsDecl.get(i).getType();
-            if(!checkType(paramsExec.get(i),typeDecl)){
-                Errors.add("Error in "+tds_current.getName()+ "type of param number "+i+" doesnt match function"+fctSymbole.getIdf()+" definition" );
+            for (int i=0 ; i<fctSymbole.getNbParam() ; i++) {
+                String typeDecl = paramsDecl.get(i).getType();
+                if (!typeDecl.equals(paramsExec.get(i).accept(this))) {
+                    Errors.add("Error in "+tds_current.getName()+ "type of param number "+i+" doesnt match function "+fctSymbole.getType()+" "+fctSymbole.getIdf()+" definition" );
+                }
             }
-            //checkType(Ast ast, String type) renvoie un boolean (true si les 2 types pareils et false sinon)
-
         }
-
-        return null;
+        return lineElement.getSymbole().getType();
     }
 
     @Override
