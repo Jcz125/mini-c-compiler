@@ -3,9 +3,15 @@ bin
 .antlr
 .idea
 
+lib/
+examples
+
 src/parser/
-out/
 
 brouillon*
 src/TDS/test.c
 src/a.exe
+grammaire_cir-c.g4
+brouillon.c
+out/
+

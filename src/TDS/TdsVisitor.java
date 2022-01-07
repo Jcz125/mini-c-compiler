@@ -132,7 +132,13 @@ public class TdsVisitor implements AstVisitor<String> {
     String lookUpReturnType(Ast bloc){
         //renvoie le type de l'expr de return du bloc (c'est le bloc d'une déclaration de function)
         //S'il n'y a pas de "return", revoie null
-
+        Bloc b = (Bloc) bloc ;
+        ArrayList<Ast> list = b.list ;
+        for (Ast instr : list){
+            if (instr instanceof Return) {
+                return ((Return) instr).value.toString() ;
+            }
+        }
         return null;
     }
 
