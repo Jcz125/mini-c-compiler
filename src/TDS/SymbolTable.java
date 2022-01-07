@@ -215,14 +215,9 @@ public class SymbolTable {
 
 
     public void displayAll() {
-        if(this != null) {
-            this.displayTDS();
-            for (SymbolTable s : this.children ) {
-                s.displayAll();
-            }
-        }
-        else {
-            System.out.print("Vide");
+        this.displayTDS();
+        for (SymbolTable s : this.children ) {
+            s.displayAll();
         }
     }
 
