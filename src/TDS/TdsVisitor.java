@@ -146,7 +146,7 @@ public class TdsVisitor implements AstVisitor<String> {
             // contrôle du type de retour
             if (typeRetour == null)
                 SymbolTable.Errors.add("Warning in "+tds_current.titre+": no return for function int "+line.getIdf());
-            else if (!typeRetour.equals("int"))
+            else if (!(typeRetour.equals("int") || typeRetour.equals("void")))
                 SymbolTable.Errors.add("Error in "+tds_current.titre+": no identical return type for function "+line.getIdf());
             // System.out.println("sortie du intFct");
         }
@@ -192,7 +192,7 @@ public class TdsVisitor implements AstVisitor<String> {
                 else {
                     String newReturn = ast.accept(this);
                     if (newReturn.equals("void") || newReturn.equals("void *"))
-                        SymbolTable.Errors.add("Warning in "+tds_current.titre+": void return type, pointer without cast");
+                        SymbolTable.Errors.add("Warning in "+tds_current.titre+": void return type, pointer without a cast");
                     else if (!returnType.equals(newReturn))
                         returnType = "";
                 }
@@ -212,10 +212,12 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null) { // au moins l'un des vars n'existe pas
             return null;
         }
-        if (!left.equals(right) && !right.equals("void")) {
-            SymbolTable.Errors.add("Error in "+tds_current.titre+": affect types don't match "+left+" and "+right);
+        if (!(left.equals(right) || right.equals("void") || right.equals("void *"))) {
+            SymbolTable.Errors.add("Error in "+tds_current.titre+": assignment types don't match "+left+" and "+right);
             return null;
         }
+        if (right.equals("void") || left.equals("int") && right.equals("void *"))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": void assignment");
         return left;
     }
 
@@ -429,10 +431,8 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Idf idf) {
-        if (tds_current.lookUp(idf.name) != null) {
-            // System.out.println(tds_current.lookUp(idf.name).getSymbole().getType());
+        if (tds_current.lookUp(idf.name) != null)
             return tds_current.lookUp(idf.name).getSymbole().getType();
-        }
         return null;
     }
 
