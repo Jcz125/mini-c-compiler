@@ -10,17 +10,29 @@ import java.util.HashMap;
 public class SymbolTable {
 
     public static ArrayList<String> Errors = new ArrayList<>();
-    private String name ;
+    public int niveau;
+    public String numero;
+    public String titre;
+    private String name;
     private ArrayList<LineElement> lines;
     private SymbolTable parent;
     private ArrayList<SymbolTable> children;
 
 
-    public SymbolTable(String name, SymbolTable parent){
-        this.name = name ;
+    public SymbolTable(String name, SymbolTable parent) {
+        this.name = name;
+        if (parent == null) {
+            this.niveau = 0;
+            this.numero = "0";
+            this.titre = "#"+0+"-"+"0"+" "+name;
+        } else {
+            this.niveau = parent.niveau + 1;
+            this.numero = parent.numero + "." + (parent.children.size()+1);
+            this.titre = "#"+this.niveau+"-"+this.numero+" "+this.name;
+        }
         this.parent = parent;
-        this.lines = new ArrayList<>() ;
-        this.children = new ArrayList<>() ;
+        this.lines = new ArrayList<>();
+        this.children = new ArrayList<>();
     }
 
 
@@ -144,19 +156,17 @@ public class SymbolTable {
     }
 
 
-    public LineElement lookUp(String idf, SymbolTable st) { // inutile de mettre st ici !
-        for (LineElement line:lines) {
+    public LineElement lookUp(String idf) { // inutile de mettre st ici !
+        for (LineElement line : this.lines) {
             if (line.getIdf().equals(idf)) {
                 // System.out.println("Var declared ");
                 return line;
             }
         }
         // System.out.println("Not found in the current table, searching in parent : ");
-
-        if (st.parent != null)
-            return lookUp(idf, st.parent);
-
-        return null ;
+        if (this.parent != null)
+            return this.parent.lookUp(idf);
+        return null;
     }
 
     public LineElement lookUpStructDef(String idf, SymbolTable symbolTable){
@@ -188,18 +198,18 @@ public class SymbolTable {
     }
 
     public void displayTDS() {
-        if(this != null) {
+        if (this != null) {
             String father = "Pas de parent";
-            if(this.parent != null) {
-                father = this.parent.getName();
+            if (this.parent != null) {
+                father = this.parent.titre;
             }
-            System.out.println("\nTable courante:  " + this.name + "              " + "mon pere:  " + father );
+            System.out.println("\nTable courante:  " + this.titre + "              " + "mon pere:  " + father );
             System.out.print("-------------------------------------------------------------------------------------");
             System.out.println("-------------------------------------------------------------------------------------");
             System.out.println("IDF                NATURE                CARACTERISTIQUES SYMBOLE              ");
             System.out.print("-------------------------------------------------------------------------------------");
             System.out.println("-------------------------------------------------------------------------------------");
-            for (LineElement line : this.lines){
+            for (LineElement line : this.lines) {
                 String idf = line.getIdf();
                 NatureSymboles nature = line.getNature();
                 Symbole s = line.getSymbole() ;
@@ -216,11 +226,11 @@ public class SymbolTable {
 
     public void displayAll() {
         this.displayTDS();
-        for (SymbolTable s : this.children ) {
+        for (SymbolTable s : this.children) {
+            // System.out.println("nb childs: "+this.children.size());
             s.displayAll();
         }
     }
-
 
 //    public LineElement updateLineInt(String idf, String value) {
 //        for (LineElement line:lines) {
@@ -236,15 +246,14 @@ public class SymbolTable {
 //
 
 
-    public SymbolTable newRegion(String name, SymbolTable currentSt) {
-        SymbolTable newRegionTable = new SymbolTable(name, currentSt);
-        currentSt.children.add(newRegionTable);
-        return newRegionTable ;
+    public SymbolTable newRegion(String name) {
+        SymbolTable newRegionTable = new SymbolTable(name, this);
+        this.children.add(newRegionTable);
+        return newRegionTable;
     }
 
 
-    public SymbolTable exitRegion(SymbolTable currentSt){
-        return currentSt.parent ;
+    public SymbolTable exitRegion() {
+        return this.parent;
     }
-
 }

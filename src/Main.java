@@ -51,7 +51,9 @@ public class Main {
             // Visiteur de l'AST + création de la TDS + contrôle sémentique
             TdsVisitor tds_visitor = new TdsVisitor();
             ast.accept(tds_visitor);
-            tds_visitor.tds_root.displayAll() ;
+            tds_visitor.tds_root.displayAll();  // Affichage TDS
+            tds_visitor.showErrors();           // Affichage erreurs sémantiques
+
         } catch (IOException e) {
             e.printStackTrace();
         }
