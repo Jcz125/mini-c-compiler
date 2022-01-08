@@ -74,7 +74,7 @@ public class SymbolTable {
     public LineElement addLineInt(String idf, NatureSymboles nature) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");    //ajouter le numéro de ligne
+                Errors.add("Error in "+this.name+": [idf] "+idf+" already used");
                 return null;
             }
         }
@@ -88,7 +88,7 @@ public class SymbolTable {
     public LineElement addLineStruct(String idf, NatureSymboles nature, String type) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");
+                Errors.add("Error in "+this.name+", add struct var: [idf] "+idf+" already used");
                 return null;
             }
         }
@@ -100,13 +100,13 @@ public class SymbolTable {
 
 
     public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, ArrayList<Symbole> fctParams, int nbParams) {
-        for (LineElement line:lines) {
+        for (LineElement line : lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");
+                Errors.add("Error in "+this.name+", add function: [idf] "+idf+" already used");
                 return null;
             }
         }
-        Symbole newSymbole = new FctSymbole(typeRetour, fctParams, nbParams);
+        Symbole newSymbole = new FctSymbole(idf, typeRetour, fctParams, nbParams);
         LineElement newLine = new LineElement(idf, nature, newSymbole);
         lines.add(newLine) ;
         return newLine;
@@ -114,10 +114,9 @@ public class SymbolTable {
 
 
     public LineElement addLineStructDef(String struct_name, NatureSymboles nature, String type, HashMap<Symbole, String> champs) {
-        for (LineElement line:lines) {
+        for (LineElement line : lines) {
             if (line.getIdf().equals(struct_name)) {
-                Errors.add("Error in "+this.name+" : idf already used "+line.getIdf());
-                // System.out.println("Idf already used");
+                Errors.add("Error in "+this.name+", add struct def: [idf] "+struct_name+" already used");
                 return null;
             }
         }
@@ -156,7 +155,7 @@ public class SymbolTable {
     }
 
 
-    public LineElement lookUp(String idf) { // inutile de mettre st ici !
+    public LineElement lookUp(String idf) {
         for (LineElement line : this.lines) {
             if (line.getIdf().equals(idf)) {
                 // System.out.println("Var declared ");
@@ -169,31 +168,28 @@ public class SymbolTable {
         return null;
     }
 
-    public LineElement lookUpStructDef(String idf, SymbolTable symbolTable){
-
-            for(LineElement line : symbolTable.lines){
-                String nameStruct = "struct "+line.getIdf();
-                if((nameStruct.equals(idf) || line.getIdf().equals(idf)) && line.getNature()==NatureSymboles.STRUCT){
+    public LineElement lookUpStructDef(String idf) { // idf ou struct idf : peut signaler un problem
+            for (LineElement line : this.lines) {
+                // String nameStruct = "struct "+line.getIdf(); nameStruct.equals(idf) || 
+                if (line.getNature()==NatureSymboles.STRUCT && line.getSymbole().getType().equals(idf)) { //line.getIdf().equals(idf) && line.getNature()==NatureSymboles.STRUCT) {
                     return line;
                 }
             }
-            if(symbolTable.parent != null){
-                return lookUpStructDef(idf, symbolTable.parent);
+            if (this.parent != null) {
+                return this.parent.lookUpStructDef(idf);
             }
-
             return null;
     }
 
-    public LineElement lookUpFunctDef(String idf, SymbolTable symbolTable){
-        for(LineElement line : symbolTable.lines){
+    public LineElement lookUpFunctDef(String idf) {
+        for (LineElement line : this.lines) {
             if(line.getIdf().equals(idf) && line.getNature()==NatureSymboles.FUNCTION){
                 return line;
             }
         }
-        if(symbolTable.parent != null){
-            return lookUpFunctDef(idf, symbolTable.parent);
+        if(this.parent != null) {
+            return this.parent.lookUpFunctDef(idf);
         }
-
         return null;
     }
 

@@ -5,7 +5,7 @@ public class StructSymbole extends Symbole{
     //private String idf;
     //private String type ;
 
-    public StructSymbole(String type,String idf) {
+    public StructSymbole(String type, String idf) {
         super();
         this.idf = idf;
         this.type = type ;

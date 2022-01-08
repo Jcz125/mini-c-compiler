@@ -13,8 +13,10 @@ public class FctSymbole extends Symbole {
 
     public FctSymbole() {} ;
 
-    public FctSymbole(String  typeRetour, ArrayList<Symbole> fctParams, int nbParam) {
+    public FctSymbole(String idf, String  typeRetour, ArrayList<Symbole> fctParams, int nbParam) {
         super();
+        this.idf = idf;
+        this.type = typeRetour;
         this.typeRetour = typeRetour ;
         this.fctParams = fctParams ;
         this.nbParam = nbParam ;
@@ -71,11 +73,11 @@ public class FctSymbole extends Symbole {
         System.out.print("Nbre de params : " +  this.nbParam + "       ") ;
 
         if (this.nbParam != 0) {
-            System.out.print("Params : ") ;
+            System.out.print("Params : ");
             for(Symbole s : fctParams){
                 String name = s.idf;
                 String type = s.type;
-                if (!type.equals("int")){
+                if (!type.equals("int")) {
                     System.out.print("(" + name + " __ " + type + " *)" + "  |  ") ;
                 }
                 else {
