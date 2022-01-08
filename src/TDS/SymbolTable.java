@@ -74,7 +74,7 @@ public class SymbolTable {
     public LineElement addLineInt(String idf, NatureSymboles nature) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                System.out.println("Idf already used");     //ajouter le numéro de ligne
+                Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");    //ajouter le numéro de ligne
                 return null;
             }
         }
@@ -88,7 +88,7 @@ public class SymbolTable {
     public LineElement addLineStruct(String idf, NatureSymboles nature, String type) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                System.out.println("Idf already used");
+                Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");
                 return null;
             }
         }
