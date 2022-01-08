@@ -173,7 +173,7 @@ public class SymbolTable {
 
             for(LineElement line : symbolTable.lines){
                 String nameStruct = "struct "+line.getIdf();
-                if(nameStruct.equals(idf) && line.getNature()==NatureSymboles.STRUCT){
+                if((nameStruct.equals(idf) || line.getIdf().equals(idf)) && line.getNature()==NatureSymboles.STRUCT){
                     return line;
                 }
             }
