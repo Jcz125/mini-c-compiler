@@ -172,7 +172,8 @@ public class SymbolTable {
     public LineElement lookUpStructDef(String idf, SymbolTable symbolTable){
 
             for(LineElement line : symbolTable.lines){
-                if(line.getIdf().equals(idf) && line.getNature()==NatureSymboles.STRUCT){
+                String nameStruct = "struct "+line.getIdf();
+                if(nameStruct.equals(idf) && line.getNature()==NatureSymboles.STRUCT){
                     return line;
                 }
             }
@@ -184,14 +185,13 @@ public class SymbolTable {
     }
 
     public LineElement lookUpFunctDef(String idf, SymbolTable symbolTable){
-
         for(LineElement line : symbolTable.lines){
             if(line.getIdf().equals(idf) && line.getNature()==NatureSymboles.FUNCTION){
                 return line;
             }
         }
         if(symbolTable.parent != null){
-            return lookUpStructDef(idf, symbolTable.parent);
+            return lookUpFunctDef(idf, symbolTable.parent);
         }
 
         return null;

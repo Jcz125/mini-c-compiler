@@ -56,11 +56,17 @@ public class FctSymbole extends Symbole {
 
     @Override
     public void displaySymbole() {
-        if (!this.typeRetour.equals("int")) {
-            System.out.print("Type de retour : " + this.typeRetour + " *       " );
-        }
-        else {
+        if (this.typeRetour.equals("int") || this.typeRetour.equals("void") || this.typeRetour.equals("void *")){
             System.out.print("Type de retour : " + this.typeRetour + "       " );
+        }
+//        else if (this.typeRetour.equals("void")){
+//            System.out.print("Type de retour : " + this.typeRetour + "       " );
+//        }
+//        else if (this.typeRetour.equals("void *")){
+//            System.out.print("Type de retour : " + this.typeRetour + "       " );
+//        }
+        else {
+            System.out.print("Type de retour : " + this.typeRetour + " *       " );
         }
         System.out.print("Nbre de params : " +  this.nbParam + "       ") ;
 

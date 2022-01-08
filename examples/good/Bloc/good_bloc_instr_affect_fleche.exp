@@ -8,6 +8,8 @@ struct S2 {
 };
 
 int fct(struct S2 * ab, int c) {
+    struct S1 * s1 ;
+    s1 = malloc(sizeof(struct S1));
     return ab->s1->a ;
 }
 

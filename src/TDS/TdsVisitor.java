@@ -286,7 +286,7 @@ public class TdsVisitor implements AstVisitor<String> {
                 return null;
             }
         } else {
-            Errors.add("Error in "+tds_current.titre+": "+left+" not defined");
+            Errors.add("Error in "+tds_current.titre+": "+left+" not defined TEST");
             return null;
         }
     }
@@ -511,8 +511,11 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Idf idf) {
-        System.out.println(tds_current.lookUp(idf.name).getSymbole().getType());
-        return tds_current.lookUp(idf.name).getSymbole().getType();
+        if (tds_current.lookUp(idf.name) != null) {
+            System.out.println(tds_current.lookUp(idf.name).getSymbole().getType());
+            return tds_current.lookUp(idf.name).getSymbole().getType();
+        }
+        return null;
     }
 
     @Override
