@@ -6,8 +6,8 @@ struct S1 {
 struct S2 { } ;
 
 struct S3 {
-    struct S1 * one, two, three;
-    struct S2 * five, six ;
+    struct S1 * one, * two, * three;
+    struct S2 * five, * six ;
 } ;
 
 
