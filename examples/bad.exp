@@ -76,16 +76,20 @@ int main(int a, int b) {
     int res ;
     struct S3 * s ;
     struct S2 * d ;
-    //struct S4 * i ; // une structure pas définie
-    // d = malloc(struct S2) ; // ça doit prendre comme param un int
+    struct S4 * i ; // une structure pas définie
+    d = malloc(s) ; // ça doit prendre comme param un int
 
+    print(res);
     d = malloc(sizeof(struct S2));
     s = malloc(sizeof(struct S3));
     d->a = 10;                          // affectation (typage)
     d->b = 5;
-    // d->c = 6; // n'acceder qu'aux champs def
+    d->c = 6; // n'acceder qu'aux champs def
 
-    // print(s) // print doit juste print un int
-    // res = fct(5, s) ;                   // ordre, nombre (TODO) , type (TODO) de params
+    print(s) // print doit juste print un int
+    res = fct(5, s) ;                   // fonction pas définie
+    res = fctI(5, s);                   // ordre des params
+    res = fctI(5, 2, s);                // nombre de param
+    res = fctI(5,5) ;                   // type de params
     return res;                         // type de retour d'une fonction
 }

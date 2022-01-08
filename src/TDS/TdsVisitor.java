@@ -292,7 +292,7 @@ public class TdsVisitor implements AstVisitor<String> {
                 return null;
             }
         } else {
-            Errors.add("Error in "+tds_current.titre+": "+left+" not defined TEST");
+            Errors.add("Error in "+tds_current.titre+": "+left+" not defined");
             return null;
         }
     }

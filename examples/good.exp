@@ -67,7 +67,7 @@ int fctS2(int a, int b, struct S3 * c) {
 
 // à supprimer le main
 // mettre un main pas avec la meme signature précise
-int main(int a) {
+int main() {
     int res ;
     struct S3 * s ;
     struct S2 * d ;
