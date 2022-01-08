@@ -6,5 +6,7 @@ int fct(int a, int b) {
 }
 
 int main() {
-    return fct(5, 4) ;
+    int res ;
+    res = fct(5,4);
+    return res;
 }
