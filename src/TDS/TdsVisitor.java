@@ -27,9 +27,9 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(DeclType decltype) {
-        HashMap<Symbole, String> table = new HashMap<Symbole, String>(); // Symbole est la clé K et String la valeur V
+        HashMap<Symbole, String> table = new HashMap<Symbole, String>();    // Symbole est la clé K et String la valeur V
         ArrayList<String> idfs = new ArrayList<>();
-        for (Ast champ : decltype.list) { // remplissage des champs selon le type
+        for (Ast champ : decltype.list) {                                   // remplissage des champs selon le type
             if (champ instanceof VarInt) {
                 for (Idf idf : ((VarInt) champ).list) {
                     if (!idfs.contains(idf.name)) {
@@ -84,9 +84,8 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.put(new IntSymbole(param.idf.name), "int");
                 } else {
-                    this.Errors.add("Error in "+tds_current.getName()+", "+name+", params"+": idf "+param.idf.name+" already used.");
-                    Errors.add("Function params : Idf already used"); // améliorer le message d'erreur
-                } // de préférence stocker l'erreur quelque part et afficher tous les erreurs
+                    Errors.add("Error in "+tds_current.getName()+", function "+name+", params"+": idf "+param.idf.name+" already used.");
+                }
             } else {
                 StructPointer param = (StructPointer) ast;
                 params.put(new StructSymbole(param.type, param.idf.name), param.type);
@@ -105,7 +104,7 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.add(new IntSymbole(param.idf.name));
                 } else {
-                    this.Errors.add("Error in "+tds_current.getName()+", "+name+", params"+": idf "+param.idf.name+" already used."); // améliorer le message d'erreur
+                    this.Errors.add("Error in "+tds_current.getName()+", function "+name+", params"+": idf "+param.idf.name+" already used."); // améliorer le message d'erreur
                 }
             } else {
                 StructPointer param = (StructPointer) ast;
@@ -124,9 +123,9 @@ public class TdsVisitor implements AstVisitor<String> {
     @Override // pas terminer à finaliser manque le contrôle sémantique
     public String visit(IntFct intFct) {
         ArrayList<Symbole> params = create_array_param(intFct.params.list, intFct.type+" "+intFct.idf);
-
         LineElement line = tds_current.addLineFct(intFct.idf.name, NatureSymboles.FUNCTION, "int", params, params.size());
-        // on check si le idf est déjà utilisé
+        
+        // on vérifie si le idf est déjà utilisé
         if (line != null) { // finalement le newRegion ici n'est pas approprié, trouver un moyen de faire autrement car Bloc le fait déjà
             // tds_current = tds_current.newRegion(intFct.idf.name, tds_current);
             // tds_current.addListVar(intFct.params.list, NatureSymboles.PARAM_FUNC);
@@ -135,7 +134,7 @@ public class TdsVisitor implements AstVisitor<String> {
             // tds_current = tds_current.exitRegion(tds_current);
             checkMain(line);
 
-            //controle type de return
+            // contrôle du type de retour
             if (typeRetour == null) {
                 Errors.add("Warning in "+tds_current.getName()+" : no return for function int "+line.getIdf());
                 return null;
@@ -155,39 +154,51 @@ public class TdsVisitor implements AstVisitor<String> {
         return null;
     }
 
-    String lookUpReturnType(Ast bloc){
-        //renvoie le type de l'expr de return du bloc (c'est le bloc d'une déclaration de function)
-        //S'il n'y a pas de "return", revoie null
+    // String lookUpReturnType(Ast bloc){
+    //     //renvoie le type de l'expr de return du bloc (c'est le bloc d'une déclaration de function)
+    //     //S'il n'y a pas de "return", revoie null
 
-        return null;
-    }
+    //     return null;
+    // }
 
 
     @Override
     public String visit(StructFct structFct) {
-        //HashMap<Symbole, String> params = create_hashmap_param(structFct.params.list);
         ArrayList<Symbole> params = create_array_param(structFct.params.list, structFct.type+" * "+structFct.idf_fct);
         LineElement line = tds_current.addLineFct(structFct.idf_fct.name, NatureSymboles.FUNCTION, structFct.type, params, params.size());
+        
+        // on vérifie si le idf est déjà utilisé
         if (line != null) {
-            tds_current = tds_current.newRegion(structFct.idf_fct.name, tds_current);
-            tds_current.addListVar(structFct.params.list, NatureSymboles.PARAM_FUNC);
-            structFct.bloc.accept(this);
-            tds_current = tds_current.exitRegion(tds_current);
+            // tds_current = tds_current.newRegion(structFct.idf_fct.name, tds_current);
+            // tds_current.addListVar(structFct.params.list, NatureSymboles.PARAM_FUNC);
+            this.list_var = structFct.params.list;
+            String typeRetour = structFct.bloc.accept(this);
+            // tds_current = tds_current.exitRegion(tds_current);
+            checkMain(line);
+
+            // controle du type de retour
+            if (typeRetour == null) {
+                Errors.add("Warning in "+tds_current.getName()+" : no return for function struct "+line.getIdf());
+                return null;
+            }
+            else if (!typeRetour.equals(structFct.type)) {
+                Errors.add("Error in "+tds_current.getName()+" : no identical return type for function "+line.getIdf());
+                return null;
+            }
         }
         return null;
     }
 
     @Override
-    public String visit(Bloc bloc) { // doit faire newRegion ici vérifier
+    public String visit(Bloc bloc) {
         tds_current = tds_current.newRegion(tds_current.getName()+"#"+tds_current.getChildren().size()+1, tds_current);
         if (list_var != null) {
             tds_current.addListVar(list_var, NatureSymboles.PARAM_FUNC);
             list_var = null;
         }
         String returnType = null;
-        for(Ast ast:bloc.list) {
+        for (Ast ast : bloc.list) {
             if (ast instanceof Return || ast instanceof IfThen || ast instanceof IfThenElse || ast instanceof WhileInst || ast instanceof Bloc) {
-                // revoir les cas IfThen etc.. déléguer au visiteurs ou traiter autrement
                 if (returnType == null)
                     returnType = ast.accept(this);
                 else if (!returnType.equals(ast.accept(this)))
@@ -202,23 +213,33 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Affect affect) {
+        String left = affect.left.accept(this);
+        String right = affect.right.accept(this);
+        if (left == null || right == null) { // au moins l'un des vars n'existe pas
+            return null;
+        }
+        if (!left.equals(right)) {
+            Errors.add("Error in "+tds_current.getName()+" : affect types don't match "+left+" and "+right);
+            return null;
+        }
+        return left;
+
         // à faire avec funct check
-        if (affect.left instanceof Idf) {
-            LineElement lineElement= tds_current.lookUp(((Idf) affect.left).name,tds_current);
-            String typeIdf = lineElement.getSymbole().getType();
-            if(!checkType(affect.right,typeIdf)){
-                Errors.add("Error in "+tds_current.getName()+": "+lineElement.getIdf()+" cannot be affected a type different to "+lineElement.getSymbole().getType());
-            }
-        }
-        else{
-            String typeFleche = getTypeFleche((Fleche) affect.left);
+        // if (affect.left instanceof Idf) {
+        //     LineElement lineElement = tds_current.lookUp(((Idf) affect.left).name, tds_current);
+        //     String typeIdf = lineElement.getSymbole().getType();
+        //     if (typeIdf.equals(affect.right.accept(this))) {
+        //         Errors.add("Error in "+tds_current.getName()+": "+lineElement.getIdf()+" cannot be affected a type different to "+lineElement.getSymbole().getType());
+        //     }
+        // } else {
+        //     String typeFleche = getTypeFleche((Fleche) affect.left);
 
-            if(!checkType(affect.right,typeFleche)){
-                Errors.add("Error in "+tds_current.getName()+" : affect types dont match"+typeFleche);
-            }
+        //     if(!checkType(affect.right,typeFleche)){
+        //         Errors.add("Error in "+tds_current.getName()+" : affect types dont match"+typeFleche);
+        //     }
 
-        }
-        return null;
+        // }
+        // return null;
     }
 
     public String getTypeFleche(Fleche fleche){
@@ -226,7 +247,7 @@ public class TdsVisitor implements AstVisitor<String> {
         //renvoie le type de fleche
         return null;
     }
-    //à vérifier,Céline will check
+
     @Override
     public String visit(Fleche fleche) {
         String left = fleche.left.accept(this);
@@ -367,6 +388,8 @@ public class TdsVisitor implements AstVisitor<String> {
         String left = divide.left.accept(this);
         String right = divide.right.accept(this);
         if (left.equals(right)) {
+            if (divide.left instanceof Entier && ((Entier) divide.left).value == 0)
+                Errors.add("Error in "+tds_current.getName()+": division by zero");
             return right;
         }
         return null;
@@ -377,9 +400,10 @@ public class TdsVisitor implements AstVisitor<String> {
         String type = oppose.value.accept(this);
         // error pour -pointer
         if (oppose.op.equals("-") && !type.equals("int")) {
-            Errors.add("Error in "+tds_current.getName()+" : -value needs value to be an arithmetic type");
+            Errors.add("Error in "+tds_current.getName()+": -value needs value to be an arithmetic type");
             return null;
         }
+        return type;
             
 
             // if (oppose.value instanceof Fleche) {
@@ -416,18 +440,16 @@ public class TdsVisitor implements AstVisitor<String> {
         }
 
         if( oppose.value instanceof Function)*/
-
-        return type;
     }
 
 
-    public boolean checkType(Ast ast, String type) {
-        // String left = ast.left.accept(this);
-        // String right = ast.right.accept(this);
+    // public boolean checkType(Ast ast, String type) {
+    //     // String left = ast.left.accept(this);
+    //     // String right = ast.right.accept(this);
 
         
-        return true;
-    }
+    //     return true;
+    // }
 
 
     @Override
@@ -455,7 +477,7 @@ public class TdsVisitor implements AstVisitor<String> {
             for (int i=0 ; i<fctSymbole.getNbParam() ; i++) {
                 String typeDecl = paramsDecl.get(i).getType();
                 if (!typeDecl.equals(paramsExec.get(i).accept(this))) {
-                    Errors.add("Error in "+tds_current.getName()+ "type of param number "+i+" doesnt match function "+fctSymbole.getType()+" "+fctSymbole.getIdf()+" definition" );
+                    Errors.add("Error in "+tds_current.getName()+ "type of param number "+i+" doesn't match function "+fctSymbole.getType()+" "+fctSymbole.getIdf()+" definition" );
                 }
             }
         }
@@ -464,14 +486,9 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Sizeof sizeof) {
-        if(tds_current.lookUpStructDef(sizeof.idf.name,tds_current)!=null){
-            return null;
-        }
-        else {
-            //idf doit etre defini
-            Errors.add("Error in"+tds_current.getName()+"sizeof invalid identifier: "+sizeof.idf.name);
-            return null;
-        }
+        if (tds_current.lookUpStructDef(sizeof.idf.name, tds_current) == null) // la struct doit être définie
+            Errors.add("Error in "+tds_current.getName()+" sizeof invalid identifier: "+sizeof.idf.name);
+        return "int";
     }
 
     @Override
@@ -481,17 +498,24 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(IfThen ifThen) {
-        return null;
+        return ifThen.thenBlock.accept(this);
     }
 
     @Override
     public String visit(IfThenElse ifThenElse) {
-        return null;
+        String thenReturn = ifThenElse.thenBlock.accept(this);
+        String elseReturn = ifThenElse.elseBlock.accept(this);
+        if (thenReturn == null && elseReturn == null)   // on vérifie s'il y a des retours
+            return null;
+        if (thenReturn.equals(elseReturn))              // retours de même types
+            return thenReturn;
+        else                                            // des retours différents
+            return "";
     }
 
     @Override
     public String visit(WhileInst whileInst) {
-        return null;
+        return whileInst.instruction.accept(this);
     }
 
     @Override
