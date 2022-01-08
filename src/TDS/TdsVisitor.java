@@ -232,7 +232,13 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null) { // au moins l'un des vars n'existe pas
             return null;
         }
-        if (!left.equals(right)) {
+        if (right.equals("void *")) {
+            if (left.equals("int")) {
+                Errors.add("Error in "+tds_current.titre+" : affect types don't match "+left+" and "+right);
+                return null;
+            }
+        }
+        else if (!left.equals(right)) {
             Errors.add("Error in "+tds_current.titre+" : affect types don't match "+left+" and "+right);
             return null;
         }

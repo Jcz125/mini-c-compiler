@@ -71,8 +71,8 @@ int fctS(int a, int b, struct S3 * c) {
 }
 
 // à supprimer le main
-// mettre un main pas avec la meme signature précise
-int main() {
+// des params dans la fonction main
+int main(int a, int b) {
     int res ;
     struct S3 * s ;
     struct S2 * d ;
