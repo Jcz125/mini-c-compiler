@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 //vide
 struct S1 {
     //ajouter un return
