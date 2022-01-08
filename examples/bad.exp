@@ -1,6 +1,10 @@
 //vide
 struct S1 {
-    //ajouter un return
+};
+
+// double declaration de meme idf
+struct S1 {
+    int a;
 };
 
 struct S2 {
@@ -12,7 +16,7 @@ struct S3 {
     struct S1 * one, *two;
     struct S2 * three, *four;
     int c, d;
-    //struct S1 * one ;  // unicité de déclaration de champs de struct
+    struct S1 * one ;  // unicité de déclaration de champs de struct
 };
 
 //fonction avec type de retour : INT
@@ -20,15 +24,18 @@ int fctI(struct S3 * ab1, int c) {
     while (c > 0) {
         int a;
         struct S3 * ab2, *ab3;
+        struct S1 * a ; //une double déclaration de a
         if (ab1->three->a > 0) {
             int b, c ;
             while (ab1->three->a > 0)  {
                 int d ;
                 if (ab1->c > 0) {
                     int f ;
-                    ab2->c = ab2->c + 1 ;   // changer l'un des element pour avoir erreur de typage
+                    //int z ; // ne pas déclarer res comme ça on utilise une var pas déclaré
+                    z = 0;
+                    ab2 = ab2->c + 1 ;   // int affecté à une struct S3
                     while (ab1->c > 0) {
-                        int res ;   // ne pas déclarer res comme ça on utilise une var pas déclaré
+                        int res ;
                         struct S2 * ab2, *ab3;
                         c = c-1 ;
                         print(c) ;
@@ -39,7 +46,6 @@ int fctI(struct S3 * ab1, int c) {
                 ab1->three->a = ab1->three->a - 1;
             }
         }
-        //struct S1 * a ; //une double déclaration de a
     }
     //WARNING : pas de return
 }
@@ -50,19 +56,18 @@ struct S3 * fctS() {
     struct S3 * cd ;
     resI = 0;
     cd = malloc(sizeof(struct S3)) ;
-    return cd ; // return un int et pas struct
+    return resI ; // return un int et pas struct
 }
 
-// double déclaration de fctI
-struct S1 * fctI2() {
+// double déclaration de fctI ( la première return int et là return struct )
+struct S1 * fctI() {
     struct S1 * a ;
     return a;
 }
 
-// double déclaration de fctI
-int fctS2(int a, int b, struct S3 * c) {
+// double déclaration de fctS ( la première return struct et là return int )
+int fctS(int a, int b, struct S3 * c) {
     return a;
-    // return c ; //double return
 }
 
 // à supprimer le main

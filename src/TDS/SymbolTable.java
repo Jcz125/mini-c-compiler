@@ -74,7 +74,8 @@ public class SymbolTable {
     public LineElement addLineInt(String idf, NatureSymboles nature) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");    //ajouter le numéro de ligne
+                //Errors.add("Error in "+ this.name +" : " + idf + " already used");    //ajouter le numéro de ligne
+                Errors.add("Error in "+ this.titre+" : l\'idf \'" + idf +"\' is already used."); // améliorer le message d'erreue
                 return null;
             }
         }
@@ -88,7 +89,8 @@ public class SymbolTable {
     public LineElement addLineStruct(String idf, NatureSymboles nature, String type) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");
+                //Errors.add("Error in "+this.name+" : "+idf+" already used");
+                Errors.add("Error in "+ this.titre+" : l'idf \'" + idf +"\' is already used."); // améliorer le message d'erreue
                 return null;
             }
         }
@@ -102,7 +104,8 @@ public class SymbolTable {
     public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, ArrayList<Symbole> fctParams, int nbParams) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");
+                //Errors.add("Error in "+this.name+" : [idf] "+idf+" already used");
+                Errors.add("Error in "+ this.titre+" : l\'idf \'" + idf +"\' is already used as name of function."); // améliorer le message d'erreue
                 return null;
             }
         }
@@ -116,7 +119,8 @@ public class SymbolTable {
     public LineElement addLineStructDef(String struct_name, NatureSymboles nature, String type, HashMap<Symbole, String> champs) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(struct_name)) {
-                Errors.add("Error in "+this.name+" : idf already used "+line.getIdf());
+                //Errors.add("Error in "+this.name+" : idf already used "+line.getIdf());
+                Errors.add("Error in "+ this.titre+" : l\'idf \'" + line.getIdf() +"\' is already used as a type."); // améliorer le message d'erreue
                 // System.out.println("Idf already used");
                 return null;
             }

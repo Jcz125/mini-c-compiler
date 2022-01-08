@@ -385,8 +385,10 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Minus minus) {
         String left = minus.left.accept(this);
         String right = minus.right.accept(this);
-        if (left.equals(right)) {
-            return right;
+        if ( (left != null) && (right != null) ){       //à ajouter dans tt les autres aussi
+            if (left.equals(right)) {
+                return right;
+            }
         }
         return null;
     }
