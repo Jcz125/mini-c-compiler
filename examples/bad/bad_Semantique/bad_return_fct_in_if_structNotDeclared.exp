@@ -1,8 +1,10 @@
 int fct() {
     if (5==4) {
-        return 0 ;
+        struct S2 * a;
+        return a ;
     }
     else {
+        int b ;
         return 1 ;
     }
 }

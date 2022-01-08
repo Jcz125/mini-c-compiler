@@ -24,6 +24,6 @@ public class LineElement {
     }
 
     public Symbole getSymbole() {
-        return symbole;
+        return this.symbole;
     }
 }
