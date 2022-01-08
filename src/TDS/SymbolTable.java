@@ -169,29 +169,32 @@ public class SymbolTable {
         return null;
     }
 
-    public LineElement lookUpStructDef(String idf, SymbolTable symbolTable){
+    public LineElement lookUpStructDef(String idf){
 
-            for(LineElement line : symbolTable.lines){
+            for(LineElement line : this.lines){
                 String nameStruct = "struct "+line.getIdf();
                 if((nameStruct.equals(idf) || line.getIdf().equals(idf)) && line.getNature()==NatureSymboles.STRUCT){
                     return line;
                 }
             }
-            if(symbolTable.parent != null){
-                return lookUpStructDef(idf, symbolTable.parent);
+            if(this.parent != null){
+                return this.parent.lookUpStructDef(idf);
             }
 
             return null;
     }
 
-    public LineElement lookUpFunctDef(String idf, SymbolTable symbolTable){
-        for(LineElement line : symbolTable.lines){
-            if(line.getIdf().equals(idf) && line.getNature()==NatureSymboles.FUNCTION){
-                return line;
+    public LineElement lookUpFunctDef(String idf){
+        for(LineElement line : this.lines){
+            if(line.getIdf().equals(idf)) {
+                if (line.getNature() == NatureSymboles.FUNCTION) {
+
+                    return line;
+                }
             }
         }
-        if(symbolTable.parent != null){
-            return lookUpFunctDef(idf, symbolTable.parent);
+        if(this.parent != null){
+            return this.parent.lookUpFunctDef(idf);
         }
 
         return null;

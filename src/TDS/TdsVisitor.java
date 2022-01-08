@@ -270,7 +270,7 @@ public class TdsVisitor implements AstVisitor<String> {
             Errors.add("Error in "+tds_current.titre+": "+"arrow problem");
             return null;
         }
-        LineElement lineElement = tds_current.lookUpStructDef(left, tds_current);
+        LineElement lineElement = tds_current.lookUpStructDef(left);
         if (lineElement != null) { // on vérifie que la struct left soit bien définie
             if (fleche.right instanceof Idf) {
                 StructDefSymbole structDefSymbole = (StructDefSymbole) lineElement.getSymbole();
@@ -474,7 +474,8 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Function function) {
         // control sémantique
         String FunctIdf= ((Idf) function.idf).name;
-        LineElement lineElement = tds_current.lookUpFunctDef(FunctIdf, tds_current);
+
+        LineElement lineElement = tds_current.lookUpFunctDef(FunctIdf);
 
         // on vérifie que la funct left (idf) soit bien définie
         if (lineElement == null) {
@@ -482,12 +483,13 @@ public class TdsVisitor implements AstVisitor<String> {
             return null;
         }
 
+
         int nb = function.expression.size();
         FctSymbole fctSymbole = (FctSymbole) lineElement.getSymbole();
 
         // on vérifie que le nombre de params de la fonction correspond bien au nombre attendu
         if (nb != fctSymbole.getNbParam()) {
-            Errors.add("Error in "+tds_current.titre+" : params number doesnt match expected number in"+lineElement.getIdf());
+            Errors.add("Error in "+tds_current.titre+" : params number doesnt match expected number in "+lineElement.getIdf());
         } else {
             ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
             ArrayList<Ast> paramsExec = function.expression;
@@ -495,16 +497,16 @@ public class TdsVisitor implements AstVisitor<String> {
             for (int i=0 ; i<fctSymbole.getNbParam() ; i++) {
                 String typeDecl = paramsDecl.get(i).getType();
                 if (!typeDecl.equals(paramsExec.get(i).accept(this))) {
-                    Errors.add("Error in "+tds_current.titre+ "type of param number "+i+" doesn't match function "+fctSymbole.getType()+" "+fctSymbole.getIdf()+" definition" );
+                    Errors.add("Error in "+tds_current.titre+ " type of param number "+i+" doesn't match function \'"+fctSymbole.getTypeRetour()+" "+lineElement.getIdf()+"\' definition" );
                 }
             }
         }
-        return lineElement.getSymbole().getType();
+        return ((FctSymbole) lineElement.getSymbole()).getTypeRetour();
     }
 
     @Override
     public String visit(Sizeof sizeof) {
-        if (tds_current.lookUpStructDef(sizeof.idf.name, tds_current) == null) // la struct doit être définie
+        if (tds_current.lookUpStructDef(sizeof.idf.name) == null) // la struct doit être définie
             Errors.add("Error in "+tds_current.titre+" sizeof invalid identifier: "+sizeof.idf.name);
         return "int";
     }
