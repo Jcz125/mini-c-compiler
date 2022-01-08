@@ -1,5 +1,8 @@
+#include <stdlib.h>
+
 //vide
 struct S1 {
+    //ajouter un return
 };
 
 struct S2 {
@@ -11,10 +14,11 @@ struct S3 {
     struct S1 * one, *two;
     struct S2 * three, *four;
     int c, d;
-}
+    //struct S1 * one ;  // unicité de déclaration de champs de struct
+};
 
 //fonction avec type de retour : INT
-int fct(struct S3 * ab1, int c) {
+int fctI(struct S3 * ab1, int c) {
     while (c > 0) {
         int a;
         struct S3 * ab2, *ab3;
@@ -24,33 +28,62 @@ int fct(struct S3 * ab1, int c) {
                 int d ;
                 if (ab1->c > 0) {
                     int f ;
+                    ab2->c = ab2->c + 1 ;   // changer l'un des element pour avoir erreur de typage
                     while (ab1->c > 0) {
-                        int res ;
+                        int res ;   // ne pas déclarer res comme ça on utilise une var pas déclaré
                         struct S2 * ab2, *ab3;
                         c = c-1 ;
+                        print(c) ;
                         res = c;
+                        return res;
                     }
                 }
                 ab1->three->a = ab1->three->a - 1;
             }
         }
+        //struct S1 * a ; //une double déclaration de a
     }
-    return res;
+    //WARNING : pas de return
 }
 
 //fonction avec type de retour : Struct
-//TODO
+struct S3 * fctS() {
+    int resI ;
+    struct S3 * cd ;
+    resI = 0;
+    cd = malloc(sizeof(struct S3)) ;
+    return cd ; // return un int et pas struct
+}
 
+// double déclaration de fctI
+struct S1 * fctI2() {
+    struct S1 * a ;
+    return a;
+}
+
+// double déclaration de fctI
+int fctS2(int a, int b, struct S3 * c) {
+    return a;
+    // return c ; //double return
+}
+
+// à supprimer le main
+// mettre un main pas avec la meme signature précise
 int main() {
     int res ;
     struct S3 * s ;
     struct S2 * d ;
+    //struct S4 * i ; // une structure pas définie
+
+    // d = malloc(struct S2) ; // ça doit prendre comme param un int
 
     d = malloc(sizeof(struct S2));
     s = malloc(sizeof(struct S3));
     d->a = 10;                          // affectation (typage)
     d->b = 5;
+    // d->c = 6; // n'acceder qu'aux champs def
 
-    res = fct(s, 5) ;                   // ordre de param et bonne manip d'une fct
+    // print(s) // print doit juste print un int
+    // res = fct(5, s) ;                   // ordre, nombre (TODO) , type (TODO) de params
     return res;                         // type de retour d'une fonction
 }

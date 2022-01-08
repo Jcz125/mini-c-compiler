@@ -69,7 +69,7 @@ public class FctSymbole extends Symbole {
             for(Symbole s : fctParams){
                 String name = s.idf;
                 String type = s.type;
-                if (!type.equals("int")){
+                if (!type.equals("int") || !type.equals("void *")){
                     System.out.print("(" + name + " __ " + type + " *)" + "  |  ") ;
                 }
                 else {

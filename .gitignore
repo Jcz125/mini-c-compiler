@@ -10,7 +10,7 @@ src/parser/
 
 brouillon*
 src/TDS/test.c
-src/a.exe
+a.exe
 grammaire_cir-c.g4
 brouillon.c
 out/
