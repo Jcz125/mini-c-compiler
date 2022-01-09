@@ -12,7 +12,6 @@ public class TdsVisitor implements AstVisitor<String> {
     public SymbolTable tds_current;
     public String new_tds_name;
     public boolean main = false;
-    // public ArrayList<String> Errors = SymbolTable.Errors;
     public ArrayList<Ast> list_var = null;
 
     public void showErrors() {
@@ -383,7 +382,7 @@ public class TdsVisitor implements AstVisitor<String> {
                 String signFct;
                 if (functIdf.equals("malloc")) signFct = "void * malloc";
                 else signFct = "void print";
-                SymbolTable.Errors.add("Error in "+tds_current.titre+" type of param number "+0+" doesn't match function "+signFct+" definition" );
+                SymbolTable.Errors.add("Error in "+tds_current.titre+": type of param number "+0+" doesn't match function "+signFct+" definition" );
             }
             return functIdf.equals("malloc") ? "void *" : "void";
         }
@@ -404,7 +403,7 @@ public class TdsVisitor implements AstVisitor<String> {
             for (int i=0 ; i<fctSymbole.getNbParam() ; i++) {
                 String typeDecl = paramsDecl.get(i).getType();
                 if (!typeDecl.equals(paramsExec.get(i).accept(this)))
-                    SymbolTable.Errors.add("Error in "+tds_current.titre+" type of param number "+i+" doesn't match function "+fctSymbole.getType()+" "+fctSymbole.getIdf()+" definition" );
+                    SymbolTable.Errors.add("Error in "+tds_current.titre+": type of param number "+i+" doesn't match function "+fctSymbole.getType()+" "+fctSymbole.getIdf()+" definition" );
             }
         }
         return ((FctSymbole) lineElement.getSymbole()).getTypeRetour();
