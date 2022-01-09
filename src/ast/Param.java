@@ -6,8 +6,5 @@ public abstract class Param implements Ast {
   public String type;
   public Idf idf;
 
-  // public Param(String str, Ast idf) {
-  //     this.type = str;
-  //     this.idf = idf;
-  // }
+
 }
