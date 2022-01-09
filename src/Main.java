@@ -10,7 +10,6 @@ import parser.grammaireLexer;
 import parser.grammaireParser;
 import parser.grammaireParser.ProgramContext;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class Main {
@@ -52,12 +51,7 @@ public class Main {
             ast.accept(tds_visitor);
             tds_visitor.tds_root.displayAll();  // Affichage TDS
             tds_visitor.showErrors();           // Affichage erreurs sémantiques
-            tds_visitor.tds_root.afficher();
-
-
-
-
-
+            tds_visitor.tds_root.generate_csv(); //Génération TDS.csv
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -65,21 +59,6 @@ public class Main {
         catch (RecognitionException e) {
             e.printStackTrace();
         }
-
-        //tds_visitor.tds_root.displayAll_CSV1(file,csvWriter);
-
-        
     }
 
-    public static void display(String s){
-        try {
-           FileWriter csvWriter = new FileWriter("./out/TDS.csv");
-
-            System.out.println(s);
-            csvWriter.append("s");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
 }

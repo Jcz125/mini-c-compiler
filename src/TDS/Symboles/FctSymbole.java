@@ -2,8 +2,6 @@ package TDS.Symboles;
 
 import TDS.SymbolTable;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class FctSymbole extends Symbole {
@@ -78,36 +76,11 @@ public class FctSymbole extends Symbole {
         }
     }
 
-    @Override
-    public void displaySymbole_CSV(FileWriter csvWriter) {
-            try {
-                if (this.typeRetour.equals("int") || this.typeRetour.equals("void") || this.typeRetour.equals("void *")) {
-                    csvWriter.append("Type de retour : " + this.typeRetour + ";"+"Nombre de params : " + this.nbParam+ ";");
-                }
-                else {
-                    csvWriter.append("Type de retour : " + this.typeRetour + "*"+ ";"+"Nombre de params : " + this.nbParam+ ";");
-                    //csvWriter.append( );
-                }
-                if (this.nbParam != 0) {
-                    csvWriter.append("Params : ");
-                    for (Symbole s : fctParams) {
-                        String name = s.idf;
-                        String type = s.type;
-                        if (!type.equals("int"))
-                            csvWriter.append("(" + name + " __ " + type + " *)" + "  |  ");
-                        else
-                            csvWriter.append("(" + name + " __ " + type + ")" + "  |  ");
-                    }
-                }
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-    }
 
 
 
     @Override
-    public String displaySymbole_CSV1() {
+    public String displaySymbole_CSV() {
             String TDS = new String();
             if (this.typeRetour.equals("int") || this.typeRetour.equals("void") || this.typeRetour.equals("void *")) {
                 TDS+=("Type de retour : " + this.typeRetour + ";"+"Nombre de params : " + this.nbParam+ ";");

@@ -3,7 +3,6 @@ package TDS;
 import TDS.Symboles.*;
 import ast.*;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,19 +19,11 @@ public class SymbolTable {
     private ArrayList<LineElement> lines;
     private SymbolTable parent;
     private ArrayList<SymbolTable> children;
-    //private File file ;
-    //private FileWriter csvWriter;
     public static String TDS;
 
 
 
     public SymbolTable(String name, SymbolTable parent) {
-        /*this.file = new File("./out/TDS.csv");
-        try {
-            this.csvWriter = new FileWriter("./out/TDS.csv");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
         this.name = name;
         if (parent == null) {
             this.niveau = 0;
@@ -229,7 +220,7 @@ public class SymbolTable {
 
 
 
-    public void displayTDS_CSV() {
+    /*public void displayTDS_CSV() {
 
         File file = new File("./out/TDS.csv");
         try {
@@ -260,9 +251,9 @@ public class SymbolTable {
             } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-    }
+    }*/
 
-    public String displayTDS_CSV1() {
+    public String displayTDS_CSV() {
 
         //File file = new File("./out/TDS.csv");
 
@@ -281,7 +272,7 @@ public class SymbolTable {
                     NatureSymboles nature = line.getNature();
                     Symbole s = line.getSymbole();
                     this.TDS += ( "\n"+ idf + ";" + nature + ";");
-                     String symbole = s.displaySymbole_CSV1();
+                     String symbole = s.displaySymbole_CSV();
                      this.TDS += symbole;
 
                 }
@@ -291,45 +282,28 @@ public class SymbolTable {
             return this.TDS;
     }
 
-    /*public String escapeSpecialCharacters(String data) {
-        String escapedData = data.replaceAll("\\R", " ");
-        if (data.contains(",") || data.contains("\"") || data.contains("'")) {
-            data = data.replace("\"", "\"\"");
-            escapedData = "\"" + data + "\"";
-        }
-        return escapedData;
-    }*/
+
 
     public void displayAll_CSV() {
-            this.displayTDS_CSV();
-            /*for (SymbolTable s : this.children) {
-                s.displayAll_CSV();
-            }*/
-    }
-
-    public String displayAll_CSV1() {
-        this.displayTDS_CSV1();
+        this.displayTDS_CSV();
         for (SymbolTable s : this.children) {
-            s.displayAll_CSV1();
+            s.displayAll_CSV();
         }
 
-        return this.TDS;
     }
 
-    public void afficher(){
-        File file = new File("./TDS_CSV/TDS.csv");
+    public void generate_csv(){
         try {
-            FileWriter csvWriter = new FileWriter("./out/TDS.csv");
-            this.displayAll_CSV1();
-            System.out.println(this.TDS);
+            FileWriter csvWriter = new FileWriter("./TDS_CSV/TDS.csv");
+            this.displayAll_CSV();
             csvWriter.append(this.TDS);
             csvWriter.flush();
             csvWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
     public void displayAll() {
         this.displayTDS();
         for (SymbolTable s : this.children)
