@@ -1,0 +1,12 @@
+
+ Table courante: #0-0 root;mon pere:  Pas de parent
+IDF;NATURE;CARACTERISTIQUES  SYMBOLE
+malloc;FUNCTION;Type de retour : void *;Nombre de params : 1;Params : (n __ int)  |  
+print;FUNCTION;Type de retour : void;Nombre de params : 1;Params : (n __ int)  |  
+S1;STRUCT;Type: struct S1;Champs : (int : [b,c,a,d])   
+S2;STRUCT;Type: struct S2;Champs :  Vide 
+S3;STRUCT;Type: struct S3;Champs : (struct S2 * : [five,six])   (struct S1 * : [two,three,one])   
+main;FUNCTION;Type de retour : int;Nombre de params : 0;
+
+ Table courante: #1-0.1 main;mon pere:  #0-0 root
+IDF;NATURE;CARACTERISTIQUES  SYMBOLE

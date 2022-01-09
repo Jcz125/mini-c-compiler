@@ -2,6 +2,8 @@ package TDS.Symboles;
 
 import TDS.SymbolTable;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,5 +94,96 @@ public class StructDefSymbole extends Symbole{
         else {
             System.out.print(" Vide ");
         }
+    }
+
+    @Override
+    public void displaySymbole_CSV(FileWriter csvWriter) {
+        try {
+            csvWriter.append("Type: " + this.type + ";" );
+            csvWriter.append("Champs : ") ;
+            if (champs.size() != 0) {
+                HashMap<String, ArrayList<String>> types = new HashMap<>();
+                for (Symbole s : champs.keySet()) {
+                    String t = s.type.toString();
+                    String name = s.idf.toString();
+                    if (types.containsKey(t)) {
+                        types.get(t).add(name);
+                    } else {
+                        ArrayList<String> tab = new ArrayList<>();
+                        tab.add(name);
+                        types.put(t, tab);
+                    }
+
+                }
+                for (String name : types.keySet()) {
+                    String key = name.toString();
+                    csvWriter.append("(");
+                    if (!key.equals("int")) {
+                        csvWriter.append(key + " * : ");
+                    } else {
+                        csvWriter.append(key + " : ");
+                    }
+                    /*ArrayList<String> s= types.get(name);
+                    for(String i : s){
+                        csvWriter.append(i+"  ");
+                    }*/
+                    csvWriter.append("["+String.join(",", types.get(name))+"]");
+                    csvWriter.append(")");
+                    csvWriter.append("   ");
+                }
+            }
+            else {
+                csvWriter.append(" Vide ");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public String displaySymbole_CSV1() {
+        String TDS = new String();
+
+            TDS+=("Type: " + this.type + ";" );
+            TDS+=("Champs : ") ;
+            if (champs.size() != 0) {
+                HashMap<String, ArrayList<String>> types = new HashMap<>();
+                for (Symbole s : champs.keySet()) {
+                    String t = s.type.toString();
+                    String name = s.idf.toString();
+                    if (types.containsKey(t)) {
+                        types.get(t).add(name);
+                    } else {
+                        ArrayList<String> tab = new ArrayList<>();
+                        tab.add(name);
+                        types.put(t, tab);
+                    }
+
+                }
+                for (String name : types.keySet()) {
+                    String key = name.toString();
+                    TDS+=("(");
+                    if (!key.equals("int")) {
+                        TDS+=(key + " * : ");
+                    } else {
+                        TDS+=(key + " : ");
+                    }
+                    /*ArrayList<String> s= types.get(name);
+                    for(String i : s){
+                        csvWriter.append(i+"  ");
+                    }*/
+                    TDS+=("["+String.join(",", types.get(name))+"]");
+                    TDS+=(")");
+                    TDS+=("   ");
+                }
+            }
+            else {
+                TDS+=(" Vide ");
+            }
+
+        return TDS;
     }
 }

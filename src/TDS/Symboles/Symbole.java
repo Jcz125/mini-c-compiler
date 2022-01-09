@@ -2,6 +2,8 @@ package TDS.Symboles;
 
 import TDS.SymbolTable;
 
+import java.io.FileWriter;
+
 public abstract class Symbole {
 
     public SymbolTable st = null;
@@ -18,6 +20,8 @@ public abstract class Symbole {
 
     public abstract void displaySymbole();
 
+    public abstract void displaySymbole_CSV(FileWriter csvWriter);
+    public abstract String displaySymbole_CSV1();
     public String getIdf(){return this.idf;};
 
     public String getType(){return this.type;}

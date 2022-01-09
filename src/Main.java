@@ -1,23 +1,22 @@
-
-import parser.grammaireLexer;
-import parser.grammaireParser;
-import parser.grammaireParser.ProgramContext;
-
-
-import java.io.IOException;
-
+import TDS.TdsVisitor;
+import ast.Ast;
+import ast.AstCreator;
+import graphViz.GraphVizVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
+import parser.grammaireLexer;
+import parser.grammaireParser;
+import parser.grammaireParser.ProgramContext;
 
-import TDS.TdsVisitor;
-import ast.*;
-import graphViz.GraphVizVisitor;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args){
+
 
         if (args.length < 1){
             System.out.println("Error : Expected 1 argument filepath, found 0");
@@ -53,6 +52,12 @@ public class Main {
             ast.accept(tds_visitor);
             tds_visitor.tds_root.displayAll();  // Affichage TDS
             tds_visitor.showErrors();           // Affichage erreurs sémantiques
+            tds_visitor.tds_root.afficher();
+
+
+
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,7 +65,21 @@ public class Main {
         catch (RecognitionException e) {
             e.printStackTrace();
         }
+
+        //tds_visitor.tds_root.displayAll_CSV1(file,csvWriter);
+
         
+    }
+
+    public static void display(String s){
+        try {
+           FileWriter csvWriter = new FileWriter("./out/TDS.csv");
+
+            System.out.println(s);
+            csvWriter.append("s");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }
