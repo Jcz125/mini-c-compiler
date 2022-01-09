@@ -182,14 +182,11 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitBloc(grammaireParser.BlocContext ctx) {
-		// ArrayList<Ast> list_decl = new ArrayList<>(); // séparation ici dès mtn ? utile ?
-		// ArrayList<Ast> list_instr = new ArrayList<>();
 		ArrayList<Ast> list = new ArrayList<>();
-		//if empty list? then list=empty avec Bloc(list(empty))
 		for (int i=1; i<ctx.getChildCount()-1; i++) {
 			list.add(ctx.getChild(i).accept(this));
 		}
-		return new Bloc(list); // list_decl, list_instr);
+		return new Bloc(list);
 	}
 	/**
 	 * {@inheritDoc}
@@ -198,7 +195,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public Ast visitNone(grammaireParser.NoneContext ctx) {
-		return visitChildren(ctx); // peut-être essayer return null; si ça ne marche pas
+		return null; // peut-être essayer return null; si ça ne marche pas
 	}
 	/**
 	 * {@inheritDoc}

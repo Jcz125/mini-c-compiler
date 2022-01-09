@@ -86,16 +86,22 @@ public class SymbolTable {
 
 
     public LineElement addLineStruct(String idf, NatureSymboles nature, String type) {
-        for (LineElement line:lines) {
+        LineElement struct = this.lookUpStructDef(type);
+        for (LineElement line : lines) {
             if (line.getIdf().equals(idf)) {
                 Errors.add("Error in "+this.titre+", add struct var: [idf] "+idf+" already used");
                 return null;
             }
         }
-        Symbole newSymbole = new StructSymbole(type, idf);
-        LineElement newLine = new LineElement(idf, nature, newSymbole);
-        lines.add(newLine) ;
-        return newLine;
+        if (struct != null) {
+            Symbole newSymbole = new StructSymbole(type, idf);
+            LineElement newLine = new LineElement(idf, nature, newSymbole);
+            lines.add(newLine);
+            return newLine;
+        } else {
+            Errors.add("Error in "+this.titre+": "+type+" is not defined");
+            return null;
+        }
     }
 
 
@@ -151,45 +157,33 @@ public class SymbolTable {
                 }
             }
         }
-
     }
 
 
     public LineElement lookUp(String idf) {
-        for (LineElement line : this.lines) {
-            if (line.getIdf().equals(idf)) {
-                // System.out.println("Var declared ");
+        for (LineElement line : this.lines)
+            if (line.getIdf().equals(idf))
                 return line;
-            }
-        }
-        // System.out.println("Not found in the current table, searching in parent : ");
         if (this.parent != null)
             return this.parent.lookUp(idf);
         return null;
     }
 
-    public LineElement lookUpStructDef(String idf) { // idf ou struct idf : peut signaler un problem
-            for (LineElement line : this.lines) {
-                // String nameStruct = "struct "+line.getIdf(); nameStruct.equals(idf) || 
-                if (line.getNature()==NatureSymboles.STRUCT && line.getSymbole().getType().equals(idf)) { //line.getIdf().equals(idf) && line.getNature()==NatureSymboles.STRUCT) {
+    public LineElement lookUpStructDef(String idf) { // struct idf_name
+            for (LineElement line : this.lines)
+                if (line.getNature()==NatureSymboles.STRUCT && line.getSymbole().getType().equals(idf))
                     return line;
-                }
-            }
-            if (this.parent != null) {
+            if (this.parent != null)
                 return this.parent.lookUpStructDef(idf);
-            }
             return null;
     }
 
     public LineElement lookUpFunctDef(String idf) {
-        for (LineElement line : this.lines) {
-            if(line.getIdf().equals(idf) && line.getNature()==NatureSymboles.FUNCTION){
+        for (LineElement line : this.lines)
+            if(line.getIdf().equals(idf) && line.getNature()==NatureSymboles.FUNCTION)
                 return line;
-            }
-        }
-        if(this.parent != null) {
+        if (this.parent != null)
             return this.parent.lookUpFunctDef(idf);
-        }
         return null;
     }
 

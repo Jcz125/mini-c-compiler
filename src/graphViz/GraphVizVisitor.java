@@ -208,15 +208,12 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(Parametres params) {
 
         String nodeIdentifier = this.nextState();
-
         this.addNode(nodeIdentifier, "Parameters");
 
-        if (params.list.size()!=0) {
+        if (params.list.size() != 0) {
             for (Ast ast:params.list) {
-
                 String astState = ast.accept(this);
                 this.addTransition(nodeIdentifier, astState);
-
             }
         }
         return nodeIdentifier;
@@ -264,14 +261,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(WhileInst whileI) {
 
         String nodeIdentifier = this.nextState();
+        this.addNode(nodeIdentifier, " While ");
 
         String CondState = whileI.condition.accept(this);
-        String InstState = whileI.instruction.accept(this);
-
-        this.addNode(nodeIdentifier, " While ");
         this.addTransition(nodeIdentifier, CondState);
-        this.addTransition(nodeIdentifier, InstState);
 
+        if (whileI.instruction != null) {
+            String InstState = whileI.instruction.accept(this);
+            this.addTransition(nodeIdentifier, InstState);
+        }
         return nodeIdentifier;
 
     }
@@ -281,15 +279,15 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(IfThen ifThen) {
 
         String nodeIdentifier = this.nextState();
-
-        String conditionState = ifThen.condition.accept(this);
-        String thenBlockState = ifThen.thenBlock.accept(this);
-
         this.addNode(nodeIdentifier, "IfThen");
 
+        String conditionState = ifThen.condition.accept(this);
         this.addTransition(nodeIdentifier, conditionState);
-        this.addTransition(nodeIdentifier, thenBlockState);
 
+        if (ifThen.thenBlock != null) {
+            String thenBlockState = ifThen.thenBlock.accept(this);
+            this.addTransition(nodeIdentifier, thenBlockState);
+        }
         return nodeIdentifier;
 
     }
@@ -299,17 +297,19 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(IfThenElse ifThenElse) {
 
         String nodeIdentifier = this.nextState();
-
-        String conditionState = ifThenElse.condition.accept(this);
-        String thenBlockState = ifThenElse.thenBlock.accept(this);
-        String elseBlockState = ifThenElse.elseBlock.accept(this);
-
         this.addNode(nodeIdentifier, "IfThenElse");
 
+        String conditionState = ifThenElse.condition.accept(this);
         this.addTransition(nodeIdentifier, conditionState);
-        this.addTransition(nodeIdentifier, thenBlockState);
-        this.addTransition(nodeIdentifier, elseBlockState);
 
+        if (ifThenElse.thenBlock != null) {
+            String thenBlockState = ifThenElse.thenBlock.accept(this);
+            this.addTransition(nodeIdentifier, thenBlockState);
+        }
+        if (ifThenElse.elseBlock != null) {
+            String elseBlockState = ifThenElse.elseBlock.accept(this);
+            this.addTransition(nodeIdentifier, elseBlockState);
+        }
         return nodeIdentifier;
 
     }
@@ -396,20 +396,21 @@ public class GraphVizVisitor implements AstVisitor<String> {
     public String visit(Bloc bloc) {
 
         String nodeIdentifier = this.nextState();
-
         this.addNode(nodeIdentifier, "Bloc");
-
         if (bloc.list.size() != 0) {
-            for (Ast ast:bloc.list) {
-
-                String astState = ast.accept(this);
-                this.addTransition(nodeIdentifier, astState);
-
+            for (Ast ast : bloc.list) {
+                if (ast != null) {
+                    String astState = ast.accept(this);
+                    this.addTransition(nodeIdentifier, astState);
+                }
+                // else {
+                //     String nodeNone = this.nextState();
+                //     this.addNode(nodeIdentifier, "None");
+                //     this.addTransition(nodeIdentifier, nodeNone);
+                // }
             }
         }
-
         return nodeIdentifier;
-
     }
 
     @Override
@@ -448,7 +449,6 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addTransition(nodeIdentifier, rightState);
 
         return nodeIdentifier;
-
     }
 
     @Override

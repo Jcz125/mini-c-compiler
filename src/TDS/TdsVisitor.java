@@ -33,7 +33,7 @@ public class TdsVisitor implements AstVisitor<String> {
         for (Ast ast : program.program)
             ast.accept(this);
         if (main == false)
-            SymbolTable.Errors.add("No main found.");
+            SymbolTable.Errors.add("No int main() found.");
         return null;
     }
 
@@ -49,7 +49,7 @@ public class TdsVisitor implements AstVisitor<String> {
                         IntSymbole sb = new IntSymbole(idf.name);
                         table.put(sb, "int");
                     } else {
-                        SymbolTable.Errors.add("Error in "+tds_current.titre+", "+decltype.type+", champs"+": "+idf.name+" already used.");
+                        SymbolTable.Errors.add("Error in "+tds_current.titre+", "+decltype.type+", champs"+": "+idf.name+" already used");
                     }
                 }
             } else {
@@ -60,7 +60,7 @@ public class TdsVisitor implements AstVisitor<String> {
                         StructSymbole sb = new StructSymbole(s.type, idf.name);
                         table.put(sb, s.type);
                     } else {
-                        SymbolTable.Errors.add("Error in "+tds_current.titre+", "+decltype.type+", champs"+": "+idf.name+" already used.");
+                        SymbolTable.Errors.add("Error in "+tds_current.titre+", "+decltype.type+", champs"+": "+idf.name+" already used");
                     }
                 }
             }
@@ -96,7 +96,7 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.put(new IntSymbole(param.idf.name), "int");
                 } else {
-                    SymbolTable.Errors.add("Error in "+tds_current.titre+", function "+name+", params"+": idf "+param.idf.name+" already used.");
+                    SymbolTable.Errors.add("Error in "+tds_current.titre+", function "+name+", params"+": idf "+param.idf.name+" already used");
                 }
             } else {
                 StructPointer param = (StructPointer) ast;
@@ -116,7 +116,7 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.add(new IntSymbole(param.idf.name));
                 } else {
-                    SymbolTable.Errors.add("Error in "+tds_current.titre+", function "+name+", params"+": idf "+param.idf.name+" already used."); // améliorer le message d'erreur
+                    SymbolTable.Errors.add("Error in "+tds_current.titre+", function "+name+", params"+": idf "+param.idf.name+" already used"); // améliorer le message d'erreur
                 }
             } else {
                 StructPointer param = (StructPointer) ast;
@@ -147,7 +147,7 @@ public class TdsVisitor implements AstVisitor<String> {
             if (typeRetour == null)
                 SymbolTable.Errors.add("Warning in "+tds_current.titre+": no return for function int "+line.getIdf());
             else if (!(typeRetour.equals("int") || typeRetour.equals("void")))
-                SymbolTable.Errors.add("Error in "+tds_current.titre+": no identical return type for function "+line.getIdf());
+                SymbolTable.Errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function "+line.getIdf());
             // System.out.println("sortie du intFct");
         }
         return null;
@@ -169,7 +169,7 @@ public class TdsVisitor implements AstVisitor<String> {
             if (typeRetour == null)
                 SymbolTable.Errors.add("Warning in "+tds_current.titre+": no return for function struct "+line.getIdf()+" *");
             else if (!(typeRetour.equals(structFct.type) || typeRetour.equals("void *")))
-                SymbolTable.Errors.add("Error in "+tds_current.titre+": no identical return type for function struct "+line.getIdf()+" *");
+                SymbolTable.Errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function struct "+line.getIdf()+" *");
         }
         return null;
     }
@@ -193,12 +193,13 @@ public class TdsVisitor implements AstVisitor<String> {
                     String newReturn = ast.accept(this);
                     if (newReturn.equals("void") || newReturn.equals("void *"))
                         SymbolTable.Errors.add("Warning in "+tds_current.titre+": void return type, pointer without a cast");
-                    else if (!returnType.equals(newReturn))
+                    else if (returnType.equals("") || !returnType.equals(newReturn))
                         returnType = "";
                 }
                 continue;
             }
-            ast.accept(this);
+            if (ast != null)
+                ast.accept(this);
         }
         tds_current = tds_current.exitRegion();
         return returnType;
@@ -209,10 +210,11 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Affect affect) {
         String left = affect.left.accept(this);
         String right = affect.right.accept(this);
-        if (left == null || right == null) { // au moins l'un des vars n'existe pas
+        if (left == null) { // au moins l'un des vars n'existe pas
+            SymbolTable.Errors.add("Error in "+tds_current.titre+": var "+(affect.left instanceof Idf ? ((Idf) affect.left).name : (((Idf) ((Fleche) affect.left).right).name))+" doesn't exist");
             return null;
         }
-        if (!(left.equals(right) || right.equals("void") || right.equals("void *"))) {
+        if (!(left.equals(right) || "void".equals(right) || "void *".equals(right))) {
             SymbolTable.Errors.add("Error in "+tds_current.titre+": assignment types don't match "+left+" and "+right);
             return null;
         }
@@ -238,7 +240,7 @@ public class TdsVisitor implements AstVisitor<String> {
                     // System.out.println(symbole.getType());
                     return symbole.getType();
                 } else {
-                    SymbolTable.Errors.add("Error in "+tds_current.titre+": "+right+" not champ of "+left);
+                    SymbolTable.Errors.add("Error in "+tds_current.titre+": "+((Idf) fleche.right).name+" not champ of "+left);
                     return null;
                 }
             } else {
@@ -255,7 +257,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(OuLogique ouLogique) {
         String left = ouLogique.left.accept(this);
         String right = ouLogique.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -265,7 +267,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(EtLogique etLogique) {
         String left = etLogique.left.accept(this);
         String right = etLogique.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -275,7 +277,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(EqualTo equalTo) {
         String left = equalTo.left.accept(this);
         String right = equalTo.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -285,7 +287,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(NotEqualTo notEqualTo) {
         String left = notEqualTo.left.accept(this);
         String right = notEqualTo.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -295,7 +297,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(GreaterOrEqual greaterOrEqual) {
         String left = greaterOrEqual.left.accept(this);
         String right = greaterOrEqual.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -305,7 +307,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(GreaterThan greaterThan) {
         String left = greaterThan.left.accept(this);
         String right = greaterThan.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -315,7 +317,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(LessOrEqual lessOrEqual) {
         String left = lessOrEqual.left.accept(this);
         String right = lessOrEqual.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -325,7 +327,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(LessThan lessThan) {
         String left = lessThan.left.accept(this);
         String right = lessThan.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -335,7 +337,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Plus plus) {
         String left = plus.left.accept(this);
         String right = plus.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -345,10 +347,8 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Minus minus) {
         String left = minus.left.accept(this);
         String right = minus.right.accept(this);
-        if ( (left != null) && (right != null) ){       //à ajouter dans tt les autres aussi
-            if (left.equals(right)) {
-                return right;
-            }
+        if (left != null && left.equals(right)) {
+            return right;
         }
         return null;
     }
@@ -357,7 +357,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Mult mult) {
         String left = mult.left.accept(this);
         String right = mult.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             return right;
         }
         return null;
@@ -367,7 +367,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Divide divide) {
         String left = divide.left.accept(this);
         String right = divide.right.accept(this);
-        if (left.equals(right)) {
+        if (left != null && left.equals(right)) {
             if (divide.left instanceof Entier && ((Entier) divide.left).value == 0)
                 SymbolTable.Errors.add("Error in "+tds_current.titre+": division by zero");
             return right;
@@ -379,7 +379,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Oppose oppose) {
         String type = oppose.value.accept(this);
         // erreur pour -pointer
-        if (oppose.op.equals("-") && !type.equals("int")) {
+        if (oppose.op.equals("-") && !"int".equals(type)) {
             SymbolTable.Errors.add("Error in "+tds_current.titre+": -value needs value to be an arithmetic type");
             return null;
         }
@@ -391,13 +391,16 @@ public class TdsVisitor implements AstVisitor<String> {
         // control sémantique
         String functIdf = ((Idf) function.idf).name;
         if (functIdf.equals("malloc") || functIdf.equals("print")) {
-            if (function.expression.size() != 1 || !function.expression.get(0).accept(this).equals("int")) {
+            String str = function.expression.get(0).accept(this);
+            System.out.println("test: "+str);
+            if (function.expression.size() != 1 || !str.equals("int")) {
+                // System.out.println("size params: "+function.expression.size()+" int? "+function.expression.get(0).accept(this).equals("int"));
                 String signFct;
                 if (functIdf.equals("malloc")) signFct = "void * malloc";
                 else signFct = "void print";
                 SymbolTable.Errors.add("Error in "+tds_current.titre+" type of param number "+0+" doesn't match function "+signFct+" definition" );
-                return null;
-            } else return functIdf.equals("malloc") ? "void *" : "void";
+            }
+            return functIdf.equals("malloc") ? "void *" : "void";
         }
         // on vérifie que la funct left (idf) soit bien définie
         LineElement lineElement = tds_current.lookUpFunctDef(functIdf);
@@ -433,6 +436,7 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Idf idf) {
+        System.out.println("idf="+idf.name);
         if (tds_current.lookUp(idf.name) != null)
             return tds_current.lookUp(idf.name).getSymbole().getType();
         return null;
@@ -440,13 +444,13 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(IfThen ifThen) {
-        return ifThen.thenBlock.accept(this);
+        return ifThen.thenBlock==null ? null : ifThen.thenBlock.accept(this);
     }
 
     @Override
     public String visit(IfThenElse ifThenElse) {
-        String thenReturn = ifThenElse.thenBlock.accept(this);
-        String elseReturn = ifThenElse.elseBlock.accept(this);
+        String thenReturn = ifThenElse.thenBlock==null ? null : ifThenElse.thenBlock.accept(this);
+        String elseReturn = ifThenElse.elseBlock==null ? null : ifThenElse.elseBlock.accept(this);
         if (thenReturn == null && elseReturn == null)   // on vérifie s'il y a des retours
             return null;
         if (thenReturn.equals(elseReturn))              // retours de même types
@@ -457,7 +461,7 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(WhileInst whileInst) {
-        return whileInst.instruction.accept(this);
+        return whileInst.instruction==null ? null : whileInst.instruction.accept(this);
     }
 
     @Override
