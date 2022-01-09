@@ -144,7 +144,7 @@ public class TdsVisitor implements AstVisitor<String> {
             if (typeRetour == null)
                 SymbolTable.Errors.add("Warning in "+tds_current.titre+": no return for function int "+line.getIdf());
             else if (!(typeRetour.equals("int") || typeRetour.equals("void")))
-                SymbolTable.Errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function "+line.getIdf());
+                SymbolTable.Errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function int "+line.getIdf());
         }
         return null;
     }
@@ -163,9 +163,9 @@ public class TdsVisitor implements AstVisitor<String> {
 
             // controle du type de retour
             if (typeRetour == null)
-                SymbolTable.Errors.add("Warning in "+tds_current.titre+": no return for function struct "+line.getIdf()+" *");
+                SymbolTable.Errors.add("Warning in "+tds_current.titre+": no return for function "+structFct.type+" * "+line.getIdf());
             else if (!(typeRetour.equals(structFct.type) || typeRetour.equals("void *")))
-                SymbolTable.Errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function struct "+line.getIdf()+" *");
+                SymbolTable.Errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function "+structFct.type+" * "+line.getIdf());
         }
         return null;
     }
