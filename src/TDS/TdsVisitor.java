@@ -48,9 +48,8 @@ public class TdsVisitor implements AstVisitor<String> {
                         idfs.add(idf.name);
                         IntSymbole sb = new IntSymbole(idf.name);
                         table.put(sb, "int");
-                    } else {
+                    } else
                         SymbolTable.Errors.add("Error in "+tds_current.titre+", "+decltype.type+", champs"+": "+idf.name+" already used");
-                    }
                 }
             } else {
                 VarStruct s = (VarStruct) champ;
@@ -59,9 +58,8 @@ public class TdsVisitor implements AstVisitor<String> {
                         idfs.add(idf.name);
                         StructSymbole sb = new StructSymbole(s.type, idf.name);
                         table.put(sb, s.type);
-                    } else {
+                    } else
                         SymbolTable.Errors.add("Error in "+tds_current.titre+", "+decltype.type+", champs"+": "+idf.name+" already used");
-                    }
                 }
             }
         }
@@ -148,7 +146,6 @@ public class TdsVisitor implements AstVisitor<String> {
                 SymbolTable.Errors.add("Warning in "+tds_current.titre+": no return for function int "+line.getIdf());
             else if (!(typeRetour.equals("int") || typeRetour.equals("void")))
                 SymbolTable.Errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function "+line.getIdf());
-            // System.out.println("sortie du intFct");
         }
         return null;
     }
@@ -187,9 +184,7 @@ public class TdsVisitor implements AstVisitor<String> {
             if (ast instanceof Return || ast instanceof IfThen || ast instanceof IfThenElse || ast instanceof WhileInst || ast instanceof Bloc) {
                 if (returnType == null) {
                     returnType = ast.accept(this);
-                    // System.out.println("returntype=null, "+returnType);
-                }
-                else {
+                } else {
                     String newReturn = ast.accept(this);
                     if (newReturn.equals("void") || newReturn.equals("void *"))
                         SymbolTable.Errors.add("Warning in "+tds_current.titre+": void return type, pointer without a cast");
@@ -204,7 +199,6 @@ public class TdsVisitor implements AstVisitor<String> {
         tds_current = tds_current.exitRegion();
         return returnType;
     }
-
 
     @Override
     public String visit(Affect affect) {
@@ -226,7 +220,7 @@ public class TdsVisitor implements AstVisitor<String> {
     @Override
     public String visit(Fleche fleche) {
         String left = fleche.left.accept(this);
-        String right = fleche.right.accept(this);
+        // String right = fleche.right.accept(this); // inutile
         if (left == null) {
             SymbolTable.Errors.add("Error in "+tds_current.titre+", arrow problem: "+"struct not defined");
             return null;
@@ -235,22 +229,16 @@ public class TdsVisitor implements AstVisitor<String> {
         if (lineElement != null) { // on vérifie que la struct left soit bien définie
             if (fleche.right instanceof Idf) {
                 StructDefSymbole structDefSymbole = (StructDefSymbole) lineElement.getSymbole(); // on récupère le struct à droite
-                Symbole symbole = structDefSymbole.lookUpChamp(((Idf) fleche.right).name); //, tds_current.lookUp(((Idf) fleche.right).name).getSymbole().getType());
+                Symbole symbole = structDefSymbole.lookUpChamp(((Idf) fleche.right).name);
                 if (symbole != null) { // on vérifie que le champ right soit bien un champ de left
-                    // System.out.println(symbole.getType());
                     return symbole.getType();
-                } else {
+                } else
                     SymbolTable.Errors.add("Error in "+tds_current.titre+": "+((Idf) fleche.right).name+" not champ of "+left);
-                    return null;
-                }
-            } else {
+            } else
                 SymbolTable.Errors.add("Error in"+tds_current.titre+": arrow problem");
-                return null;
-            }
-        } else {
+        } else
             SymbolTable.Errors.add("Error in "+tds_current.titre+": "+left+" not defined");
-            return null;
-        }
+        return null;
     }
 
     @Override
@@ -391,10 +379,7 @@ public class TdsVisitor implements AstVisitor<String> {
         // control sémantique
         String functIdf = ((Idf) function.idf).name;
         if (functIdf.equals("malloc") || functIdf.equals("print")) {
-            String str = function.expression.get(0).accept(this);
-            System.out.println("test: "+str);
-            if (function.expression.size() != 1 || !str.equals("int")) {
-                // System.out.println("size params: "+function.expression.size()+" int? "+function.expression.get(0).accept(this).equals("int"));
+            if (function.expression.size() != 1 || !function.expression.get(0).accept(this).equals("int")) {
                 String signFct;
                 if (functIdf.equals("malloc")) signFct = "void * malloc";
                 else signFct = "void print";
@@ -416,12 +401,10 @@ public class TdsVisitor implements AstVisitor<String> {
         } else {
             ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
             ArrayList<Ast> paramsExec = function.expression;
-
             for (int i=0 ; i<fctSymbole.getNbParam() ; i++) {
                 String typeDecl = paramsDecl.get(i).getType();
-                if (!typeDecl.equals(paramsExec.get(i).accept(this))) {
+                if (!typeDecl.equals(paramsExec.get(i).accept(this)))
                     SymbolTable.Errors.add("Error in "+tds_current.titre+" type of param number "+i+" doesn't match function "+fctSymbole.getType()+" "+fctSymbole.getIdf()+" definition" );
-                }
             }
         }
         return ((FctSymbole) lineElement.getSymbole()).getTypeRetour();
@@ -436,7 +419,6 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(Idf idf) {
-        System.out.println("idf="+idf.name);
         if (tds_current.lookUp(idf.name) != null)
             return tds_current.lookUp(idf.name).getSymbole().getType();
         return null;

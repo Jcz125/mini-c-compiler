@@ -216,24 +216,9 @@ public class SymbolTable {
 
     public void displayAll() {
         this.displayTDS();
-        for (SymbolTable s : this.children) {
-            // System.out.println("nb childs: "+this.children.size());
+        for (SymbolTable s : this.children)
             s.displayAll();
-        }
     }
-
-//    public LineElement updateLineInt(String idf, String value) {
-//        for (LineElement line:lines) {
-//            if (line.getIdf().equals(idf) && (line.getValue().equals(""))) {
-//                line.setValue(value);
-//                return line;
-//            }
-//        }
-//        System.out.println("Undeclared var");
-//        return null ;
-//    }
-//
-//
 
 
     public SymbolTable newRegion(String name) {
