@@ -218,53 +218,13 @@ public class SymbolTable {
         }
     }
 
-
-
-    /*public void displayTDS_CSV() {
-
-        File file = new File("./out/TDS.csv");
-        try {
-            FileWriter csvWriter = new FileWriter("./out/TDS.csv");
-            //csvWriter.append("hellooooooo");
-            //csvWriter.append("\nTable courante: " + "mon pere:  " +"\n" );
-            if (this != null) {
-                String father = "Pas de parent";
-
-                if (this.parent != null) {
-                    father = this.parent.titre;
-                }
-                //System.out.println("hello\n");
-                csvWriter.append("Table courante: " + this.titre + ";" + "mon pere:  " +father+"\n" );
-                csvWriter.append("IDF;"+"NATURE;"+"CARACTERISTIQUES "+" SYMBOLE\n");
-                for (LineElement line : this.lines) {
-                    String idf = line.getIdf();
-                    NatureSymboles nature = line.getNature();
-                    Symbole s = line.getSymbole() ;
-
-                    System.out.println("\n"+idf + ";" + nature + ";");
-                    csvWriter.append("\n"+idf + ";" + nature + ";");
-                    s.displaySymbole_CSV(csvWriter);
-                }
-            }
-            csvWriter.flush();
-            csvWriter.close();
-            } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
-    }*/
-
     public String displayTDS_CSV() {
-
-        //File file = new File("./out/TDS.csv");
-
-            //FileWriter csvWriter = new FileWriter("./out/TDS.csv");
             if (this != null) {
                 String father = "Pas de parent";
                 System.out.println("hello\n");
                 if (this.parent != null) {
                     father = this.parent.titre;
                 }
-
                 this.TDS += ("\n Table courante: " + this.titre + ";" + "mon pere:  " + father );
                 this.TDS += ("\nIDF;" + "NATURE;" + "CARACTERISTIQUES " + " SYMBOLE");
                 for (LineElement line : this.lines) {
@@ -274,10 +234,8 @@ public class SymbolTable {
                     this.TDS += ( "\n"+ idf + ";" + nature + ";");
                      String symbole = s.displaySymbole_CSV();
                      this.TDS += symbole;
-
                 }
                 this.TDS+="\n";
-
             }
             return this.TDS;
     }
@@ -309,7 +267,6 @@ public class SymbolTable {
         for (SymbolTable s : this.children)
             s.displayAll();
     }
-
 
     public SymbolTable newRegion(String name) {
         SymbolTable newRegionTable = new SymbolTable(name, this);
