@@ -2,8 +2,7 @@ package TDS.Symboles;
 
 public class StructSymbole extends Symbole{
 
-    //private String idf;
-    //private String type ;
+
 
     public StructSymbole(String type, String idf) {
         super();
@@ -21,4 +20,3 @@ public class StructSymbole extends Symbole{
         System.out.print(" type : " + this.type + " *       ");
     }
 }
-//good luck
