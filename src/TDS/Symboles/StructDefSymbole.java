@@ -26,13 +26,9 @@ public class StructDefSymbole extends Symbole{
     }
 
     public Symbole lookUpChamp(String idf_champ) {
-        for (Map.Entry<Symbole, String> mapentry : this.champs.entrySet()) {
-            // if (mapentry.getValue().equals(type)) {
-                if (mapentry.getKey().idf.equals(idf_champ)) {
-                    return mapentry.getKey();
-                }
-            // }
-        }
+        for (Map.Entry<Symbole, String> mapentry : this.champs.entrySet())
+            if (mapentry.getKey().idf.equals(idf_champ))
+                return mapentry.getKey();
         return null;
     }
 
@@ -88,9 +84,7 @@ public class StructDefSymbole extends Symbole{
                 System.out.print(")");
                 System.out.print("      ");
             }
-        }
-        else {
+        } else
             System.out.print(" Vide ");
-        }
     }
 }

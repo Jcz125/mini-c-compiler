@@ -58,37 +58,22 @@ public class FctSymbole extends Symbole {
 
     @Override
     public void displaySymbole() {
-        if (this.typeRetour.equals("int") || this.typeRetour.equals("void") || this.typeRetour.equals("void *")){
+        if (this.typeRetour.equals("int") || this.typeRetour.equals("void") || this.typeRetour.equals("void *"))
             System.out.print("Type de retour : " + this.typeRetour + "       " );
-        }
-//        else if (this.typeRetour.equals("void")){
-//            System.out.print("Type de retour : " + this.typeRetour + "       " );
-//        }
-//        else if (this.typeRetour.equals("void *")){
-//            System.out.print("Type de retour : " + this.typeRetour + "       " );
-//        }
-        else {
+        else
             System.out.print("Type de retour : " + this.typeRetour + " *       " );
-        }
         System.out.print("Nbre de params : " +  this.nbParam + "       ") ;
 
         if (this.nbParam != 0) {
             System.out.print("Params : ");
-            for(Symbole s : fctParams){
+            for (Symbole s : fctParams) {
                 String name = s.idf;
                 String type = s.type;
-                if (!type.equals("int")) {
-                    System.out.print("(" + name + " __ " + type + " *)" + "  |  ") ;
-                }
-                else {
+                if (type.equals("int"))
                     System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
-                }
+                else
+                    System.out.print("(" + name + " __ " + type + " *)" + "  |  ");
             }
-            /*for (Symbole s : fctParams.keySet()){
-                String name = s.idf.toString() ;
-                String type = s.type.toString() ;
-                System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
-            }*/
         }
     }
 }
