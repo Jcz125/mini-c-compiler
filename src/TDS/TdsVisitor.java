@@ -48,7 +48,7 @@ public class TdsVisitor implements AstVisitor<String> {
                         IntSymbole sb = new IntSymbole(idf.name);
                         table.put(sb, "int");
                     } else
-                        SymbolTable.Errors.add("Error in "+tds_current.titre+", "+decltype.type+", champs"+": "+idf.name+" already used");
+                        SymbolTable.Errors.add("Error in "+tds_current.titre+": "+decltype.type+", champs"+": "+idf.name+" already used");
                 }
             } else {
                 VarStruct s = (VarStruct) champ;
@@ -58,7 +58,7 @@ public class TdsVisitor implements AstVisitor<String> {
                         StructSymbole sb = new StructSymbole(s.type, idf.name);
                         table.put(sb, s.type);
                     } else
-                        SymbolTable.Errors.add("Error in "+tds_current.titre+", "+decltype.type+", champs"+": "+idf.name+" already used");
+                        SymbolTable.Errors.add("Error in "+tds_current.titre+": "+decltype.type+", champs"+": "+idf.name+" already used");
                 }
             }
         }
@@ -93,7 +93,7 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.put(new IntSymbole(param.idf.name), "int");
                 } else {
-                    SymbolTable.Errors.add("Error in "+tds_current.titre+", function "+name+", params"+": idf "+param.idf.name+" already used");
+                    SymbolTable.Errors.add("Error in "+tds_current.titre+": function "+name+", params"+": idf "+param.idf.name+" already used");
                 }
             } else {
                 StructPointer param = (StructPointer) ast;
@@ -113,7 +113,7 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.add(new IntSymbole(param.idf.name));
                 } else {
-                    SymbolTable.Errors.add("Error in "+tds_current.titre+", function "+name+", params"+": idf "+param.idf.name+" already used"); // améliorer le message d'erreur
+                    SymbolTable.Errors.add("Error in "+tds_current.titre+": function "+name+", params"+": idf "+param.idf.name+" already used"); // améliorer le message d'erreur
                 }
             } else {
                 StructPointer param = (StructPointer) ast;
@@ -208,7 +208,7 @@ public class TdsVisitor implements AstVisitor<String> {
             return null;
         }
         if (!(left.equals(right) || "void".equals(right) || "void *".equals(right))) {
-            SymbolTable.Errors.add("Error in "+tds_current.titre+": assignment types don't match "+left+" and "+right);
+            SymbolTable.Errors.add("Error in "+tds_current.titre+": assignment types ("+left+" and "+right+") don't match");
             return null;
         }
         if (right.equals("void") || left.equals("int") && right.equals("void *"))
@@ -221,7 +221,7 @@ public class TdsVisitor implements AstVisitor<String> {
         String left = fleche.left.accept(this);
         // String right = fleche.right.accept(this); // inutile
         if (left == null) {
-            SymbolTable.Errors.add("Error in "+tds_current.titre+", arrow problem: "+"struct not defined");
+            SymbolTable.Errors.add("Error in "+tds_current.titre+": arrow problem: "+"struct not defined");
             return null;
         }
         LineElement lineElement = tds_current.lookUpStructDef(left);
