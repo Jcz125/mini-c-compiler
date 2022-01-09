@@ -86,7 +86,7 @@ int main(int a, int b) {
     d->b = 5;
     d->c = 6; // n'acceder qu'aux champs def
 
-    print(s) // print doit juste print un int
+    print(s); // print doit juste print un int
     res = fct(5, s) ;                   // fonction pas définie
     res = fctI(5, s);                   // ordre des params
     res = fctI(5, 2, s);                // nombre de param
