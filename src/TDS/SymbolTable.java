@@ -221,7 +221,6 @@ public class SymbolTable {
     public String displayTDS_CSV() {
             if (this != null) {
                 String father = "Pas de parent";
-                System.out.println("hello\n");
                 if (this.parent != null) {
                     father = this.parent.titre;
                 }
