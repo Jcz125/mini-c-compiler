@@ -37,7 +37,7 @@ public class SymbolTable {
         this.parent = parent;
         this.lines = new ArrayList<>();
         this.children = new ArrayList<>();
-        this.TDS="";
+        SymbolTable.TDS="";
     }
 
 
@@ -224,19 +224,19 @@ public class SymbolTable {
                 if (this.parent != null) {
                     father = this.parent.titre;
                 }
-                this.TDS += ("\n Table courante: " + this.titre + ";" + "mon pere:  " + father );
-                this.TDS += ("\nIDF;" + "NATURE;" + "CARACTERISTIQUES " + " SYMBOLE");
+                SymbolTable.TDS += ("\n Table courante: " + this.titre + ";" + "mon pere:  " + father );
+                SymbolTable.TDS += ("\nIDF;" + "NATURE;" + "CARACTERISTIQUES " + " SYMBOLE");
                 for (LineElement line : this.lines) {
                     String idf = line.getIdf();
                     NatureSymboles nature = line.getNature();
                     Symbole s = line.getSymbole();
-                    this.TDS += ( "\n"+ idf + ";" + nature + ";");
-                     String symbole = s.displaySymbole_CSV();
-                     this.TDS += symbole;
+                    SymbolTable.TDS += ( "\n"+ idf + ";" + nature + ";");
+                    String symbole = s.displaySymbole_CSV();
+                    SymbolTable.TDS += symbole;
                 }
-                this.TDS+="\n";
+                SymbolTable.TDS+="\n";
             }
-            return this.TDS;
+            return SymbolTable.TDS;
     }
 
 
@@ -253,7 +253,7 @@ public class SymbolTable {
         try {
             FileWriter csvWriter = new FileWriter("./TDS_CSV/TDS.csv");
             this.displayAll_CSV();
-            csvWriter.append(this.TDS);
+            csvWriter.append(SymbolTable.TDS);
             csvWriter.flush();
             csvWriter.close();
         } catch (IOException e) {

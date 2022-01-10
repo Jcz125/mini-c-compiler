@@ -412,7 +412,7 @@ public class TdsVisitor implements AstVisitor<String> {
     @Override
     public String visit(Sizeof sizeof) {
         if (tds_current.lookUpStructDef("struct "+sizeof.idf.name) == null) // la struct doit être définie
-            SymbolTable.Errors.add("Error in "+tds_current.titre+" sizeof invalid identifier: "+sizeof.idf.name);
+            SymbolTable.Errors.add("Error in "+tds_current.titre+": sizeof invalid identifier: "+sizeof.idf.name);
         return "int";
     }
 
@@ -420,6 +420,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Idf idf) {
         if (tds_current.lookUp(idf.name) != null)
             return tds_current.lookUp(idf.name).getSymbole().getType();
+        SymbolTable.Errors.add("Error in "+tds_current.titre+": [idf] "+idf.name+" not found");
         return null;
     }
 
