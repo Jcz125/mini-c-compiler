@@ -468,7 +468,7 @@ public class TdsVisitor implements AstVisitor<String> {
         ifThenElse.condition.accept(this);
         String thenReturn = ifThenElse.thenBlock==null ? null : ifThenElse.thenBlock.accept(this);
         String elseReturn = ifThenElse.elseBlock==null ? null : ifThenElse.elseBlock.accept(this);
-        if (thenReturn == null && elseReturn == null)   // on vérifie s'il y a des retours
+        if (thenReturn == null || elseReturn == null)   // on vérifie s'il y a des retours
             return null;
         if (thenReturn.equals(elseReturn))              // retours de même types
             return thenReturn;

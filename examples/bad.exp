@@ -35,7 +35,7 @@ int fctI(struct S3 * paramSFctI1, int paramIFctI2) {
                 int while2I1 ;
                 struct S3 * while2S1, *while2S2;
 
-                //int z ;                                                      // ne pas déclarer z comme ça on utilise une var pas déclaré
+                //int inconnu1 ;                                                      // ne pas déclarer inconnu1 comme ça on utilise une var pas déclaré
                 inconnu1 = 0;
                 while2S1 = while2S1->champ5S3 + 1 ;                            // int affecté à une struct S3
                 if1I2 = if1I2-1 ;
