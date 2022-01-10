@@ -2,9 +2,6 @@ package TDS.Symboles;
 
 public class StructSymbole extends Symbole{
 
-    //private String idf;
-    //private String type ;
-
     public StructSymbole(String type, String idf) {
         super();
         this.idf = idf;
@@ -17,8 +14,15 @@ public class StructSymbole extends Symbole{
 
     @Override
     public void displaySymbole() {
-        //System.out.print(" idf : " + this.idf + "       ");
         System.out.print(" type : " + this.type + " *       ");
     }
+
+
+
+    @Override
+    public String displaySymbole_CSV() {
+        String TDS = new String();
+        TDS+=(" Type : " + this.type + " * ;");
+        return TDS;
+    }
 }
-//good luck

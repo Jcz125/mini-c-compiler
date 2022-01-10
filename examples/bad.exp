@@ -1,8 +1,8 @@
-//vide
+/* vide */
 struct S1 {
 };
 
-// double declaration de meme idf
+/* double declaration de meme idf */
 struct S1 {
     int a;
 };
@@ -13,83 +13,85 @@ struct S2 {
 };
 
 struct S3 {
-    struct S1 * one, *two;
-    struct S2 * three, *four;
-    int c, d;
-    struct S1 * one ;  // unicité de déclaration de champs de struct
+    struct S1 * champ1S3, * champ2S3;
+    struct S2 * champ3S3, * champ4S3;
+    int champ5S3, champ6S3;
+    struct S1 * champ1S3 ;                                                  // unicité de déclaration de champs de struct
 };
 
-//fonction avec type de retour : INT
-int fctI(struct S3 * ab1, int c) {
-    while (c > 0) {
-        int a;
-        struct S3 * ab2, *ab3;
-        struct S1 * a ; //une double déclaration de a
-        if (ab1->three->a > 0) {
-            int b, c ;
-            while (ab1->three->a > 0)  {
-                int d ;
-                if (ab1->c > 0) {
-                    int f ;
-                    //int z ; // ne pas déclarer res comme ça on utilise une var pas déclaré
-                    z = 0;
-                    ab2 = ab2->c + 1 ;   // int affecté à une struct S3
-                    while (ab1->c > 0) {
-                        int res ;
-                        struct S2 * ab2, *ab3;
-                        c = c-1 ;
-                        print(c) ;
-                        res = c;
-                        return res;
-                    }
-                }
-                ab1->three->a = ab1->three->a - 1;
+/* fonction avec type de retour : INT */
+int fctI(struct S3 * paramSFctI1, int paramIFctI2) {
+    while (paramIFctI2 > 0) {
+        int while1I1;
+        struct S3 * while1S1, *while1S2;
+        struct S1 * while1I1 ;                                               // une double déclaration de while1I1
+        paramSFctI1 = while1S1 + while1S2 ;
+        while1I1 = (while1I1 == while1I1) + 5 ;
+
+        if (paramSFctI1->champ3S3->a != 0) {
+            int if1I1, if1I2 ;
+
+            while (paramSFctI1->champ3S3->a > paramSFctI1->champ3S3->b)  {
+                int while2I1 ;
+                struct S3 * while2S1, *while2S2;
+
+                //int z ;                                                    // ne pas déclarer res comme ça on utilise une var pas déclaré
+                inconnu1 = 0;
+                while2S1 = while2S1->champ5S3 + 1 ;                          // int affecté à une struct S3
+                if1I2 = if1I2-1 ;
+                print(if1I2) ;
+                while2I1 = if1I2;
+                while2I1==while2I1+5+9+while2I1 < paramSFctI1->champ3S3->a ;
+                return while2I1;
             }
+
+            paramSFctI1->champ3S3->a = paramSFctI1->champ3S3->a - 1;
         }
     }
-    //WARNING : pas de return
+    return  paramIFctI2 + 2;
 }
 
-//fonction avec type de retour : Struct
+/* fonction avec type de retour : Struct */
 struct S3 * fctS() {
     int resI ;
-    struct S3 * cd ;
+    struct S3 * varSFctS1 ;
     resI = 0;
-    cd = malloc(sizeof(struct S3)) ;
-    return resI ; // return un int et pas struct
+    inconnu2 = malloc(sizeof(struct S3)) ;
+    return fctI(varSFctS1, resI) ;                                           // return un int et pas struct avec une fonction
 }
 
-// double déclaration de fctI ( la première return int et là return struct )
+/* double déclaration de fctI ( la première return int et là return struct ) */
 struct S1 * fctI() {
     struct S1 * a ;
     return a;
 }
 
-// double déclaration de fctS ( la première return struct et là return int )
+/* double déclaration de fctS ( la première return struct et là return int ) */
 int fctS(int a, int b, struct S3 * c) {
     return a;
 }
 
-// à supprimer le main
-// des params dans la fonction main
-int main(int a, int b) {
+/* main */
+int start(int paramMain1, int paramMain2) {
     int res ;
-    struct S3 * s ;
-    struct S2 * d ;
-    struct S4 * i ; // une structure pas définie
-    d = malloc(s) ; // ça doit prendre comme param un int
+    struct S3 * varS1Main ;
+    struct S2 * varS2Main ;
+    struct S4 * structInconnu ;                                               // une structure pas définie
+    varS2Main = malloc(varS2Main) ;                                           // ça doit prendre comme param un int
 
     print(res);
-    d = malloc(sizeof(struct S2));
-    s = malloc(sizeof(struct S3));
-    d->a = 10;                          // affectation (typage)
-    d->b = 5;
-    d->c = 6; // n'acceder qu'aux champs def
+    varS2Main ; = malloc(sizeof(struct S2));
+    varS1Main = malloc(sizeof(struct S3));
+    varS2Main->a = -10;                                                       // affectation (typage)
+    varS2Main->b = 5;
+    varS2Main->champPasDef = 6;                                               // n'acceder qu'aux champs def
+    res = 'a' + ' ' ' * -8 ;
 
-    print(s); // print doit juste print un int
-    res = fct(5, s) ;                   // fonction pas définie
-    res = fctI(5, s);                   // ordre des params
-    res = fctI(5, 2, s);                // nombre de param
-    res = fctI(5,5) ;                   // type de params
-    return res;                         // type de retour d'une fonction
+    print(varS1Main);                                                         // print doit juste print un int
+
+    res = fct(5, varS2Main) ;                                                 // fonction pas définie
+    res = fctI(5, varS2Main);                                                 // type et ordre des params
+    res = fctI(5, 2, varS2Main);                                              // nombre de param
+    return res;                                                               // type de retour d'une fonction
 }
+

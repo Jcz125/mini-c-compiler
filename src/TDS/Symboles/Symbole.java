@@ -18,6 +18,8 @@ public abstract class Symbole {
 
     public abstract void displaySymbole();
 
+
+    public abstract String displaySymbole_CSV();
     public String getIdf(){return this.idf;};
 
     public String getType(){return this.type;}

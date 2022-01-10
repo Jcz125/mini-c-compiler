@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class FctSymbole extends Symbole {
 
-   // private String idf;
     private String typeRetour ;
     private ArrayList<Symbole> fctParams;
     private int nbParam ;
@@ -62,18 +61,48 @@ public class FctSymbole extends Symbole {
             System.out.print("Type de retour : " + this.typeRetour + "       " );
         else
             System.out.print("Type de retour : " + this.typeRetour + " *       " );
-        System.out.print("Nbre de params : " +  this.nbParam + "       ") ;
+        System.out.print("Nbre de params : " +  this.nbParam + "       ");
 
         if (this.nbParam != 0) {
             System.out.print("Params : ");
             for (Symbole s : fctParams) {
                 String name = s.idf;
                 String type = s.type;
-                if (type.equals("int"))
-                    System.out.print("(" + name + " __ " + type + ")" + "  |  ") ;
-                else
+                if (!type.equals("int"))
                     System.out.print("(" + name + " __ " + type + " *)" + "  |  ");
+                else
+                    System.out.print("(" + name + " __ " + type + ")" + "  |  ");
             }
         }
     }
+
+
+
+
+    @Override
+    public String displaySymbole_CSV() {
+            String TDS = new String();
+            if (this.typeRetour.equals("int") || this.typeRetour.equals("void") || this.typeRetour.equals("void *")) {
+                TDS+=("Type de retour : " + this.typeRetour + ";"+"Nombre de params : " + this.nbParam+ ";");
+            }
+            else {
+                TDS+=("Type de retour : " + this.typeRetour + "*"+ ";"+"Nombre de params : " + this.nbParam+ ";");
+                //csvWriter.append( );
+            }
+            if (this.nbParam != 0) {
+                TDS+=("Params : ");
+                for (Symbole s : fctParams) {
+                    String name = s.idf;
+                    String type = s.type;
+                    if (!type.equals("int"))
+                        TDS+=("(" + name + " __ " + type + " *)" + "  |  ");
+                    else
+                        TDS+=("(" + name + " __ " + type + ")" + "  |  ");
+                }
+
+
+            }
+            return TDS;
+    }
 }
+

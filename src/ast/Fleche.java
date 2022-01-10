@@ -16,9 +16,5 @@ public class Fleche implements Ast {
         this.right = right;
     }
 
-    // public ArrayList<Ast> idfList;
 
-    // public Fleche(ArrayList<Ast> list) {
-    //     this.idfList = list;
-    // }
 }

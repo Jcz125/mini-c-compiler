@@ -87,4 +87,50 @@ public class StructDefSymbole extends Symbole{
         } else
             System.out.print(" Vide ");
     }
+
+
+
+    @Override
+    public String displaySymbole_CSV() {
+        String TDS = new String();
+
+            TDS+=("Type: " + this.type + ";" );
+            TDS+=("Champs : ") ;
+            if (champs.size() != 0) {
+                HashMap<String, ArrayList<String>> types = new HashMap<>();
+                for (Symbole s : champs.keySet()) {
+                    String t = s.type.toString();
+                    String name = s.idf.toString();
+                    if (types.containsKey(t)) {
+                        types.get(t).add(name);
+                    } else {
+                        ArrayList<String> tab = new ArrayList<>();
+                        tab.add(name);
+                        types.put(t, tab);
+                    }
+
+                }
+                for (String name : types.keySet()) {
+                    String key = name.toString();
+                    TDS+=("(");
+                    if (!key.equals("int")) {
+                        TDS+=(key + " * : ");
+                    } else {
+                        TDS+=(key + " : ");
+                    }
+                    /*ArrayList<String> s= types.get(name);
+                    for(String i : s){
+                        csvWriter.append(i+"  ");
+                    }*/
+                    TDS+=("["+String.join(",", types.get(name))+"]");
+                    TDS+=(")");
+                    TDS+=("   ");
+                }
+            }
+            else {
+                TDS+=(" Vide ");
+            }
+
+        return TDS;
+    }
 }

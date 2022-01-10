@@ -102,7 +102,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(nodeIdentifier, "Var");
 
         String nodeType = this.nextState();
-        this.addNode(nodeType, decl_struct.type);
+        this.addNode(nodeType, decl_struct.type+" *");
         
         this.addTransition(nodeIdentifier, nodeType);
 
@@ -171,7 +171,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(nodeIdentifier, "Decl_StructFct");
 
         String nodeType = this.nextState();
-        this.addNode(nodeType, structFunc.type);
+        this.addNode(nodeType, structFunc.type+" *");
 
         String idfState = structFunc.idf_fct.accept(this);
         String paramsState = structFunc.params.accept(this);
@@ -246,7 +246,7 @@ public class GraphVizVisitor implements AstVisitor<String> {
         this.addNode(nodeIdentifier, "Param");
 
         String nodeType = this.nextState();
-        this.addNode(nodeType, pointer.type);
+        this.addNode(nodeType, pointer.type+" *");
 
         String idfState = pointer.idf.accept(this);
 

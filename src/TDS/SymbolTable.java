@@ -3,6 +3,8 @@ package TDS;
 import TDS.Symboles.*;
 import ast.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,6 +19,8 @@ public class SymbolTable {
     private ArrayList<LineElement> lines;
     private SymbolTable parent;
     private ArrayList<SymbolTable> children;
+    public static String TDS;
+
 
 
     public SymbolTable(String name, SymbolTable parent) {
@@ -33,6 +37,7 @@ public class SymbolTable {
         this.parent = parent;
         this.lines = new ArrayList<>();
         this.children = new ArrayList<>();
+        SymbolTable.TDS="";
     }
 
 
@@ -89,7 +94,7 @@ public class SymbolTable {
         LineElement struct = this.lookUpStructDef(type);
         for (LineElement line : lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.titre+", add struct var: [idf] "+idf+" already used");
+                Errors.add("Error in "+this.titre+": add struct var: [idf] "+idf+" already used");
                 return null;
             }
         }
@@ -108,7 +113,7 @@ public class SymbolTable {
     public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, ArrayList<Symbole> fctParams, int nbParams) {
         for (LineElement line : lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.titre+", add function: [idf] "+idf+" already used");
+                Errors.add("Error in "+this.titre+": add function: [idf] "+idf+" already used");
                 return null;
             }
         }
@@ -122,7 +127,7 @@ public class SymbolTable {
     public LineElement addLineStructDef(String struct_name, NatureSymboles nature, String type, HashMap<Symbole, String> champs) {
         for (LineElement line : lines) {
             if (line.getIdf().equals(struct_name)) {
-                Errors.add("Error in "+this.titre+", add struct def: [idf] "+struct_name+" already used");
+                Errors.add("Error in "+this.titre+": add struct def: [idf] "+struct_name+" already used");
                 return null;
             }
         }
@@ -213,13 +218,54 @@ public class SymbolTable {
         }
     }
 
+    public String displayTDS_CSV() {
+            if (this != null) {
+                String father = "Pas de parent";
+                if (this.parent != null) {
+                    father = this.parent.titre;
+                }
+                SymbolTable.TDS += ("\n Table courante: " + this.titre + ";" + "mon pere:  " + father );
+                SymbolTable.TDS += ("\nIDF;" + "NATURE;" + "CARACTERISTIQUES " + " SYMBOLE");
+                for (LineElement line : this.lines) {
+                    String idf = line.getIdf();
+                    NatureSymboles nature = line.getNature();
+                    Symbole s = line.getSymbole();
+                    SymbolTable.TDS += ( "\n"+ idf + ";" + nature + ";");
+                    String symbole = s.displaySymbole_CSV();
+                    SymbolTable.TDS += symbole;
+                }
+                SymbolTable.TDS+="\n";
+            }
+            return SymbolTable.TDS;
+    }
+
+
+
+    public void displayAll_CSV() {
+        this.displayTDS_CSV();
+        for (SymbolTable s : this.children) {
+            s.displayAll_CSV();
+        }
+
+    }
+
+    public void generate_csv(){
+        try {
+            FileWriter csvWriter = new FileWriter("./TDS_CSV/TDS.csv");
+            this.displayAll_CSV();
+            csvWriter.append(SymbolTable.TDS);
+            csvWriter.flush();
+            csvWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void displayAll() {
         this.displayTDS();
         for (SymbolTable s : this.children)
             s.displayAll();
     }
-
 
     public SymbolTable newRegion(String name) {
         SymbolTable newRegionTable = new SymbolTable(name, this);
