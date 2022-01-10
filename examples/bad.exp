@@ -16,7 +16,7 @@ struct S3 {
     struct S1 * champ1S3, * champ2S3;
     struct S2 * champ3S3, * champ4S3;
     int champ5S3, champ6S3;
-    struct S1 * champ1S3 ;                                                  // unicité de déclaration de champs de struct
+    struct S1 * champ1S3 ;                                                     // unicité de déclaration de champs de struct
 };
 
 /* fonction avec type de retour : INT */
@@ -24,8 +24,8 @@ int fctI(struct S3 * paramSFctI1, int paramIFctI2) {
     while (paramIFctI2 > 0) {
         int while1I1;
         struct S3 * while1S1, *while1S2;
-        struct S1 * while1I1 ;                                               // une double déclaration de while1I1
-        paramSFctI1 = while1S1 + while1S2 ;
+        struct S1 * while1I1 ;                                                 // une double déclaration de while1I1
+        paramSFctI1 = while1S1 + while1S2 ;                                    // somme de pointer non autorisée
         while1I1 = (while1I1 == while1I1) + 5 ;
 
         if (paramSFctI1->champ3S3->a != 0) {
@@ -35,9 +35,9 @@ int fctI(struct S3 * paramSFctI1, int paramIFctI2) {
                 int while2I1 ;
                 struct S3 * while2S1, *while2S2;
 
-                //int z ;                                                    // ne pas déclarer res comme ça on utilise une var pas déclaré
+                //int z ;                                                      // ne pas déclarer z comme ça on utilise une var pas déclaré
                 inconnu1 = 0;
-                while2S1 = while2S1->champ5S3 + 1 ;                          // int affecté à une struct S3
+                while2S1 = while2S1->champ5S3 + 1 ;                            // int affecté à une struct S3
                 if1I2 = if1I2-1 ;
                 print(if1I2) ;
                 while2I1 = if1I2;
@@ -56,8 +56,8 @@ struct S3 * fctS() {
     int resI ;
     struct S3 * varSFctS1 ;
     resI = 0;
-    inconnu2 = malloc(sizeof(struct S3)) ;
-    return fctI(varSFctS1, resI) ;                                           // return un int et pas struct avec une fonction
+    inconnu2 = malloc(sizeof(struct S3)) ;                                      // variable non déclarée
+    return fctI(varSFctS1, resI) ;                                              // return un int et pas struct avec une fonction
 }
 
 /* double déclaration de fctI ( la première return int et là return struct ) */
@@ -76,22 +76,22 @@ int start(int paramMain1, int paramMain2) {
     int res ;
     struct S3 * varS1Main ;
     struct S2 * varS2Main ;
-    struct S4 * structInconnu ;                                               // une structure pas définie
-    varS2Main = malloc(varS2Main) ;                                           // ça doit prendre comme param un int
+    struct S4 * structInconnu ;                                                 // une structure pas définie
+    varS2Main = malloc(varS2Main) ;                                             // ça doit prendre comme param un int
 
     print(res);
-    varS2Main ; = malloc(sizeof(struct S2));
+    varS2Main = malloc(sizeof(struct S2));
     varS1Main = malloc(sizeof(struct S3));
-    varS2Main->a = -10;                                                       // affectation (typage)
+    varS2Main->a = -10;                                                         // affectation (typage)
     varS2Main->b = 5;
-    varS2Main->champPasDef = 6;                                               // n'acceder qu'aux champs def
-    res = 'a' + ' ' ' * -8 ;
+    varS2Main->champPasDef = 6;                                                 // n'acceder qu'aux champs def
+    res = 'a' + '\'' * -8 ;
 
-    print(varS1Main);                                                         // print doit juste print un int
+    print(varS1Main);                                                           // print doit juste print un int
 
-    res = fct(5, varS2Main) ;                                                 // fonction pas définie
-    res = fctI(5, varS2Main);                                                 // type et ordre des params
-    res = fctI(5, 2, varS2Main);                                              // nombre de param
-    return res;                                                               // type de retour d'une fonction
+    res = fct(5, varS2Main) ;                                                   // fonction pas définie
+    res = fctI(5, varS2Main);                                                   // type et ordre des params
+    res = fctI(5, 2, varS2Main);                                                // nombre de param
+    return res;                                                                 // type de retour d'une fonction
 }
 

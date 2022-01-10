@@ -204,7 +204,8 @@ public class TdsVisitor implements AstVisitor<String> {
         String left = affect.left.accept(this);
         String right = affect.right.accept(this);
         if (left == null) { // au moins l'un des vars n'existe pas
-            SymbolTable.Errors.add("Error in "+tds_current.titre+": var "+(affect.left instanceof Idf ? ((Idf) affect.left).name : (((Idf) ((Fleche) affect.left).right).name))+" doesn't exist");
+            if (affect.left instanceof Fleche)
+                SymbolTable.Errors.add("Error in "+tds_current.titre+": var "+(affect.left instanceof Idf ? ((Idf) affect.left).name : (((Idf) ((Fleche) affect.left).right).name))+" doesn't exist");
             return null;
         }
         if (!(left.equals(right) || "void".equals(right) || "void *".equals(right))) {
@@ -244,122 +245,154 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(OuLogique ouLogique) {
         String left = ouLogique.left.accept(this);
         String right = ouLogique.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
-        }
-        return null;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals(right) && ((ouLogique.right instanceof Entier && ((Entier) ouLogique.right).value == 0) ? false : true))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": || comparaison between different types (integer and pointer)");
+        return "int";
     }
 
     @Override
     public String visit(EtLogique etLogique) {
         String left = etLogique.left.accept(this);
         String right = etLogique.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
-        }
-        return null;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals(right) && ((etLogique.right instanceof Entier && ((Entier) etLogique.right).value == 0) ? false : true))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": && comparaison between different types (integer and pointer)");
+        return "int";
     }
 
     @Override
     public String visit(EqualTo equalTo) {
         String left = equalTo.left.accept(this);
         String right = equalTo.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
-        }
-        return null;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals(right) && ((equalTo.right instanceof Entier && ((Entier) equalTo.right).value == 0) ? false : true))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": == comparaison between different types (integer and pointer)");
+        return "int";
     }
 
     @Override
     public String visit(NotEqualTo notEqualTo) {
         String left = notEqualTo.left.accept(this);
         String right = notEqualTo.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
-        }
-        return null;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals(right) && ((notEqualTo.right instanceof Entier && ((Entier) notEqualTo.right).value == 0) ? false : true))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": != comparaison between different types (integer and pointer)");
+        return "int";
     }
 
     @Override
     public String visit(GreaterOrEqual greaterOrEqual) {
         String left = greaterOrEqual.left.accept(this);
         String right = greaterOrEqual.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
-        }
-        return null;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals(right) && ((greaterOrEqual.right instanceof Entier && ((Entier) greaterOrEqual.right).value == 0) ? false : true))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": >= comparaison between different types (integer and pointer)");
+        return "int";
     }
 
     @Override
     public String visit(GreaterThan greaterThan) {
         String left = greaterThan.left.accept(this);
         String right = greaterThan.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
-        }
-        return null;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals(right) && ((greaterThan.right instanceof Entier && ((Entier) greaterThan.right).value == 0) ? false : true))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": > comparaison between different types (integer and pointer)");
+        return "int";
     }
 
     @Override
     public String visit(LessOrEqual lessOrEqual) {
         String left = lessOrEqual.left.accept(this);
         String right = lessOrEqual.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
-        }
-        return null;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals(right) && ((lessOrEqual.right instanceof Entier && ((Entier) lessOrEqual.right).value == 0) ? false : true))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": <= comparaison between different types (integer and pointer)");
+        return "int";
     }
 
     @Override
     public String visit(LessThan lessThan) {
         String left = lessThan.left.accept(this);
         String right = lessThan.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
-        }
-        return null;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals(right) && ((lessThan.right instanceof Entier && ((Entier) lessThan.right).value == 0) ? false : true))
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": < comparaison between different types (integer and pointer)");
+        return "int";
     }
 
     @Override
     public String visit(Plus plus) {
         String left = plus.left.accept(this);
         String right = plus.right.accept(this);
-        if (left != null && left.equals(right)) {
+        if (left == null || right == null)
+            return null;
+        if (left.equals(right)) {
+            if (!left.equals("int")) {
+                SymbolTable.Errors.add("Error in "+tds_current.titre+": addition between pointers");
+                return null;
+            }
             return right;
+        } else {
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": addition between different types (integer and pointer)");
+            if (!left.equals("int")) return left;
+            else return right;
         }
-        return null;
     }
 
     @Override
     public String visit(Minus minus) {
         String left = minus.left.accept(this);
         String right = minus.right.accept(this);
-        if (left != null && left.equals(right)) {
+        if (left == null || right == null)
+            return null;
+        if (left.equals(right)) {
+            if (!left.equals("int")) {
+                SymbolTable.Errors.add("Error in "+tds_current.titre+": subtraction between pointers");
+                return null;
+            }
             return right;
+        } else {
+            SymbolTable.Errors.add("Warning in "+tds_current.titre+": subtraction between different types (integer and pointer)");
+            if (!left.equals("int")) return left;
+            else return right;
         }
-        return null;
     }
 
     @Override
     public String visit(Mult mult) {
         String left = mult.left.accept(this);
         String right = mult.right.accept(this);
-        if (left != null && left.equals(right)) {
-            return right;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals("int") || !right.equals("int")) {
+            SymbolTable.Errors.add("Error in "+tds_current.titre+": multiplication of pointer");
+            return null;
         }
-        return null;
+        return right;
     }
 
     @Override
     public String visit(Divide divide) {
         String left = divide.left.accept(this);
         String right = divide.right.accept(this);
-        if (left != null && left.equals(right)) {
-            if (divide.left instanceof Entier && ((Entier) divide.left).value == 0)
-                SymbolTable.Errors.add("Error in "+tds_current.titre+": division by zero");
-            return right;
+        if (left == null || right == null)
+            return null;
+        if (!left.equals("int") || !right.equals("int")) {
+            SymbolTable.Errors.add("Error in "+tds_current.titre+": division of pointer");
+            return null;
         }
-        return null;
+        if (divide.left instanceof Entier && ((Entier) divide.left).value == 0)
+            SymbolTable.Errors.add("Error in "+tds_current.titre+": division by zero");
+        return right;
     }
 
     @Override
@@ -426,11 +459,13 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(IfThen ifThen) {
+        ifThen.condition.accept(this);
         return ifThen.thenBlock==null ? null : ifThen.thenBlock.accept(this);
     }
 
     @Override
     public String visit(IfThenElse ifThenElse) {
+        ifThenElse.condition.accept(this);
         String thenReturn = ifThenElse.thenBlock==null ? null : ifThenElse.thenBlock.accept(this);
         String elseReturn = ifThenElse.elseBlock==null ? null : ifThenElse.elseBlock.accept(this);
         if (thenReturn == null && elseReturn == null)   // on vérifie s'il y a des retours
@@ -443,6 +478,7 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(WhileInst whileInst) {
+        whileInst.condition.accept(this);
         return whileInst.instruction==null ? null : whileInst.instruction.accept(this);
     }
 
