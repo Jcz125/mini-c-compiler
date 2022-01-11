@@ -236,8 +236,9 @@ public class TdsVisitor implements AstVisitor<String> {
                     SymbolTable.Errors.add("Error in "+tds_current.titre+": "+((Idf) fleche.right).name+" not champ of "+left);
             } else
                 SymbolTable.Errors.add("Error in"+tds_current.titre+": arrow problem");
-        } else
-            SymbolTable.Errors.add("Error in "+tds_current.titre+": "+left+" not defined");
+        } else if (left.equals("int"))
+                SymbolTable.Errors.add("Error in "+tds_current.titre+" invalid type argument of -> (have int)");
+            else SymbolTable.Errors.add("Error in "+tds_current.titre+": "+left+" not defined");
         return null;
     }
 
