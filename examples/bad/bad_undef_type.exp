@@ -1,6 +1,6 @@
-struct S1 fct(int a) {
+struct S1 * fct(int a) {
     int b ;
-    struct S1* st ;
+    struct S1 * st ;
     st = malloc(sizeof(struct S1)) ;
     return st ;
 }

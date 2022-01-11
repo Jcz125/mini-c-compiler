@@ -3,7 +3,7 @@ struct struct1 {
 };
 
 int fct(int a ){
-    int b;
+    int b ;
     int c ;
     struct struct1 * one;
     print(a);
