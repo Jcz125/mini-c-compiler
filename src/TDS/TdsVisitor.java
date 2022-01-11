@@ -399,7 +399,7 @@ public class TdsVisitor implements AstVisitor<String> {
             this.errors.add("Error at line "+divide.line+" in "+tds_current.titre+": division of pointer");
             return null;
         }
-        if (divide.left instanceof Entier && ((Entier) divide.left).value == 0)
+        if (divide.right instanceof Entier && ((Entier) divide.right).value == 0)
             this.errors.add("Error at line "+divide.line+" in "+tds_current.titre+": division by zero");
         return right;
     }
