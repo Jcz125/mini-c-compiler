@@ -17,7 +17,7 @@ struct S3 {
     struct S2 * champ3S3, * champ4S3;
     int champ5S3, champ6S3;
     struct S1 * champ1S3 ;                                                     // unicité de déclaration de champs de struct
-    struct S4 * inconnuStruct;                                                 // Struct S4 pas déclaré mais pas de problème
+    struct S4 * inconnuStruct;
 };
 
 /* fonction avec type de retour : INT */
@@ -120,9 +120,9 @@ int start(int paramMain1, int paramMain2) {
     struct S4 * structInconnu ;                                                 // une structure pas définie
 
     print(res);
-    //print(inconnu) ;                                                          // print inconnu pad déclaré
+    print(inconnu) ;                                                            // print inconnu pad déclaré
     print(varS1Main);                                                           // print doit juste print un int
-    print(structInconnu);                                                       // print struct non définie
+    print(structInconnu);
 
     varS2Main = malloc(varS2Main) ;                                             // ça doit prendre comme param un int
     varS2Main = malloc(sizeof(struct S2));
