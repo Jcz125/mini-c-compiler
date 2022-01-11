@@ -43,6 +43,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(DeclType decltype) {
         HashMap<Symbole, String> table = new HashMap<Symbole, String>();    // Symbole est la clé K et String la valeur V
         ArrayList<String> idfs = new ArrayList<>();
+        ArrayList<String> local_errors = new ArrayList<>();
         for (Ast champ : decltype.list) {                                   // remplissage des champs selon le type
             if (champ instanceof VarInt) {
                 for (Idf idf : ((VarInt) champ).list) {
@@ -51,7 +52,7 @@ public class TdsVisitor implements AstVisitor<String> {
                         IntSymbole sb = new IntSymbole(idf.name);
                         table.put(sb, "int");
                     } else
-                        this.errors.add("Error in "+tds_current.titre+": "+decltype.type+", champs"+": "+idf.name+" already used");
+                        local_errors.add("Error at line "+idf.line+" in "+tds_current.titre+": "+decltype.type+", field: '"+idf.name+"' already used");
                 }
             } else {
                 VarStruct s = (VarStruct) champ;
@@ -61,20 +62,21 @@ public class TdsVisitor implements AstVisitor<String> {
                         StructSymbole sb = new StructSymbole(s.type, idf.name);
                         table.put(sb, s.type);
                     } else
-                        this.errors.add("Error in "+tds_current.titre+": "+decltype.type+", champs"+": "+idf.name+" already used");
+                        local_errors.add("Error at line "+idf.line+" in "+tds_current.titre+": "+decltype.type+", field: '"+idf.name+"' already used");
                 }
             }
         }
         if (tds_current.addLineStructDef(decltype.idf_name.name, NatureSymboles.STRUCT, decltype.type, table) == null)
-            this.errors.add("Error in "+tds_current.titre+": add struct def: [idf] "+decltype.idf_name.name+" already used");
+            this.errors.add("Error at line "+decltype.line+" in "+tds_current.titre+": add struct def: [idf] '"+decltype.idf_name.name+"' already used");
+        this.errors.addAll(local_errors);
         return null;
     }
 
     @Override
     public String visit(VarInt varInt) {
         for (Idf idf : varInt.list) {
-            if (tds_current.addLineInt(idf.name, NatureSymboles.VARIABLE) == null)
-                this.errors.add("Error in "+tds_current.titre+": [idf] "+idf.name+" already used");
+            if (tds_current.addLineInt(idf.name, NatureSymboles.VARIABLE, varInt.line) == null)
+                this.errors.add("Error at line "+varInt.line+" in "+tds_current.titre+": [idf] '"+idf.name+"' already used");
         }
         return null;
     }
@@ -84,11 +86,11 @@ public class TdsVisitor implements AstVisitor<String> {
         String type = varStruct.type;
         for (Idf idf : varStruct.list_idf) {
             if (tds_current.addLineStruct(idf.name, NatureSymboles.VARIABLE, type) == null)
-                this.errors.add("Error in "+tds_current.titre+": add struct var: [idf] "+idf+" already used");
+                this.errors.add("Error at line "+varStruct.line+" in "+tds_current.titre+": add struct var: [idf] '"+idf.name+"' already used");
         }
         return null;
     }
-
+/* NON UTILISEE
     public HashMap<Symbole, String> create_hashmap_param(ArrayList<Ast> list, String name) {
         HashMap<Symbole, String> params = new HashMap<>();
         ArrayList<String> idfs = new ArrayList<>();
@@ -99,7 +101,7 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.put(new IntSymbole(param.idf.name), "int");
                 } else {
-                    this.errors.add("Error in "+tds_current.titre+": function "+name+", params"+": idf "+param.idf.name+" already used");
+                    this.errors.add("Error at line "+param.line+" in "+tds_current.titre+": function "+name+", params"+": idf "+param.idf.name+" already used");
                 }
             } else {
                 StructPointer param = (StructPointer) ast;
@@ -108,7 +110,7 @@ public class TdsVisitor implements AstVisitor<String> {
         }
         return params;
     }
-
+*/
     public ArrayList<Symbole> create_array_param(ArrayList<Ast> list, String name) {
         ArrayList<Symbole> params = new ArrayList<>();
         ArrayList<String> idfs = new ArrayList<>();
@@ -119,7 +121,7 @@ public class TdsVisitor implements AstVisitor<String> {
                     idfs.add(param.idf.name);
                     params.add(new IntSymbole(param.idf.name));
                 } else {
-                    this.errors.add("Error in "+tds_current.titre+": function "+name+", params"+": idf "+param.idf.name+" already used"); // améliorer le message d'erreur
+                    this.errors.add("Error at line "+param.line+" in "+tds_current.titre+": function "+name+", params"+": [idf] '"+param.idf.name+"' already used"); // améliorer le message d'erreur
                 }
             } else {
                 StructPointer param = (StructPointer) ast;
@@ -148,10 +150,10 @@ public class TdsVisitor implements AstVisitor<String> {
 
             // contrôle du type de retour
             if (typeRetour == null)
-                this.errors.add("Warning in "+tds_current.titre+": no return or invalid return for function int "+line.getIdf());
+                this.errors.add("Warning at line "+intFct.line+" in "+tds_current.titre+": no return or invalid return for function: int "+line.getIdf());
             else if (!(typeRetour.equals("int") || typeRetour.equals("void")))
-                this.errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function int "+line.getIdf());
-        } else this.errors.add("Error in "+tds_current.titre+": add function: [idf] "+intFct.idf.name+" already used");
+                this.errors.add("Warning at line "+intFct.line+" in "+tds_current.titre+": no identical return type or missing some return for function: int "+line.getIdf());
+        } else this.errors.add("Error at line "+intFct.line+" in "+tds_current.titre+": add function: [idf] '"+intFct.idf.name+"' already used");
         return null;
     }
 
@@ -169,10 +171,10 @@ public class TdsVisitor implements AstVisitor<String> {
 
             // controle du type de retour
             if (typeRetour == null)
-                this.errors.add("Warning in "+tds_current.titre+": no return or invalid return for function "+structFct.type+" * "+line.getIdf());
+                this.errors.add("Warning at line "+structFct.line+" in "+tds_current.titre+": no return or invalid return for function: "+structFct.type+" * "+line.getIdf());
             else if (!(typeRetour.equals(structFct.type) || typeRetour.equals("void *")))
-                this.errors.add("Warning in "+tds_current.titre+": no identical return type or missing some return for function "+structFct.type+" * "+line.getIdf());
-        } else this.errors.add("Error in "+tds_current.titre+": add function: [idf] "+structFct.idf_fct.name+" already used");
+                this.errors.add("Warning at line "+structFct.line+" in "+tds_current.titre+": no identical return type or missing some return for function: "+structFct.type+" * "+line.getIdf());
+        } else this.errors.add("Error at line "+structFct.line+" in "+tds_current.titre+": add function: [idf] '"+structFct.idf_fct.name+"' already used");
         return null;
     }
 
@@ -201,7 +203,6 @@ public class TdsVisitor implements AstVisitor<String> {
             if (ast != null)
                 ast.accept(this);
         }
-        System.out.println("typeReturn= "+"".equals(returnType));
         tds_current = tds_current.exitRegion();
         return returnType;
     }
@@ -212,15 +213,15 @@ public class TdsVisitor implements AstVisitor<String> {
         String right = affect.right.accept(this);
         if (left == null) { // au moins l'un des vars n'existe pas
             if (affect.left instanceof Fleche)
-                this.errors.add("Error in "+tds_current.titre+": var "+(affect.left instanceof Idf ? ((Idf) affect.left).name : (((Idf) ((Fleche) affect.left).right).name))+" doesn't exist");
+                this.errors.add("Error at line "+affect.line+" in "+tds_current.titre+": var '"+(affect.left instanceof Idf ? ((Idf) affect.left).name : (((Idf) ((Fleche) affect.left).right).name))+"' doesn't exist");
             return null;
         }
         if (!(left.equals(right) || "void".equals(right) || "void *".equals(right))) {
-            this.errors.add("Error in "+tds_current.titre+": assignment types ("+left+" and "+right+") don't match");
+            this.errors.add("Error at line "+affect.line+" in "+tds_current.titre+": assignment types ('"+left+"' and '"+right+"') don't match");
             return null;
         }
         if (right.equals("void") || left.equals("int") && right.equals("void *"))
-            this.errors.add("Warning in "+tds_current.titre+": void assignment");
+            this.errors.add("Warning at line "+affect.line+" in "+tds_current.titre+": void assignment");
         return left;
     }
 
@@ -229,7 +230,7 @@ public class TdsVisitor implements AstVisitor<String> {
         String left = fleche.left.accept(this);
         // String right = fleche.right.accept(this); // inutile
         if (left == null) {
-            // this.errors.add("Error in "+tds_current.titre+": arrow problem: "+"struct not defined");
+            // this.errors.add("Error at line "+fleche.line+" in "+tds_current.titre+": arrow problem: "+"struct not defined");
             return null;
         }
         LineElement lineElement = tds_current.lookUpStructDef(left);
@@ -240,12 +241,12 @@ public class TdsVisitor implements AstVisitor<String> {
                 if (symbole != null) { // on vérifie que le champ right soit bien un champ de left
                     return symbole.getType();
                 } else
-                    this.errors.add("Error in "+tds_current.titre+": "+((Idf) fleche.right).name+" not champ of "+left);
+                    this.errors.add("Error at line "+fleche.line+" in "+tds_current.titre+": '"+((Idf) fleche.right).name+"' not a field of '"+left+"'");
             } else
-                this.errors.add("Error in"+tds_current.titre+": arrow problem");
+                this.errors.add("Error at line "+fleche.line+" in "+tds_current.titre+": arrow problem");
         } else if (left.equals("int"))
-                this.errors.add("Error in "+tds_current.titre+" invalid type argument of -> (have int)");
-            else this.errors.add("Error in "+tds_current.titre+": "+left+" not defined");
+                this.errors.add("Error at line "+fleche.line+" in "+tds_current.titre+" invalid type argument of -> (have 'int')");
+            else this.errors.add("Error at line "+fleche.line+" in "+tds_current.titre+": '"+left+"' not defined");
         return null;
     }
 
@@ -256,7 +257,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals(right) && ((ouLogique.right instanceof Entier && ((Entier) ouLogique.right).value == 0) ? false : true))
-            this.errors.add("Warning in "+tds_current.titre+": || comparaison between different types (integer and pointer)");
+            this.errors.add("Warning at line "+ouLogique.line+" in "+tds_current.titre+": || comparaison between different types (integer and pointer)");
         return "int";
     }
 
@@ -267,7 +268,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals(right) && ((etLogique.right instanceof Entier && ((Entier) etLogique.right).value == 0) ? false : true))
-            this.errors.add("Warning in "+tds_current.titre+": && comparaison between different types (integer and pointer)");
+            this.errors.add("Warning at line "+etLogique.line+" in "+tds_current.titre+": && comparaison between different types (integer and pointer)");
         return "int";
     }
 
@@ -278,7 +279,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals(right) && ((equalTo.right instanceof Entier && ((Entier) equalTo.right).value == 0) ? false : true))
-            this.errors.add("Warning in "+tds_current.titre+": == comparaison between different types (integer and pointer)");
+            this.errors.add("Warning at line "+equalTo.line+" in "+tds_current.titre+": == comparaison between different types (integer and pointer)");
         return "int";
     }
 
@@ -289,7 +290,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals(right) && ((notEqualTo.right instanceof Entier && ((Entier) notEqualTo.right).value == 0) ? false : true))
-            this.errors.add("Warning in "+tds_current.titre+": != comparaison between different types (integer and pointer)");
+            this.errors.add("Warning at line "+notEqualTo.line+" in "+tds_current.titre+": != comparaison between different types (integer and pointer)");
         return "int";
     }
 
@@ -300,7 +301,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals(right) && ((greaterOrEqual.right instanceof Entier && ((Entier) greaterOrEqual.right).value == 0) ? false : true))
-            this.errors.add("Warning in "+tds_current.titre+": >= comparaison between different types (integer and pointer)");
+            this.errors.add("Warning at line "+greaterOrEqual.line+" in "+tds_current.titre+": >= comparaison between different types (integer and pointer)");
         return "int";
     }
 
@@ -311,7 +312,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals(right) && ((greaterThan.right instanceof Entier && ((Entier) greaterThan.right).value == 0) ? false : true))
-            this.errors.add("Warning in "+tds_current.titre+": > comparaison between different types (integer and pointer)");
+            this.errors.add("Warning at line "+greaterThan.line+" in "+tds_current.titre+": > comparaison between different types (integer and pointer)");
         return "int";
     }
 
@@ -322,7 +323,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals(right) && ((lessOrEqual.right instanceof Entier && ((Entier) lessOrEqual.right).value == 0) ? false : true))
-            this.errors.add("Warning in "+tds_current.titre+": <= comparaison between different types (integer and pointer)");
+            this.errors.add("Warning at line "+lessOrEqual.line+" in "+tds_current.titre+": <= comparaison between different types (integer and pointer)");
         return "int";
     }
 
@@ -333,7 +334,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals(right) && ((lessThan.right instanceof Entier && ((Entier) lessThan.right).value == 0) ? false : true))
-            this.errors.add("Warning in "+tds_current.titre+": < comparaison between different types (integer and pointer)");
+            this.errors.add("Warning at line "+lessThan.line+" in "+tds_current.titre+": < comparaison between different types (integer and pointer)");
         return "int";
     }
 
@@ -345,12 +346,12 @@ public class TdsVisitor implements AstVisitor<String> {
             return null;
         if (left.equals(right)) {
             if (!left.equals("int")) {
-                this.errors.add("Error in "+tds_current.titre+": addition between pointers");
+                this.errors.add("Error at line "+plus.line+" in "+tds_current.titre+": addition between pointers");
                 return null;
             }
             return right;
         } else {
-            this.errors.add("Warning in "+tds_current.titre+": addition between different types (integer and pointer)");
+            this.errors.add("Warning at line "+plus.line+" in "+tds_current.titre+": addition between different types (integer and pointer)");
             if (!left.equals("int")) return left;
             else return right;
         }
@@ -364,12 +365,12 @@ public class TdsVisitor implements AstVisitor<String> {
             return null;
         if (left.equals(right)) {
             if (!left.equals("int")) {
-                this.errors.add("Error in "+tds_current.titre+": subtraction between pointers");
+                this.errors.add("Error at line "+minus.line+" in "+tds_current.titre+": subtraction between pointers");
                 return null;
             }
             return right;
         } else {
-            this.errors.add("Warning in "+tds_current.titre+": subtraction between different types (integer and pointer)");
+            this.errors.add("Warning at line "+minus.line+" in "+tds_current.titre+": subtraction between different types (integer and pointer)");
             if (!left.equals("int")) return left;
             else return right;
         }
@@ -382,7 +383,7 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals("int") || !right.equals("int")) {
-            this.errors.add("Error in "+tds_current.titre+": multiplication of pointer");
+            this.errors.add("Error at line "+mult.line+" in "+tds_current.titre+": multiplication of pointer");
             return null;
         }
         return right;
@@ -395,11 +396,11 @@ public class TdsVisitor implements AstVisitor<String> {
         if (left == null || right == null)
             return null;
         if (!left.equals("int") || !right.equals("int")) {
-            this.errors.add("Error in "+tds_current.titre+": division of pointer");
+            this.errors.add("Error at line "+divide.line+" in "+tds_current.titre+": division of pointer");
             return null;
         }
         if (divide.left instanceof Entier && ((Entier) divide.left).value == 0)
-            this.errors.add("Error in "+tds_current.titre+": division by zero");
+            this.errors.add("Error at line "+divide.line+" in "+tds_current.titre+": division by zero");
         return right;
     }
 
@@ -408,7 +409,7 @@ public class TdsVisitor implements AstVisitor<String> {
         String type = oppose.value.accept(this);
         // erreur pour -pointer
         if (oppose.op.equals("-") && !"int".equals(type)) {
-            this.errors.add("Error in "+tds_current.titre+": -value needs value to be an arithmetic type");
+            this.errors.add("Error at line "+oppose.line+" in "+tds_current.titre+": -value needs value to be an arithmetic type");
             return null;
         }
         return type;
@@ -423,28 +424,28 @@ public class TdsVisitor implements AstVisitor<String> {
                 String signFct;
                 if (functIdf.equals("malloc")) signFct = "void * malloc";
                 else signFct = "void print";
-                this.errors.add("Error in "+tds_current.titre+": type of param number "+0+" doesn't match function "+signFct+" definition" );
+                this.errors.add("Error at line "+function.line+" in "+tds_current.titre+": type of param number "+0+" doesn't match function '"+signFct+"' definition" );
             }
             return functIdf.equals("malloc") ? "void *" : "void";
         }
         // on vérifie que la funct left (idf) soit bien définie
         LineElement lineElement = tds_current.lookUpFunctDef(functIdf);
         if (lineElement == null) {
-            this.errors.add("Error in "+tds_current.titre+": "+functIdf+" not defined");
+            this.errors.add("Error at line "+function.line+" in "+tds_current.titre+": '"+functIdf+"' not defined");
             return null;
         }
         // on vérifie que le nombre de params de la fonction correspond bien au nombre attendu
         int nb = function.expression.size();
         FctSymbole fctSymbole = (FctSymbole) lineElement.getSymbole();
         if (nb != fctSymbole.getNbParam()) {
-            this.errors.add("Error in "+tds_current.titre+": params number doesn't match expected number in "+lineElement.getIdf());
+            this.errors.add("Error at line "+function.line+" in "+tds_current.titre+": params number doesn't match expected number in function '"+fctSymbole.getType()+" "+fctSymbole.getIdf()+"' definition");
         } else {
             ArrayList<Symbole> paramsDecl = fctSymbole.getFctParams();
             ArrayList<Ast> paramsExec = function.expression;
             for (int i=0 ; i<fctSymbole.getNbParam() ; i++) {
                 String typeDecl = paramsDecl.get(i).getType();
                 if (!typeDecl.equals(paramsExec.get(i).accept(this)))
-                    this.errors.add("Error in "+tds_current.titre+": type of param number "+i+" doesn't match function "+fctSymbole.getType()+" "+fctSymbole.getIdf()+" definition" );
+                    this.errors.add("Error at line "+function.line+" in "+tds_current.titre+": type of param number "+i+" doesn't match function '"+fctSymbole.getType()+" "+fctSymbole.getIdf()+"' definition");
             }
         }
         return ((FctSymbole) lineElement.getSymbole()).getTypeRetour();
@@ -453,7 +454,7 @@ public class TdsVisitor implements AstVisitor<String> {
     @Override
     public String visit(Sizeof sizeof) {
         if (tds_current.lookUpStructDef("struct "+sizeof.idf.name) == null) // la struct doit être définie
-            this.errors.add("Error in "+tds_current.titre+": sizeof invalid identifier: "+sizeof.idf.name);
+            this.errors.add("Error at line "+sizeof.line+" in "+tds_current.titre+": sizeof invalid identifier: "+sizeof.idf.name);
         return "int";
     }
 
@@ -461,7 +462,7 @@ public class TdsVisitor implements AstVisitor<String> {
     public String visit(Idf idf) {
         if (tds_current.lookUp(idf.name) != null)
             return tds_current.lookUp(idf.name).getSymbole().getType();
-        this.errors.add("Error in "+tds_current.titre+": [idf] "+idf.name+" not found");
+        this.errors.add("Error at line "+idf.line+" in "+tds_current.titre+": [idf] "+idf.name+" not found");
         return null;
     }
 

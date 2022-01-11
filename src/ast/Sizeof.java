@@ -6,11 +6,13 @@ public class Sizeof implements Ast {
     return visitor.visit(this);
   }
 
+  public int line;
   public String type;
   public Idf idf;
 
-  public Sizeof(Idf idf) {
+  public Sizeof(Idf idf, int line) {
     this.idf = idf;
     this.type = "struct " + idf.name;
+    this.line = line;
   }
 }

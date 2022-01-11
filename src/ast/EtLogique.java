@@ -6,11 +6,13 @@ public class EtLogique implements Ast {
         return visitor.visit(this);
     }
 
+    public int line;
     public Ast left;
     public Ast right;
 
-    public EtLogique(Ast noeudTemporaire, Ast right) {
+    public EtLogique(Ast noeudTemporaire, Ast right, int line) {
         this.left = noeudTemporaire;
         this.right = right;
+        this.line = line;
     }
 }

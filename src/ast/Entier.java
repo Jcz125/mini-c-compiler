@@ -6,9 +6,11 @@ public class Entier implements Ast {
         return visitor.visit(this);
     }
 
+    public int line;
     public int value;
 
-    public Entier(int value) {
+    public Entier(int value, int line) {
         this.value = value;
+        this.line = line;
     }
 }
