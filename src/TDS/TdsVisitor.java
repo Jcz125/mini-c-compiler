@@ -52,7 +52,7 @@ public class TdsVisitor implements AstVisitor<String> {
                         IntSymbole sb = new IntSymbole(idf.name);
                         table.put(sb, "int");
                     } else
-                        local_errors.add("Error at line "+idf.line+" in "+tds_current.titre+": "+decltype.type+", champs"+": '"+idf.name+"' already used");
+                        local_errors.add("Error at line "+idf.line+" in "+tds_current.titre+": "+decltype.type+", field: '"+idf.name+"' already used");
                 }
             } else {
                 VarStruct s = (VarStruct) champ;
@@ -62,7 +62,7 @@ public class TdsVisitor implements AstVisitor<String> {
                         StructSymbole sb = new StructSymbole(s.type, idf.name);
                         table.put(sb, s.type);
                     } else
-                        local_errors.add("Error at line "+idf.line+" in "+tds_current.titre+": "+decltype.type+", champs"+": '"+idf.name+"' already used");
+                        local_errors.add("Error at line "+idf.line+" in "+tds_current.titre+": "+decltype.type+", field: '"+idf.name+"' already used");
                 }
             }
         }
@@ -86,7 +86,7 @@ public class TdsVisitor implements AstVisitor<String> {
         String type = varStruct.type;
         for (Idf idf : varStruct.list_idf) {
             if (tds_current.addLineStruct(idf.name, NatureSymboles.VARIABLE, type) == null)
-                this.errors.add("Error at line "+varStruct.line+" in "+tds_current.titre+": add struct var: [idf] '"+idf+"' already used");
+                this.errors.add("Error at line "+varStruct.line+" in "+tds_current.titre+": add struct var: [idf] '"+idf.name+"' already used");
         }
         return null;
     }
@@ -203,7 +203,6 @@ public class TdsVisitor implements AstVisitor<String> {
             if (ast != null)
                 ast.accept(this);
         }
-        System.out.println("typeReturn= "+"".equals(returnType));
         tds_current = tds_current.exitRegion();
         return returnType;
     }
