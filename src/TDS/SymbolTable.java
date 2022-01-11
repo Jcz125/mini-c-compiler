@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class SymbolTable {
 
-    public static ArrayList<String> Errors = new ArrayList<>();
+    // public static ArrayList<String> Errors = new ArrayList<>();
     public int niveau;
     public String numero;
     public String titre;
@@ -79,7 +79,7 @@ public class SymbolTable {
     public LineElement addLineInt(String idf, NatureSymboles nature) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.titre+": [idf] "+idf+" already used");
+                // Errors.add("Error in "+this.titre+": [idf] "+idf+" already used");
                 return null;
             }
         }
@@ -91,29 +91,30 @@ public class SymbolTable {
 
 
     public LineElement addLineStruct(String idf, NatureSymboles nature, String type) {
-        LineElement struct = this.lookUpStructDef(type);
+        // LineElement struct = this.lookUpStructDef(type);
         for (LineElement line : lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.titre+": add struct var: [idf] "+idf+" already used");
+                // Errors.add("Error in "+this.titre+": add struct var: [idf] "+idf+" already used");
                 return null;
             }
         }
-        if (struct != null) {
+        // if (struct != null) {
+        //     Errors.add("Becareful in "+this.titre+": "+type+" is not defined");
             Symbole newSymbole = new StructSymbole(type, idf);
             LineElement newLine = new LineElement(idf, nature, newSymbole);
             lines.add(newLine);
             return newLine;
-        } else {
-            Errors.add("Error in "+this.titre+": "+type+" is not defined");
-            return null;
-        }
+        // } else {
+        //     Errors.add("Error in "+this.titre+": "+type+" is not defined");
+        //     return null;
+        // }
     }
 
 
     public LineElement addLineFct(String idf, NatureSymboles nature, String typeRetour, ArrayList<Symbole> fctParams, int nbParams) {
         for (LineElement line : lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.titre+": add function: [idf] "+idf+" already used");
+                // Errors.add("Error in "+this.titre+": add function: [idf] "+idf+" already used");
                 return null;
             }
         }
@@ -127,7 +128,7 @@ public class SymbolTable {
     public LineElement addLineStructDef(String struct_name, NatureSymboles nature, String type, HashMap<Symbole, String> champs) {
         for (LineElement line : lines) {
             if (line.getIdf().equals(struct_name)) {
-                Errors.add("Error in "+this.titre+": add struct def: [idf] "+struct_name+" already used");
+                // Errors.add("Error in "+this.titre+": add struct def: [idf] "+struct_name+" already used");
                 return null;
             }
         }
