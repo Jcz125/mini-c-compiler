@@ -20,6 +20,7 @@ public class SymbolTable {
     private SymbolTable parent;
     private ArrayList<SymbolTable> children;
     public static String TDS;
+    public static grapheTDS graphe;
 
 
 
@@ -38,11 +39,19 @@ public class SymbolTable {
         this.lines = new ArrayList<>();
         this.children = new ArrayList<>();
         SymbolTable.TDS="";
+        SymbolTable.graphe=new grapheTDS();
     }
 
 
     public String getName() {
         return name;
+    }
+
+    public String getTDS() {
+        return TDS;
+    }
+    public grapheTDS getGrapheTDS() {
+        return graphe;
     }
 
     public SymbolTable getParent() {
@@ -221,11 +230,20 @@ public class SymbolTable {
 
     public String displayTDS_CSV() {
             if (this != null) {
-                String father = "Pas de parent";
+                String father;
                 if (this.parent != null) {
                     father = this.parent.titre;
                 }
+                else{
+                    father = "Pas de parent";
+                }
                 SymbolTable.TDS += ("\n Table courante: " + this.titre + ";" + "mon pere:  " + father );
+
+                graphe.addNode("<"+this.titre+">","<"+this.titre+">");
+                if (father != "Pas de parent") {
+                    graphe.addTransition("<"+father+">","<"+this.titre+">");
+                }
+
                 SymbolTable.TDS += ("\nIDF;" + "NATURE;" + "CARACTERISTIQUES " + " SYMBOLE");
                 for (LineElement line : this.lines) {
                     String idf = line.getIdf();
@@ -262,6 +280,8 @@ public class SymbolTable {
             e.printStackTrace();
         }
     }
+
+
 
     public void displayAll() {
         this.displayTDS();
