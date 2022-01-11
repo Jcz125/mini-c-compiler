@@ -2,7 +2,7 @@ struct S1 {
     int one ;
 };
 
-struct S1 fct(int a) {
+struct S1 * fct(int a) {
     int b ;
     b = a*2 ;
     return b ;
