@@ -10,4 +10,4 @@ brouillon*
 src/TDS/test.c
 src/a.exe
 
-TDS_CSV/*
+src/TDS_CSV/*
