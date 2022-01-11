@@ -8,9 +8,11 @@ public class Bloc implements Ast {
         return visitor.visit(this);
     }
 
+    public int line;
     public ArrayList<Ast> list;
 
-    public Bloc(ArrayList<Ast> list) {
+    public Bloc(ArrayList<Ast> list, int line) {
         this.list = list;
+        this.line = line;
     }
 }

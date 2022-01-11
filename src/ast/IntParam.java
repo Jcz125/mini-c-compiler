@@ -6,11 +6,13 @@ public class IntParam extends Param {
         return visitor.visit(this);
     }
 
+    public int line;
     public String type;
     public Idf idf;
 
-    public IntParam(String str, Idf idf) {
+    public IntParam(String str, Idf idf, int line) {
         this.type = str;
         this.idf = idf;
+        this.line = line;
     }
 }
