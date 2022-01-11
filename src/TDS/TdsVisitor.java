@@ -68,8 +68,8 @@ public class TdsVisitor implements AstVisitor<String> {
 
     @Override
     public String visit(VarInt varInt) {
-        for(Idf idf : varInt.list){
-            tds_current.addLineInt(idf.name, NatureSymboles.VARIABLE);
+        for (Idf idf : varInt.list) {
+            tds_current.addLineInt(idf.name, NatureSymboles.VARIABLE, varInt.line);
         }
         return null;
     }

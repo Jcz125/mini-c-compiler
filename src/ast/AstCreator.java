@@ -65,7 +65,7 @@ public class AstCreator extends grammaireBaseVisitor<Ast> {
 			Idf idf = new Idf(idfString);
 			list.add(idf);
 		}
-		return new VarInt(list);
+		return new VarInt(list, ctx.getStart().getLine());
 	}
 	/**
 	 * {@inheritDoc}

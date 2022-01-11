@@ -76,10 +76,10 @@ public class SymbolTable {
 
 
 
-    public LineElement addLineInt(String idf, NatureSymboles nature) {
+    public LineElement addLineInt(String idf, NatureSymboles nature, int ligne) {
         for (LineElement line:lines) {
             if (line.getIdf().equals(idf)) {
-                Errors.add("Error in "+this.titre+": [idf] "+idf+" already used");
+                Errors.add("Error at line "+ligne+" in: "+this.titre+": [idf] "+idf+" already used");
                 return null;
             }
         }
@@ -143,7 +143,7 @@ public class SymbolTable {
             for (Ast ast : list) {
                 if (ast instanceof IntParam) {
                     IntParam param = (IntParam) ast;
-                    addLineInt(param.idf.name, nature);
+                    addLineInt(param.idf.name, nature, 0);
                 } else {
                     StructPointer param = (StructPointer) ast;
                     addLineStruct(param.idf.name, nature, param.type);
@@ -154,7 +154,7 @@ public class SymbolTable {
                 if (ast instanceof VarInt) {
                     VarInt var = (VarInt) ast;
                     for (Idf idf : var.list)
-                        addLineInt(idf.name, nature);
+                        addLineInt(idf.name, nature, 0);
                 } else {
                     VarStruct var = (VarStruct) ast;
                     for (Idf idf : var.list_idf)
