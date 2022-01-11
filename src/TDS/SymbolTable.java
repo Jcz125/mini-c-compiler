@@ -251,7 +251,8 @@ public class SymbolTable {
 
     public void generate_csv(){
         try {
-            FileWriter csvWriter = new FileWriter("./TDS_CSV/TDS.csv");
+            //FileWriter csvWriter = new FileWriter("./TDS_CSV/TDS.csv");
+            FileWriter csvWriter = new FileWriter("./out/TDS.csv");
             this.displayAll_CSV();
             csvWriter.append(SymbolTable.TDS);
             csvWriter.flush();
