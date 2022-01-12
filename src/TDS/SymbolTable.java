@@ -21,6 +21,7 @@ public class SymbolTable {
     private ArrayList<SymbolTable> children;
     public static String TDS;
     public static grapheTDS graphe;
+    public static int node ;
 
 
 
@@ -40,6 +41,7 @@ public class SymbolTable {
         this.children = new ArrayList<>();
         SymbolTable.TDS="";
         SymbolTable.graphe=new grapheTDS();
+        node = 0;
     }
 
 
@@ -239,11 +241,17 @@ public class SymbolTable {
                 }
                 SymbolTable.TDS += ("\n Table courante: " + this.titre + ";" + "mon pere:  " + father );
 
-                graphe.addNode("<"+this.titre+">","<"+this.titre+">");
+                graphe.addNode("<"+this.titre+">","/ "+this.titre+ " /");
+
+                if (this.parent != null){
+                    //graphe.addLine("<"+this.titre+">", this.name, this.numero, this.parent.name);
+                }
+
                 if (father != "Pas de parent") {
                     graphe.addTransition("<"+father+">","<"+this.titre+">");
                 }
 
+                graphe.BeginTable("<"+this.titre+">", "/ "+this.titre+ " /", "IDF", "NATURE", "CARACTERISTIQUES");
                 SymbolTable.TDS += ("\nIDF;" + "NATURE;" + "CARACTERISTIQUES " + " SYMBOLE");
                 for (LineElement line : this.lines) {
                     String idf = line.getIdf();
@@ -252,7 +260,18 @@ public class SymbolTable {
                     SymbolTable.TDS += ( "\n"+ idf + ";" + nature + ";");
                     String symbole = s.displaySymbole_CSV();
                     SymbolTable.TDS += symbole;
+
+
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(idf);
+                    list.add(nature.toString());
+                    list.addAll(s.listCaracteristiques());
+                    graphe.addLine(list);
                 }
+                if (father != null){
+                    graphe.EndTable();
+                }
+
                 SymbolTable.TDS+="\n";
             }
             return SymbolTable.TDS;

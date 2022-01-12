@@ -50,6 +50,31 @@ public class grapheTDS {
 
     }
 
+    public void BeginTable(String node, String titre, String one, String two, String three ){
+        this.nodeBuffer += String.format("\t%s [label=\"{%s|{%s|%s|%s}", node,titre,one,two,three);
+    }
+
+    public void addLine( ArrayList<String> listC ){
+        //this.nodeBuffer += String.format("\t%s [label=\"{%s|{%s|%s|%s}|{%s|%s|%s}}\", shape=\"record\"];\n", node,titre,one,two,three, one,two,three);
+        //this.nodeBuffer += String.format("\t%s [label=\"{%s|{%s|%s|%s}", node,titre,one,two,three);
+        this.nodeBuffer += "|{";
+        for (int i=0 ; i<listC.size(); i++) {
+            if (i == listC.size()-1 ){
+                this.nodeBuffer += String.format("%s", listC.get(i));
+            }
+            else{
+                this.nodeBuffer += String.format("%s|", listC.get(i));
+            }
+        }
+        this.nodeBuffer += "}";
+    }
+
+    public void EndTable() {
+        this.nodeBuffer += String.format("}\", shape=\"record\"];\n") ;
+    }
+
+}
+
 
 
     /*@Override
@@ -120,4 +145,4 @@ public class grapheTDS {
 
     }*/
 
-}
+
