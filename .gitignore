@@ -13,4 +13,4 @@ src/TDS/test.c
 src/a.exe
 out/
 
-TDS_CSV/*
+TDS_CSV/

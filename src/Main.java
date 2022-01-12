@@ -1,4 +1,5 @@
 import TDS.TdsVisitor;
+import TDS.grapheTDS;
 import ast.Ast;
 import ast.AstCreator;
 import graphViz.GraphVizVisitor;
@@ -46,12 +47,16 @@ public class Main {
         
             graphViz.dumpGraph("./out/tree.dot");
 
+
+
             // Visiteur de l'AST + création de la TDS + contrôle sémentique
             TdsVisitor tds_visitor = new TdsVisitor();
             ast.accept(tds_visitor);
             tds_visitor.tds_root.displayAll();      // Affichage TDS
             tds_visitor.showErrors();               // Affichage erreurs sémantiques
             tds_visitor.tds_root.generate_csv();    // Génération TDS.csv
+            grapheTDS graphe = tds_visitor.tds_root.getGrapheTDS();
+            graphe.dumpGraph("./out/tds.dot");
 
         } catch (IOException e) {
             e.printStackTrace();

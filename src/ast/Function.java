@@ -8,12 +8,14 @@ public class Function implements Ast{
         return visitor.visit(this);
     }
 
+    public int line;
     public Ast idf;
     public ArrayList<Ast> expression;
 
-    public Function(Ast idf, ArrayList<Ast> expr) {
+    public Function(Ast idf, ArrayList<Ast> expr, int line) {
         this.idf = idf;
         this.expression = expr;
+        this.line = line;
     }
 
 }

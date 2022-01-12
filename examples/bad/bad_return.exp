@@ -1,5 +1,5 @@
 
-int sum(int a1, a2){
+int sum(int a1, int a2){
 
     int S;
     S = a1 + a2 ;
@@ -9,7 +9,8 @@ int sum(int a1, a2){
 
 int main() {
 
-    int S = sum(3,2) ;
+    int S;
+    S=sum(3,2) ;
     print(S) ;
 
     return 0 ;

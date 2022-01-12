@@ -1,6 +1,6 @@
 int fct(int a) {
+  int c;
   print(a);
   a = b;
-  int c;
   c = '\'';
 }

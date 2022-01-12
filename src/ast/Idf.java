@@ -6,10 +6,12 @@ public class Idf implements Ast{
         return visitor.visit(this);
     }
 
+    public int line;
     public String name;
 
-    public Idf(String name) {
+    public Idf(String name, int line) {
         this.name = name;
+        this.line = line;
     }
 
 
