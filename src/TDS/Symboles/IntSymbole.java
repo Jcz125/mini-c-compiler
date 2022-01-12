@@ -1,5 +1,7 @@
 package TDS.Symboles;
 
+import java.util.ArrayList;
+
 public class IntSymbole extends Symbole{
 
     public IntSymbole(String idf) {
@@ -16,7 +18,12 @@ public class IntSymbole extends Symbole{
         System.out.print(" Type : int ");
     }
 
-
+    @Override
+    public ArrayList<String> listCaracteristiques() {
+        ArrayList<String> res = new ArrayList<>();
+        res.add("int");
+        return res;
+    }
 
     @Override
     public String displaySymbole_CSV() {

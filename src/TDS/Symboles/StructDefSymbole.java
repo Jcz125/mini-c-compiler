@@ -88,6 +88,44 @@ public class StructDefSymbole extends Symbole{
             System.out.print(" Vide ");
     }
 
+    @Override
+    public ArrayList<String> listCaracteristiques() {
+        ArrayList<String> list = new ArrayList<>() ;
+        list.add(type);
+        if (champs.size() != 0) {
+            HashMap<String, ArrayList<String>> types = new HashMap<>();
+            for (Symbole s : champs.keySet()) {
+                String t = s.type.toString();
+                String name = s.idf.toString();
+                if (types.containsKey(t)) {
+                    types.get(t).add(name);
+                } else {
+                    ArrayList<String> tab = new ArrayList<>();
+                    tab.add(name);
+                    types.put(t, tab);
+                }
+
+            }
+            for (String name : types.keySet()) {
+                String key = name.toString();
+                String res = "";
+                res+="(";
+                if (!key.equals("int")) {
+                    res+=(key + " * : ");
+                } else {
+                    res+=(key + " : ");
+                }
+
+                res+=("["+String.join(",", types.get(name))+"]");
+                res+=(")");
+                list.add(res);
+            }
+        }
+        else {
+            list.add("Vide");
+        }
+        return list;
+    }
 
 
     @Override

@@ -55,6 +55,7 @@ public class FctSymbole extends Symbole {
     }
 
 
+
     @Override
     public void displaySymbole() {
         if (this.typeRetour.equals("int") || this.typeRetour.equals("void") || this.typeRetour.equals("void *"))
@@ -76,7 +77,34 @@ public class FctSymbole extends Symbole {
         }
     }
 
+    @Override
+    public ArrayList<String> listCaracteristiques() {
+        ArrayList<String> list = new ArrayList<>() ;
 
+        if (this.typeRetour.equals("int") || this.typeRetour.equals("void") || this.typeRetour.equals("void *")) {
+            list.add("(type de retour: "+this.typeRetour + ")     ("+"Nombre de params : " + this.nbParam+")");
+        }
+        else {
+            list.add("(type de retour: "+this.typeRetour + "*)     ("+"Nombre de params : " + this.nbParam+")");
+        }
+        if (this.nbParam != 0) {
+            String res = "";
+            res+=("Params : ");
+            for (Symbole s : fctParams) {
+                String name = s.idf;
+                String type = s.type;
+                if (!type.equals("int"))
+                    res+=("(" + name + " __ " + type + " *)" + "  |  ");
+                else
+                    res+=("(" + name + " __ " + type + ")" + "  |  ");
+            }
+            list.add(res);
+        }
+//        list.add(typeRetour);
+//        list.add(Integer.toString(nbParam));
+//        list.add(fctParams.toString());
+        return list;
+    }
 
 
     @Override
@@ -99,8 +127,6 @@ public class FctSymbole extends Symbole {
                     else
                         TDS+=("(" + name + " __ " + type + ")" + "  |  ");
                 }
-
-
             }
             return TDS;
     }
