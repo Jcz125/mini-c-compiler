@@ -20,7 +20,7 @@ make parser
 java -jar ./lib/antlr-4.9.2-complete.jar grammaire.g4 -no-listener -visitor -o ./src/parser
 ```
 
-## Pour construire l'AST :
+## Pour construire l'AST, la TDS et afficher les contrôles sémantiques :
 ### Linux :
 ```bash
 javac -cp ./lib/antlr-4.9.2-complete.jar:./src ./src/Main.java -d ./bin
@@ -38,7 +38,11 @@ javac  -cp "./lib/antlr-4.9.2-complete.jar;./src" ./src/Main.java -d ./bin
 java -cp "./lib/antlr-4.9.2-complete.jar;./bin" Main [nom_du_fichier]
 ```
 
-## Pour afficher l'AST :
+## Pour afficher et enregistrer l'AST :
 ```bash
 dot -Tsvg ./out/tree.dot -o ./out/tree.svg
+```
+## Pour afficher et enregistrer la TDS :
+```bash
+dot -Tsvg ./out/tds.dot -o ./out/tds.svg
 ```
